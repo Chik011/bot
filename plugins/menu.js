@@ -57,22 +57,15 @@ const allTags = {
     'main': 'MENU UTAMA',
     'downloader': 'MENU DOWNLOADER',
     'database': 'MENU DATABASE',
-    'rpg': 'MENU RPG',
-    'rpgG': 'MENU RPG GUILD',
     'sticker': 'MENU CONVERT',
     'advanced': 'ADVANCED',
-    'xp': 'MENU EXP',
     'fun': 'MENU FUN',
     'game': 'MENU GAME',
-    'github': 'MENU GITHUB',
     'group': 'MENU GROUP',
     'image': 'MENU IMAGE',
     'nsfw': 'MENU NSFW',
     'info': 'MENU INFO',
     'internet': 'INTERNET',
-    'islam': 'MENU ISLAMI',
-    'kerang': 'MENU KERANG',
-    'maker': 'MENU MAKER',
     'news': 'MENU NEWS',
     'owner': 'MENU OWNER',
     'voice': 'PENGUBAH SUARA',
@@ -88,10 +81,6 @@ const allTags = {
 const defaultMenu = {
     before: `
 Hi %name
-I am an automated system (WhatsApp Bot) that can help to do something, search and get data / information only through WhatsApp.
-
-◦ *Library:* Baileys
-◦ *Function:* Assistant
 
 ┌  ◦ Uptime : %uptime
 │  ◦ Tanggal : %date
