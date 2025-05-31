@@ -20,7 +20,7 @@ let arrayMenu = [
   'all', 
   'ai', 
   'main', 
-  'downloader', 
+  'toram',
   'sticker', 
   'group', 
   'image',  
