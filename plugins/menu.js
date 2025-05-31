@@ -23,8 +23,7 @@ let arrayMenu = [
   'downloader', 
   'sticker', 
   'group', 
-  'image', 
-  'nsfw', 
+  'image',  
   'info', 
   ];
 
@@ -36,9 +35,8 @@ const allTags = {
     'toram': 'TORAM',
     'group': 'MENU GROUP',
     'image': 'MENU IMAGE',
-    'nsfw': 'MENU NSFW',
     'info': 'MENU INFO',
-    'internet': 'INTERNET',
+    'internet': 'INTERNET'
 
 }
 
@@ -54,7 +52,7 @@ Hi %name
     header: '┌  ◦ *%category*',
     body: '│  ◦ %cmd %islimit %isPremium',
     footer: '└  ',
-    after: `*Note:* Ketik .menu <category> untuk melihat menu spesifik\nContoh: .menu tools`
+    after: `*Note:* Ketik .menu <category> untuk melihat menu spesifik\nContoh: .menu all`
 }
 
 let handler = async (m, { conn, usedPrefix: _p, args = [], command }) => {

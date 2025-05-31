@@ -15,7 +15,7 @@ extendedTextMessage:{
                         mediaType: 1,
                         previewType: 0,
                         renderLargerThumbnail: true,
-                        thumbnailUrl: 'https://telegra.ph/file/dc5a67d724b016574129b.jpg',
+                        thumbnailUrl: '',
                         sourceUrl: ''
                     }
                 }, mentions: [m.sender]
