@@ -23,8 +23,9 @@ let arrayMenu = [
   'toram',
   'sticker', 
   'group', 
+  'tools',
   'image',  
-  'info', 
+  'info'
   ];
 
 
@@ -33,11 +34,10 @@ const allTags = {
     'ai': 'MENU AI',
     'main': 'MENU UTAMA',
     'toram': 'TORAM',
+    'sticker': 'MENU STICKER',
     'group': 'MENU GROUP',
-    'image': 'MENU IMAGE',
-    'info': 'MENU INFO',
-    'internet': 'INTERNET'
-
+    'tools': 'MENU TOOLS',
+    'info': 'MENU INFO'
 }
 
 const defaultMenu = {
