@@ -22,7 +22,7 @@ let handler = async (m, { conn, command, usedPrefix, text }) => {
 handler.help = ['aistiker <prompt>'];
 handler.tags = ['sticker'];
 handler.command = /^(aistiker|ai?s|aisticker|stickerai)$/i;
-handler.limit = true;
+handler.limit = false;
 module.exports = handler;
 
 const isUrl = (text) => {

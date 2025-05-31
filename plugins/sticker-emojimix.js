@@ -19,5 +19,5 @@ let handler = async (m, { conn, text, args }) => {
 handler.help = ['emojimix']
 handler.tags = ['sticker']
 handler.command = /^(emojimix)$/i
-handler.limit = true
+handler.limit = false
 module.exports = handler

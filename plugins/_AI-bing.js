@@ -59,7 +59,7 @@ handler.command = handler.help = ['bing', 'bingimg']
 
 //handler.command = handler.help = ['bing']
 handler.tags = ['ai'];
-handler.limit = true
+handler.limit = false
 
 module.exports = handler
 

@@ -46,6 +46,6 @@ const handler = async (m, { conn, args, text, usedPrefix, command }) => {
 
 handler.command = handler.help = ['brat', 'brat2', 'bratgif', 'bratvid', 'ttp', 'attp'];
 handler.tags = ['sticker'];
-handler.limit = true;
+handler.limit = false;
 
 module.exports = handler;

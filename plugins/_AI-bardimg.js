@@ -49,6 +49,6 @@ handler.help = ['bardimg', 'bardimage', 'bardvideo', 'bardaudio', 'geminiimg', '
 handler.tags = ['ai'];
 handler.command = /^(bardimg|bardimage|bardvideo|bardaudio|geminiimg|geminiimage|geminivideo|geminiaudio)$/i;
 
-handler.limit = true;
+handler.limit = false;
 
 module.exports = handler;

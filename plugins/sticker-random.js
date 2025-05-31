@@ -40,5 +40,5 @@ var handler = async (m, {
 
 handler.command = handler.help = ['dinokuning', 'patrick', 'spongebob', 'doge', 'manusialidi', 'sdino', 'spatrick', 'sspongebob', 'sdoge', 'smanusialidi']
 handler.tags = ['sticker']
-handler.limit = true
+handler.limit = false
 module.exports = handler
