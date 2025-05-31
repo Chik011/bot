@@ -14,7 +14,7 @@ let handler = async (m, { conn, command }) => {
   throw "🚩 Terjadi kesalahan"
    };
 };
-handler.command = handler.help = ['gay','ahegao','ass','bdsm','blowjob','cuckold','cum','ero','femdom','foot','gangbang','glasses','hentai','gifs','jahy','manga','masturbation','neko','neko2','orgy','tentacles','pussy','panties','thighs','yuri','zettai']
+handler.command = handler.help = ['buff','lvlg',]
 handler.tags = ['toram']
 handler.limit = false;
 handler.premium = false;
