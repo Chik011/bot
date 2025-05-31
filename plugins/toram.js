@@ -1,22 +1,16 @@
-let handler = async (m, { conn, command }) => {
-  await conn.reply(m.chat, wait, m)
-  try {
-    const messages = {
-  buff: 'buff code belum tersedia',
-  lvlg: 'lvlg code belum tersedia',
-  pembolong: 'belum tersedia'
-};
+const knownCommands = ['buff', 'lvlg', 'pembolong']
 
-if (messages[command]) {
-  throw new Error(messages[command]);
+if (knownCommands.includes(command.toLowerCase())) {
+  switch (command.toLowerCase()) {
+    case 'buff':
+      throw 'buff code belum tersedia';
+    case 'lvlg':
+      throw 'lvlg code belum tersedia';
+    case 'pembolong':
+      throw 'belum tersedia';
+  }
 }
 
-   } catch (err) {
-  console.error(err)
-  throw "🚩 Terjadi kesalahan"
-   };
-};
-handler.command = handler.help = ['buff','lvlg','pembolong'];
 handler.tags = ['toram']
 handler.limit = false;
 handler.premium = false;
