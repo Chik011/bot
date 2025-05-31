@@ -300,7 +300,55 @@ DROP RATE★
       return;
     }
     if (command == 'pembolong') {
-      await conn.reply(m.chat, 'belum tersedia', m)
+      await conn.reply(m.chat, `Harga belum pasti sesuai, bisa berubah
+
+OHS
+0-1: 15-30m
+1-2: 150-250m
+
+2H
+0-1: 10-15m
+1-2: 60-80m
+
+Knuckles
+0-1: 12-18m
+1-2: 100-120m
+
+Katana
+0-1: 12-16m
+1-2: 100-120m
+
+Staff
+0-1: 10-15m
+1-2: 90-120m
+
+Bow
+0-1: 9-15m
+1-2: 60-90m
+
+Bowgun
+0-1: 7-14m
+1-2: 45-65m
+
+MD
+0-1: 5-12m
+1-2: 16-35m
+
+Halberd
+0-1: 7-12m
+1-2: 70-80m
+
+Armor
+Spirit Needle: 10m
+Legendary Needle: 400m+
+
+Additionals
+Fairy Silk: 5-10m
+Legendary Silk: 600m+
+
+Ring
+High Grade Ornament: 8-10m
+Legendary Ornament: 450-500m`, m)
       return;
     }
   } catch (err) {
