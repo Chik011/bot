@@ -67,7 +67,6 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 ▢ Level: ${level}
 ▢ Role: *${role}*
 ▢ Limit: ${limit}
-▢ Money: ${money}
 └──────────────
 
 ┌─⊷ *STATUS*

@@ -1,6 +1,5 @@
 global.owner = ['62895329092414']  
 global.mods = ['62895329092414'] // Nomor Moderator
-global.prems = ['62895329092414'] // Nomor Premium
 global.nameowner = 'chiko'
 global.numberowner = '62895329092414' // Nomor Owner
 global.mail = 'c' 

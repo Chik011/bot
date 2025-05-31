@@ -68,5 +68,5 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 handler.command = handler.help = ['ai','openai','chatgpt'];
 handler.tags = ['ai'];
 handler.premium = false
-handler.limit = true;
+handler.limit = false;
 module.exports = handler;
