@@ -55,27 +55,13 @@ const allTags = {
     'all': 'SEMUA MENU',
     'ai': 'MENU AI',
     'main': 'MENU UTAMA',
-    'downloader': 'MENU DOWNLOADER',
-    'database': 'MENU DATABASE',
-    'sticker': 'MENU CONVERT',
-    'advanced': 'ADVANCED',
-    'fun': 'MENU FUN',
-    'game': 'MENU GAME',
+    'toram': 'TORAM',
     'group': 'MENU GROUP',
     'image': 'MENU IMAGE',
     'nsfw': 'MENU NSFW',
     'info': 'MENU INFO',
     'internet': 'INTERNET',
-    'news': 'MENU NEWS',
-    'owner': 'MENU OWNER',
-    'voice': 'PENGUBAH SUARA',
-    'quotes': 'MENU QUOTES',
-    'store': 'MENU STORE',
-    'stalk': 'MENU STALK',
-    'shortlink': 'SHORT LINK',
-    'tools': 'MENU TOOLS',
-    'anonymous': 'ANONYMOUS CHAT',
-    '': 'NO CATEGORY'
+
 }
 
 const defaultMenu = {
