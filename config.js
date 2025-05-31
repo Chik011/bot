@@ -11,7 +11,7 @@ global.wait = '_*Tunggu sedang di proses...*_'
 global.eror = '_*Server Error*_'
 global.stiker_wait = '*⫹⫺ Stiker sedang dibuat...*'
 global.packname = 'Made With'
-global.author = 'Bot WhatsApp'
+global.author = 'Laurens'
 global.maxwarn = '5' // Peringatan maksimum Warn
 
 global.autobio = false // Set true/false untuk mengaktifkan atau mematikan autobio (default: false)
