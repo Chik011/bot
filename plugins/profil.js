@@ -14,13 +14,23 @@ function saveProfiles() {
 
 async function saveProfilePic(conn, m, userId) {
   try {
-    let msg = m.message?.imageMessage ? m : m.quoted;
-    if (!msg?.message?.imageMessage) return null;
-    let buffer = await conn.downloadMediaMessage(msg);
-    if (!buffer) return null;
-    let fileName = path.join(picDir, userId + ".jpg");
-    fs.writeFileSync(fileName, buffer);
-    return fileName;
+    // Cek gambar di pesan utama
+    if (m.message?.imageMessage) {
+      let buffer = await conn.downloadMediaMessage(m);
+      if (!buffer) return null;
+      let fileName = path.join(picDir, userId + ".jpg");
+      fs.writeFileSync(fileName, buffer);
+      return fileName;
+    }
+    // Cek gambar di reply
+    if (m.quoted?.message?.imageMessage) {
+      let buffer = await conn.downloadMediaMessage(m.quoted);
+      if (!buffer) return null;
+      let fileName = path.join(picDir, userId + ".jpg");
+      fs.writeFileSync(fileName, buffer);
+      return fileName;
+    }
+    return null;
   } catch (e) {
     return null;
   }
@@ -39,7 +49,7 @@ let handler = async (m, { conn, command, args }) => {
       if (!text) return conn.reply(m.chat, "Kirim teks profilmu setelah .addprofil", m);
 
       let photoPath = await saveProfilePic(conn, m, userId);
-      if (!photoPath) return conn.reply(m.chat, "Kirim atau reply gambar untuk dijadikan foto profil!", m);
+      if (!photoPath) return conn.reply(m.chat, "Kirim gambar atau reply ke gambar untuk dijadikan foto profil!", m);
 
       profiles[userId] = { text, photoPath };
       saveProfiles();
@@ -56,7 +66,7 @@ let handler = async (m, { conn, command, args }) => {
       if (!text) return conn.reply(m.chat, "Kirim teks profilmu setelah .editprofil", m);
 
       let photoPath = await saveProfilePic(conn, m, userId);
-      if (!photoPath) return conn.reply(m.chat, "Kirim atau reply gambar untuk mengganti foto profil!", m);
+      if (!photoPath) return conn.reply(m.chat, "Kirim gambar atau reply ke gambar untuk mengganti foto profil!", m);
 
       profiles[userId].photoPath = photoPath;
       profiles[userId].text = text;
@@ -71,7 +81,7 @@ let handler = async (m, { conn, command, args }) => {
         return conn.reply(m.chat, "❌ Profil belum ada. Gunakan .addprofil untuk membuat profil.", m);
       }
       let photoPath = await saveProfilePic(conn, m, userId);
-      if (!photoPath) return conn.reply(m.chat, "Kirim atau reply gambar untuk dijadikan foto profil!", m);
+      if (!photoPath) return conn.reply(m.chat, "Kirim gambar atau reply ke gambar untuk dijadikan foto profil!", m);
 
       profiles[userId].photoPath = photoPath;
       saveProfiles();
