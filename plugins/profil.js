@@ -1,18 +1,24 @@
 const fs = require("fs");
+const path = require("path");
 const wait = 'Tunggu sebentar...';
 
 const profileFile = './profil.json';
+const picDir = './profile-pics/';
+if (!fs.existsSync(picDir)) fs.mkdirSync(picDir);
+
 let profiles = {};
 if (fs.existsSync(profileFile)) profiles = JSON.parse(fs.readFileSync(profileFile));
 function saveProfiles() {
   fs.writeFileSync(profileFile, JSON.stringify(profiles, null, 2));
 }
 
-function getImageUrl(m) {
-  // Cek jika ada gambar di pesan ini atau reply
-  if (m.message?.imageMessage) return m.message.imageMessage.url;
-  if (m.quoted?.message?.imageMessage) return m.quoted.message.imageMessage.url;
-  return null;
+async function saveProfilePic(conn, m, userId) {
+  let msg = m.message?.imageMessage ? m : m.quoted;
+  if (!msg?.message?.imageMessage) return null;
+  let buffer = await conn.downloadMediaMessage(msg);
+  let fileName = path.join(picDir, userId + ".jpg");
+  fs.writeFileSync(fileName, buffer);
+  return fileName;
 }
 
 let handler = async (m, { conn, command, args }) => {
@@ -27,10 +33,10 @@ let handler = async (m, { conn, command, args }) => {
       const text = args.join(" ").trim();
       if (!text) return conn.reply(m.chat, "Kirim teks profilmu setelah .addprofil", m);
 
-      let photoUrl = getImageUrl(m);
-      if (!photoUrl) return conn.reply(m.chat, "Kirim atau reply gambar untuk dijadikan foto profil!", m);
+      let photoPath = await saveProfilePic(conn, m, userId);
+      if (!photoPath) return conn.reply(m.chat, "Kirim atau reply gambar untuk dijadikan foto profil!", m);
 
-      profiles[userId] = { text, photoUrl };
+      profiles[userId] = { text, photoPath };
       saveProfiles();
       return conn.reply(m.chat, "✅ Profil berhasil ditambahkan.", m);
     }
@@ -44,10 +50,10 @@ let handler = async (m, { conn, command, args }) => {
       const text = args.join(" ").trim();
       if (!text) return conn.reply(m.chat, "Kirim teks profilmu setelah .editprofil", m);
 
-      let photoUrl = getImageUrl(m);
-      if (!photoUrl) return conn.reply(m.chat, "Kirim atau reply gambar untuk mengganti foto profil!", m);
+      let photoPath = await saveProfilePic(conn, m, userId);
+      if (!photoPath) return conn.reply(m.chat, "Kirim atau reply gambar untuk mengganti foto profil!", m);
 
-      profiles[userId].photoUrl = photoUrl;
+      profiles[userId].photoPath = photoPath;
       profiles[userId].text = text;
       saveProfiles();
       return conn.reply(m.chat, "✅ Profil berhasil diupdate.", m);
@@ -59,10 +65,10 @@ let handler = async (m, { conn, command, args }) => {
       if (!profiles[userId]) {
         return conn.reply(m.chat, "❌ Profil belum ada. Gunakan .addprofil untuk membuat profil.", m);
       }
-      let photoUrl = getImageUrl(m);
-      if (!photoUrl) return conn.reply(m.chat, "Kirim atau reply gambar untuk dijadikan foto profil!", m);
+      let photoPath = await saveProfilePic(conn, m, userId);
+      if (!photoPath) return conn.reply(m.chat, "Kirim atau reply gambar untuk dijadikan foto profil!", m);
 
-      profiles[userId].photoUrl = photoUrl;
+      profiles[userId].photoPath = photoPath;
       saveProfiles();
       return conn.reply(m.chat, "✅ Foto profil berhasil diupdate.", m);
     }
@@ -76,10 +82,10 @@ let handler = async (m, { conn, command, args }) => {
       }
       const contact = targetId.split("@")[0];
       const title = targetId === m.sender ? "👤 Profil Anda" : `📄 Profil @${contact}`;
-      if (p.photoUrl) {
+      if (p.photoPath && fs.existsSync(p.photoPath)) {
         // Kirim foto profil + caption
         return conn.sendMessage(m.chat, {
-          image: { url: p.photoUrl },
+          image: { url: p.photoPath },
           caption: `${title}:\n${p.text}`,
           mentions: [targetId]
         }, { quoted: m });
