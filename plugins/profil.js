@@ -74,20 +74,6 @@ let handler = async (m, { conn, command, args }) => {
       return conn.reply(m.chat, "✅ Profil berhasil diupdate.", m);
     }
 
-    // .addfoto (hanya ganti foto profil)
-    if (command === 'addfoto') {
-      const userId = m.sender;
-      if (!profiles[userId]) {
-        return conn.reply(m.chat, "❌ Profil belum ada. Gunakan .addprofil untuk membuat profil.", m);
-      }
-      let photoPath = await saveProfilePic(conn, m, userId);
-      if (!photoPath) return conn.reply(m.chat, "Kirim gambar atau reply ke gambar untuk dijadikan foto profil!", m);
-
-      profiles[userId].photoPath = photoPath;
-      saveProfiles();
-      return conn.reply(m.chat, "✅ Foto profil berhasil diupdate.", m);
-    }
-
     // .profil (sendiri, reply, atau mention)
     if (command === 'profil') {
       let targetId = m.quoted?.sender || m.mentionedJid?.[0] || m.sender;
@@ -115,7 +101,7 @@ let handler = async (m, { conn, command, args }) => {
   }
 };
 
-handler.command = handler.help = ['addprofil', 'editprofil', 'profil', 'addfoto'];
+handler.command = handler.help = ['addprofil', 'editprofil', 'profil'];
 handler.tags = ['profil'];
 handler.limit = false;
 handler.premium = false;
