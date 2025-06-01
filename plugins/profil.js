@@ -42,7 +42,8 @@ async function startBot() {
     const text = msg.message.conversation || msg.message.extendedTextMessage?.text;
     if (!text || (!text.startsWith(".editprofil") && !text.startsWith(".profil"))) return;
 
-    const userId = msg.key.participant || msg.key.remoteJid;
+    // Gunakan fallback yang benar untuk userId
+    const userId = msg.key.participant ?? msg.key.remoteJid;
 
     // Handle .editprofil nama=.., umur=.., kota=..
     if (text.startsWith(".editprofil")) {
@@ -51,7 +52,7 @@ async function startBot() {
 
       args.forEach(arg => {
         const [key, value] = arg.split("=");
-        if (["nama", "umur", "kota"].includes(key.trim())) {
+        if (key && value && ["nama", "umur", "kota"].includes(key.trim())) {
           profiles[userId][key.trim()] = value.trim();
         }
       });
@@ -62,9 +63,14 @@ async function startBot() {
 
     // Handle .profil (sendiri, reply, atau mention)
     if (text.startsWith(".profil")) {
-      let targetId = extractMentionedOrRepliedId(msg) || userId;
+      let targetId = extractMentionedOrRepliedId(msg) ?? userId;
 
-      const p = profiles[targetId];
+      // Jika profil tidak ditemukan, coba fallback ke remoteJid (untuk chat pribadi)
+      let p = profiles[targetId];
+      if (!p && targetId !== msg.key.remoteJid) {
+        targetId = msg.key.remoteJid;
+        p = profiles[targetId];
+      }
       if (!p) {
         return sock.sendMessage(sender, { text: "❌ Profil belum dibuat oleh pengguna ini." }, { quoted: msg });
       }
