@@ -28,6 +28,8 @@ let handler = async (m, { conn, command, args }) => {
       if (!text) return conn.reply(m.chat, "Kirim teks profilmu setelah .addprofil", m);
 
       let photoUrl = getImageUrl(m);
+      if (!photoUrl) return conn.reply(m.chat, "Kirim atau reply gambar untuk dijadikan foto profil!", m);
+
       profiles[userId] = { text, photoUrl };
       saveProfiles();
       return conn.reply(m.chat, "✅ Profil berhasil ditambahkan.", m);
@@ -43,10 +45,26 @@ let handler = async (m, { conn, command, args }) => {
       if (!text) return conn.reply(m.chat, "Kirim teks profilmu setelah .editprofil", m);
 
       let photoUrl = getImageUrl(m);
-      if (photoUrl) profiles[userId].photoUrl = photoUrl;
+      if (!photoUrl) return conn.reply(m.chat, "Kirim atau reply gambar untuk mengganti foto profil!", m);
+
+      profiles[userId].photoUrl = photoUrl;
       profiles[userId].text = text;
       saveProfiles();
       return conn.reply(m.chat, "✅ Profil berhasil diupdate.", m);
+    }
+
+    // .addfoto (hanya ganti foto profil)
+    if (command === 'addfoto') {
+      const userId = m.sender;
+      if (!profiles[userId]) {
+        return conn.reply(m.chat, "❌ Profil belum ada. Gunakan .addprofil untuk membuat profil.", m);
+      }
+      let photoUrl = getImageUrl(m);
+      if (!photoUrl) return conn.reply(m.chat, "Kirim atau reply gambar untuk dijadikan foto profil!", m);
+
+      profiles[userId].photoUrl = photoUrl;
+      saveProfiles();
+      return conn.reply(m.chat, "✅ Foto profil berhasil diupdate.", m);
     }
 
     // .profil (sendiri, reply, atau mention)
@@ -76,7 +94,7 @@ let handler = async (m, { conn, command, args }) => {
   }
 };
 
-handler.command = handler.help = ['addprofil', 'editprofil', 'profil'];
+handler.command = handler.help = ['addprofil', 'editprofil', 'profil', 'addfoto'];
 handler.tags = ['profil'];
 handler.limit = false;
 handler.premium = false;
