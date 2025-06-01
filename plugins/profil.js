@@ -1,7 +1,7 @@
 const fs = require("fs");
 const wait = 'Tunggu sebentar...';
 
-const profileFile = './profiles.json';
+const profileFile = './profil.json';
 let profiles = {};
 if (fs.existsSync(profileFile)) profiles = JSON.parse(fs.readFileSync(profileFile));
 function saveProfiles() {
