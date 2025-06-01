@@ -13,12 +13,17 @@ function saveProfiles() {
 }
 
 async function saveProfilePic(conn, m, userId) {
-  let msg = m.message?.imageMessage ? m : m.quoted;
-  if (!msg?.message?.imageMessage) return null;
-  let buffer = await conn.downloadMediaMessage(msg);
-  let fileName = path.join(picDir, userId + ".jpg");
-  fs.writeFileSync(fileName, buffer);
-  return fileName;
+  try {
+    let msg = m.message?.imageMessage ? m : m.quoted;
+    if (!msg?.message?.imageMessage) return null;
+    let buffer = await conn.downloadMediaMessage(msg);
+    if (!buffer) return null;
+    let fileName = path.join(picDir, userId + ".jpg");
+    fs.writeFileSync(fileName, buffer);
+    return fileName;
+  } catch (e) {
+    return null;
+  }
 }
 
 let handler = async (m, { conn, command, args }) => {
