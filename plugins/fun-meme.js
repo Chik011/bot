@@ -1,14 +1,16 @@
-let fetch = require('node-fetch')
-let handler = async (m, { conn, text }) => {
-try { 
-let img = await fetch(`https://api.botcahx.eu.org/api/random/meme?apikey=${btc}`).then(result => result.buffer())
-await conn.sendFile(m.chat, img, 'file.jpg', wm, m)
-} catch (e) {
-throw `Error ${eror}`
- }
-}
-handler.command = /^(meme)$/i
-handler.tags = ['fun']
-handler.help = ['meme']
-handler.limit = true
-module.exports = handler
+let fetch = require('node-fetch');
+let handler = async (m, { conn }) => {
+  try {
+    let res = await fetch('https://meme-api.com/gimme');
+    let json = await res.json();
+    if (!json.url) throw 'Gagal mengambil meme!';
+    await conn.sendFile(m.chat, json.url, 'meme.jpg', json.title, m);
+  } catch (e) {
+    throw 'Error mengambil meme!';
+  }
+};
+handler.command = /^(meme)$/i;
+handler.tags = ['fun'];
+handler.help = ['meme'];
+handler.limit = false;
+module.exports = handler;

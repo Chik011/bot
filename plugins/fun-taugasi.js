@@ -1,14 +1,20 @@
- const fetch = require('node-fetch');
+const fetch = require('node-fetch');
 
 let handler = async (m, { conn }) => {
-  let res = await fetch(`https://api.botcahx.eu.org/api/random/taugasih?apikey=${btc}`).then(result => result.json());
-  conn.reply(m.chat, `“${res.taugasih}”`, m);
+  try {
+    let res = await fetch('https://api.lolhuman.xyz/api/random/quotes?apikey=apikeydemo');
+    let json = await res.json();
+    let text = json.result || json.result.quote || json.result.text || 'Tidak ada data.';
+    conn.reply(m.chat, `“${text}”`, m);
+  } catch (e) {
+    conn.reply(m.chat, 'Gagal mengambil data.', m);
+  }
 };
 
 handler.help = ['taugasih'];
 handler.tags = ['fun'];
 handler.command = /^(taugasih)$/i;
-handler.limit = true;
+handler.limit = false;
 handler.admin = false;
 handler.fail = null;
 
