@@ -1,4 +1,5 @@
 let handler = async (m, { conn }) => {
+  // Kirim react ke chat
   await conn.sendMessage(m.chat, {
     react: {
       text: pickRandom(['😨','😅','😂','😳','😎', '🥵', '😱', '🐦', '🙄', '🐤','🗿','🐦','🤨','🥴','😐','👆','😔', '👀','👎']),
@@ -7,20 +8,19 @@ let handler = async (m, { conn }) => {
   });
 
   const lower = (m.text || '').toLowerCase();
+
   if (lower.includes('owner')) {
-    await conn.reply(m.chat, 'Owner sedang sibuk, silakan tinggalkan pesan.', m);
+    await conn.reply(m.chat, 'ada', m);
   } else if (lower.includes('wibu')) {
-    await conn.reply(m.chat, 'Wibu detected! 🚨', m);
+    await conn.reply(m.chat, 'waaa', m);
+  } else if (lower.includes('admin')) {
+    await conn.reply(m.chat, 'hadir', m);
   }
-  // Tambah else if sesuai kebutuhan
 
   return true;
 };
 
-handler.before = true; // <--- Tambahkan ini agar selalu dijalankan
-handler.customPrefix = /(bile?k|ban?h|cum?|knt?l|y?|mmk|p|b(a|i)?c?(o|i)?(t|d)?|wibu|p(a)?nt(e)?k|pepe?k|owner)/i;
-handler.command = () => false;
-handler.mods = false;
+handler.all = handler; // agar selalu dijalankan di semua pesan
 
 module.exports = handler;
 
