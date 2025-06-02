@@ -5,9 +5,6 @@ const eror = 'Maaf, terjadi kesalahan.';
 const endpoints = {
   waifu: 'https://api.waifu.pics/sfw/waifu',
   loli: 'https://api.waifu.pics/sfw/neko',
-  yuri: 'https://api.waifu.pics/sfw/waifu', // waifu.pics tidak punya yuri, pakai waifu
-  shota: 'https://api.waifu.pics/sfw/neko', // waifu.pics tidak punya shota, pakai neko
-  hinata: 'https://api.waifu.pics/sfw/waifu', // tidak ada hinata, pakai waifu
 };
 
 var handler = async (m, { conn, command }) => {
@@ -23,8 +20,8 @@ var handler = async (m, { conn, command }) => {
   }
 };
 
-handler.help = ['yuri','shota','waifu','loli'];
-handler.command = /^(yuri|shota|waifu|loli)$/i;
+handler.help = ['waifu','loli'];
+handler.command = /^(waifu|loli)$/i;
 handler.tags = ['image'];
 handler.limit = true;
 module.exports = handler;
