@@ -1,4 +1,4 @@
-/*let handler = async (m, { conn, text }) => {
+let handler = async (m, { conn, text }) => {
 
     conn.sendMessage(m.chat, {
           react: {
@@ -17,4 +17,4 @@ module.exports = handler
   function pickRandom(list) {
      return list[Math.floor(Math.random() * list.length)]
   }
-*/
+
