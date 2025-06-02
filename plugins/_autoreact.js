@@ -1,4 +1,4 @@
-let handler = async (m, { conn, text }) => {
+let handler = async (m, { conn }) => {
   await conn.sendMessage(m.chat, {
     react: {
       text: pickRandom(['😨','😅','😂','😳','😎', '🥵', '😱', '🐦', '🙄', '🐤','🗿','🐦','🤨','🥴','😐','👆','😔', '👀','👎']),
@@ -6,7 +6,6 @@ let handler = async (m, { conn, text }) => {
     }
   });
 
-  // Balasan khusus untuk kata tertentu
   const lower = (m.text || '').toLowerCase();
   if (lower.includes('owner')) {
     await conn.reply(m.chat, 'Owner sedang sibuk, silakan tinggalkan pesan.', m);
@@ -18,6 +17,7 @@ let handler = async (m, { conn, text }) => {
   return true;
 };
 
+handler.before = true; // <--- Tambahkan ini agar selalu dijalankan
 handler.customPrefix = /(bile?k|ban?h|cum?|knt?l|y?|mmk|p|b(a|i)?c?(o|i)?(t|d)?|wibu|p(a)?nt(e)?k|pepe?k|owner)/i;
 handler.command = () => false;
 handler.mods = false;
