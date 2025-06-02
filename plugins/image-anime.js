@@ -1,16 +1,30 @@
 const axios = require('axios');
-var handler = async (m, { conn, args, usedPrefix, command }) => {
-    m.reply(wait);
-    try {
-    let url = `https://api.botcahx.eu.org/api/anime/${command}?apikey=${btc}`;
-    let response = await axios.get(url, { responseType: 'arraybuffer' });
-    conn.sendFile(m.chat, response.data, "", "", m);
-    } catch (e) {
-    conn.reply(m.chat, eror, m)
-    }
-}
-handler.help = ['umaru','kaneki','megumin','yotsuba','shinomiya','yumeko','tejina','chiho','toukachan','akira','itori','kurumi','sagiri','eba','deidara','itachi','madara','asuna','ayuzawa','chitoge','emilia','hestia','inori','ana','miku','kaori','shizuka','doraemon','kaga','kotori','mikasa','akiyama','gremory','isuzu','shina','kagura','shinka','tsunade','sasuke','sakura','rize','nezuko','boruto','naruto','erza','minato','elaina','yuri','shota','waifu','loli','hinata']
-handler.command = /^(umaru|keneki|megumin|yotsuba|shinomiya|yumeko|tejina|chiho|toukachan|akira|itori|kurumi|sagiri|eba|deidara|itachi|madara|asuna|ayuzawa|chitoge|emilia|hestia|inori|ana|miku|kaori|shizuka|doraemon|kaga|koturi|mikasa|akiyama|gremory|isuzu|shina|kagura|shinka|tsunade|sasuke|sakura|rize|nezuko|boruto|naruto|erza|minato|elaina|yuri|shota|waifu|loli|hinata)$/i
-handler.tags = ['image']
+const wait = 'Tunggu sebentar...';
+const eror = 'Maaf, terjadi kesalahan.';
+
+const endpoints = {
+  waifu: 'https://api.waifu.pics/sfw/waifu',
+  loli: 'https://api.waifu.pics/sfw/neko',
+  yuri: 'https://api.waifu.pics/sfw/waifu', // waifu.pics tidak punya yuri, pakai waifu
+  shota: 'https://api.waifu.pics/sfw/neko', // waifu.pics tidak punya shota, pakai neko
+  hinata: 'https://api.waifu.pics/sfw/waifu', // tidak ada hinata, pakai waifu
+};
+
+var handler = async (m, { conn, command }) => {
+  m.reply(wait);
+  try {
+    let url = endpoints[command];
+    if (!url) return conn.reply(m.chat, 'Fitur tidak tersedia.', m);
+    let { data } = await axios.get(url);
+    await conn.sendFile(m.chat, data.url, '', '', m);
+  } catch (e) {
+    console.error(e);
+    conn.reply(m.chat, eror, m);
+  }
+};
+
+handler.help = ['yuri','shota','waifu','loli'];
+handler.command = /^(yuri|shota|waifu|loli)$/i;
+handler.tags = ['image'];
 handler.limit = true;
 module.exports = handler;
