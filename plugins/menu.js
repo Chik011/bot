@@ -18,7 +18,6 @@ let moment = require('moment-timezone')
 let levelling = require('../lib/levelling')
 let arrayMenu = [
   'all', 
-  'ai', 
   'main', 
   'toram',
   'sticker', 
@@ -33,7 +32,6 @@ let arrayMenu = [
 
 const allTags = {
     'all': 'SEMUA MENU',
-    'ai': 'MENU AI',
     'main': 'MENU UTAMA',
     'toram': 'TORAM',
     'sticker': 'MENU STICKER',
