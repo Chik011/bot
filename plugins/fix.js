@@ -1,12 +1,11 @@
 let handler = async (conn, m, args) => {
-  await conn.reply(m.chat, '🔧 Memperbaiki sesi...', m); // pesan awal
-
   try {
-    // Bersihkan berbagai session/chat antrian
+    await conn.reply(m.chat, '🔧 Memperbaiki sesi...', m); // selalu sertakan `m` sebagai pesan yang di-reply
+
     conn.queue = conn.queue || {};
-    conn.msgqueque = conn.msgqueque || {};
-    conn.game = conn.game || {};
+    conn.msgqueque = conn.msgqueque || [];
     conn.session = conn.session || {};
+    conn.game = conn.game || {};
 
     let removed = 0;
 
@@ -15,11 +14,9 @@ let handler = async (conn, m, args) => {
       removed++;
     }
 
-    if (conn.msgqueque instanceof Array) {
-      let before = conn.msgqueque.length;
-      conn.msgqueque = conn.msgqueque.filter(id => !id.includes(m.chat));
-      removed += (before - conn.msgqueque.length);
-    }
+    let before = conn.msgqueque.length;
+    conn.msgqueque = conn.msgqueque.filter(id => !id.includes(m.chat));
+    removed += (before - conn.msgqueque.length);
 
     if (conn.session[m.chat]) {
       delete conn.session[m.chat];
@@ -31,18 +28,18 @@ let handler = async (conn, m, args) => {
       removed++;
     }
 
-    await conn.reply(m.chat, `✅ Sesi dibersihkan. Total yang dihapus: ${removed}`, m);
+    await conn.reply(m.chat, `✅ Sesi grup telah diperbaiki. Dihapus: ${removed} entri.`, m);
 
   } catch (e) {
     console.error(e);
-    await conn.reply(m.chat, '🚨 Gagal memperbaiki sesi.', m);
+    await conn.reply(m.chat, '❌ Gagal memperbaiki sesi. Coba lagi nanti.', m);
   }
 };
 
-handler.command = handler.help = ['fix', 'perbaiki', 'reset'];
+handler.command = handler.help = ['fix', 'perbaiki'];
 handler.tags = ['tools'];
-handler.group = false;
-handler.admin = true; // hanya admin grup bisa jalankan
+handler.group = true;
+handler.admin = true; // bisa diganti rowner
 handler.limit = false;
 
 module.exports = handler;
