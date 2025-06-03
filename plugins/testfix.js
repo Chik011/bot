@@ -6,6 +6,10 @@ module.exports = {
   tags: ['tools'],
   handler: async function (m) {
     console.log('📩 testfix dipanggil')
-    await m.reply('✅ testfix berhasil dipanggil')
+    try {
+      await m.reply('✅ testfix berhasil dipanggil')
+    } catch (error) {
+      console.error('Terjadi kesalahan saat mengirim balasan:', error)
+    }
   }
 }
