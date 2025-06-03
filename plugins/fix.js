@@ -5,16 +5,18 @@ module.exports = {
   group: true,
   admin: true,
   handler: async function (m) {
-    const chat = m.chat
+    console.log('📥 Fix command dipanggil oleh:', m.sender)
 
     this.msgqueque = this.msgqueque || []
     this.queue = this.queue || {}
 
-    let before = this.msgqueque.length
+    const chat = m.chat
+    const before = this.msgqueque.length
     this.msgqueque = this.msgqueque.filter(id => !id.includes(chat))
-
     if (this.queue[chat]) delete this.queue[chat]
 
-    await m.reply(`✅ Sesi/perintah grup berhasil dibersihkan.\n🧹 ${before - this.msgqueque.length} queue dibersihkan.`)
+    await this.sendMessage(m.chat, {
+      text: `✅ Sesi diperbaiki.\nDihapus dari queue: ${before - this.msgqueque.length}`
+    }, { quoted: m })
   }
 }
