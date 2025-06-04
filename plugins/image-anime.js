@@ -4,15 +4,21 @@ const eror = 'Maaf, terjadi kesalahan.';
 
 const endpoints = {
   waifu: 'https://api.waifu.pics/sfw/waifu',
-  loli: 'https://api.waifu.pics/sfw/loli',         // pakai waifu.pics loli
-  husbu: 'https://api.waifu.pics/sfw/husbando',   // husbando
-  mommy: 'https://api.waifu.pics/sfw/mommy',      // mommy
+  loli: 'https://api.waifu.pics/sfw/loli',
+  husbu: 'https://api.waifu.pics/sfw/husbando',
   neko: 'https://api.waifu.pics/sfw/neko',
 };
+
+const mommyFallback = 'https://some-random-api.ml/img/simpson'; // contoh fallback gambar mommy lucu
 
 var handler = async (m, { conn, command }) => {
   m.reply(wait);
   try {
+    if (command === 'mommy') {
+      // karena mommy tidak ada di waifu.pics, kita pakai fallback ini
+      return await conn.sendFile(m.chat, mommyFallback, '', '🌸 Mommy untukmu~', m);
+    }
+
     let url = endpoints[command];
     if (!url) return conn.reply(m.chat, 'Fitur tidak tersedia.', m);
 
@@ -24,7 +30,6 @@ var handler = async (m, { conn, command }) => {
       waifu: '✨ Waifu untukmu~',
       loli: '🎀 Loli manis untukmu~',
       husbu: '✨ Husbando keren untukmu~',
-      mommy: '🌸 Mommy cantik untukmu~',
       neko: '🐱 Neko lucu untukmu~',
     };
 
