@@ -6,7 +6,9 @@ const endpoints = {
   waifu: 'https://api.waifu.pics/sfw/waifu',
   loli: 'https://api.lolicon.app/setu/v2?tag=loli&r18=0',
   husbu: 'https://nekos.best/api/v2/male',
-  husbu_alt: 'https://api.waifu.pics/sfw/smile', // fallback husbu
+  mommy: 'https://nekos.best/api/v2/female',       // endpoint mommy
+  husbu_alt: 'https://api.waifu.pics/sfw/smile',   // fallback husbu
+  mommy_alt: 'https://api.waifu.pics/sfw/cuddle',  // fallback mommy
   neko: 'https://api.waifu.pics/sfw/neko',
 };
 
@@ -22,12 +24,17 @@ var handler = async (m, { conn, command }) => {
       const res = await axios.get(url);
       data = res.data;
     } else if (command === 'husbu') {
-      // coba nekos.best dulu
       const res = await axios.get(url);
       data = res.data;
       if (!data.results || data.results.length === 0) {
-        // fallback ke waifu.pics
         const altRes = await axios.get(endpoints.husbu_alt);
+        data = { url: altRes.data.url };
+      }
+    } else if (command === 'mommy') {
+      const res = await axios.get(url);
+      data = res.data;
+      if (!data.results || data.results.length === 0) {
+        const altRes = await axios.get(endpoints.mommy_alt);
         data = { url: altRes.data.url };
       }
     } else {
@@ -55,6 +62,16 @@ var handler = async (m, { conn, command }) => {
       } else {
         return conn.reply(m.chat, 'Gagal mengambil gambar husbu.', m);
       }
+    } else if (command === 'mommy') {
+      if (data.results && data.results.length > 0) {
+        imageUrl = data.results[0].url;
+        caption = '🌸 Mommy untukmu~';
+      } else if (data.url) {
+        imageUrl = data.url;
+        caption = '🌸 Mommy untukmu~ (fallback)';
+      } else {
+        return conn.reply(m.chat, 'Gagal mengambil gambar mommy.', m);
+      }
     } else {
       imageUrl = data.url;
       caption = `✨ ${command.charAt(0).toUpperCase() + command.slice(1)} untukmu~`;
@@ -68,8 +85,8 @@ var handler = async (m, { conn, command }) => {
   }
 };
 
-handler.help = ['waifu', 'loli', 'husbu', 'neko'];
-handler.command = /^(waifu|loli|husbu|neko)$/i;
+handler.help = ['waifu', 'loli', 'husbu', 'mommy', 'neko'];
+handler.command = /^(waifu|loli|husbu|mommy|neko)$/i;
 handler.tags = ['image'];
 handler.limit = false;
 
