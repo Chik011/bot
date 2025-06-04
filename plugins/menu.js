@@ -27,6 +27,7 @@ let arrayMenu = [
   'profil',
   'fun',
   'image',
+  'owner'
   ];
 
 
@@ -41,6 +42,7 @@ const allTags = {
     'profil': 'MENU PROFIL',
     'fun': 'MENU FUN',
     'image': 'MENU IMAGE',
+    'owner': 'MENU OWNER'
 }
 
 const defaultMenu = {
