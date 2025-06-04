@@ -2,49 +2,49 @@ const axios = require('axios');
 const wait = 'Tunggu sebentar...';
 const eror = 'Maaf, terjadi kesalahan.';
 
+// Semua command terdaftar sebagai key di sini
 const endpoints = {
-  waifu: 'https://api.waifu.pics/sfw/waifu',
-  loli: 'https://api.waifu.pics/sfw/loli',
-  husbu: 'https://api.waifu.pics/sfw/husbando',
-  neko: 'https://api.waifu.pics/sfw/neko',
+  waifu: {
+    url: 'https://api.waifu.pics/sfw/waifu',
+    caption: '✨ Waifu untukmu~',
+  },
+  loli: {
+    url: 'https://api.waifu.pics/sfw/loli',
+    caption: '🎀 Loli manis untukmu~',
+  },
+  husbu: {
+    url: 'https://api.waifu.pics/sfw/husbando',
+    caption: '✨ Husbando keren untukmu~',
+  },
+  neko: {
+    url: 'https://api.waifu.pics/sfw/neko',
+    caption: '🐱 Neko lucu untukmu~',
+  },
+  mommy: {
+    url: 'https://some-random-api.ml/img/simpson', // fallback, kamu bisa ganti ke endpoint lain
+    caption: '🌸 Mommy untukmu~',
+  }
 };
 
-const mommyFallback = 'https://some-random-api.ml/img/simpson'; // contoh fallback gambar mommy lucu
-
-var handler = async (m, { conn, command }) => {
+const handler = async (m, { conn, command }) => {
   m.reply(wait);
   try {
-    if (command === 'mommy') {
-      // karena mommy tidak ada di waifu.pics, kita pakai fallback ini
-      return await conn.sendFile(m.chat, mommyFallback, '', '🌸 Mommy untukmu~', m);
-    }
+    const endpoint = endpoints[command];
+    if (!endpoint || !endpoint.url) return conn.reply(m.chat, 'Fitur tidak tersedia.', m);
 
-    let url = endpoints[command];
-    if (!url) return conn.reply(m.chat, 'Fitur tidak tersedia.', m);
+    const { data } = await axios.get(endpoint.url);
+    const imageUrl = data.url || data.link || data.message; // beberapa API beda-beda key-nya
+    if (!imageUrl) return conn.reply(m.chat, 'Gagal mendapatkan gambar.', m);
 
-    let { data } = await axios.get(url);
-
-    if (!data || !data.url) return conn.reply(m.chat, 'Gagal mendapatkan gambar.', m);
-
-    let captions = {
-      waifu: '✨ Waifu untukmu~',
-      loli: '🎀 Loli manis untukmu~',
-      husbu: '✨ Husbando keren untukmu~',
-      neko: '🐱 Neko lucu untukmu~',
-    };
-
-    let caption = captions[command] || '✨ Untukmu~';
-
-    await conn.sendFile(m.chat, data.url, '', caption, m);
-
+    await conn.sendFile(m.chat, imageUrl, '', endpoint.caption || '✨ Untukmu~', m);
   } catch (e) {
     console.error(e);
     conn.reply(m.chat, eror, m);
   }
 };
 
-handler.help = ['waifu', 'loli', 'husbu', 'mommy', 'neko'];
-handler.command = /^(waifu|loli|husbu|mommy|neko)$/i;
+handler.help = Object.keys(endpoints);
+handler.command = new RegExp(`^(${Object.keys(endpoints).join('|')})$`, 'i');
 handler.tags = ['image'];
 handler.limit = false;
 
