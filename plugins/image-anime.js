@@ -9,7 +9,7 @@ const endpoints = {
     caption: '✨ Waifu untukmu~',
   },
   loli: {
-    url: 'https://api.waifu.pics/type/category',
+    url: 'https://api.waifu.pics/sfw/awoo',
     caption: '🎀 Loli manis untukmu~',
   },
   husbu: {
