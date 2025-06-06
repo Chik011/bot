@@ -1,6 +1,5 @@
 const axios = require('axios');
-const { data } = await axios.get('https://api.waifu.pics/sfw/husbando');
-const imageUrl = data.url;
+
 const wait = 'Tunggu sebentar...';
 const eror = 'Maaf, terjadi kesalahan.';
 
@@ -11,19 +10,19 @@ const endpoints = {
     caption: '✨ Waifu untukmu~',
   },
   loli: {
-    url: 'https://nekos.life/api/v2/img/',
+    url: 'https://nekos.life/api/v2/img/loli',
     caption: 'Pedo banget',
   },
   husbu: {
-  url: 'https://api.waifu.pics/sfw/husbando',
-  caption: '✨ Husbando keren untukmu~',
-},
+    url: 'https://api.waifu.pics/sfw/husbando',
+    caption: '✨ Husbando keren untukmu~',
+  },
   neko: {
     url: 'https://api.waifu.pics/sfw/neko',
     caption: '🐱 Neko lucu untukmu~',
   },
   mommy: {
-    url: 'https://some-random-api.ml/img/simpson', // fallback, kamu bisa ganti ke endpoint lain
+    url: 'https://some-random-api.ml/img/simpson',
     caption: '🌸 Mommy untukmu~',
   }
 };
@@ -31,12 +30,15 @@ const endpoints = {
 const handler = async (m, { conn, command }) => {
   m.reply(wait);
   try {
-    const endpoint = endpoints[command];
-    if (!endpoint || !endpoint.url) return conn.reply(m.chat, 'Fitur tidak tersedia.', m);
+    const endpoint = endpoints[command.toLowerCase()];
+    if (!endpoint || !endpoint.url)
+      return conn.reply(m.chat, 'Fitur tidak tersedia.', m);
 
     const { data } = await axios.get(endpoint.url);
-    const imageUrl = data.url || data.link || data.message; // beberapa API beda-beda key-nya
-    if (!imageUrl) return conn.reply(m.chat, 'Gagal mendapatkan gambar.', m);
+    const imageUrl = data.url || data.link || data.message;
+
+    if (!imageUrl)
+      return conn.reply(m.chat, 'Gagal mendapatkan gambar.', m);
 
     await conn.sendFile(m.chat, imageUrl, '', endpoint.caption || '✨ Untukmu~', m);
   } catch (e) {
