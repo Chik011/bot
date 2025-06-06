@@ -1,4 +1,6 @@
 const axios = require('axios');
+const { data } = await axios.get('https://api.waifu.pics/sfw/husbando');
+const imageUrl = data.url;
 const wait = 'Tunggu sebentar...';
 const eror = 'Maaf, terjadi kesalahan.';
 
@@ -9,13 +11,13 @@ const endpoints = {
     caption: '✨ Waifu untukmu~',
   },
   loli: {
-    url: 'https://nekos.life/api/v2/img/loli',
+    url: 'https://nekos.life/api/v2/img/',
     caption: 'Pedo banget',
   },
   husbu: {
-    url: 'https://danbooru.donmai.us/posts',
-    caption: '✨ Husbando keren untukmu~',
-  },
+  url: 'https://api.waifu.pics/sfw/husbando',
+  caption: '✨ Husbando keren untukmu~',
+},
   neko: {
     url: 'https://api.waifu.pics/sfw/neko',
     caption: '🐱 Neko lucu untukmu~',
