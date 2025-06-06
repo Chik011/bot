@@ -9,11 +9,11 @@ const endpoints = {
     caption: '✨ Waifu untukmu~',
   },
   loli: {
-    url: 'https://api.waifu.pics/sfw/waifu',
+    url: 'https://raw.githubusercontent.com/Zaxerion/databased/refs/heads/main/anime/loli.json',
     caption: 'Pedo banget',
   },
   husbu: {
-    url: 'https://danbooru.donmai.us/male_focus',
+    url: 'https://danbooru.donmai.us/posts',
     caption: '✨ Husbando keren untukmu~',
   },
   neko: {
