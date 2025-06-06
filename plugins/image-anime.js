@@ -9,7 +9,7 @@ const endpoints = {
     caption: '✨ Waifu untukmu~',
   },
   loli: {
-    url: 'https://raw.githubusercontent.com/Zaxerion/databased/refs/heads/main/anime/loli.json',
+    url: 'https://nekos.life/api/v2/img/loli',
     caption: 'Pedo banget',
   },
   husbu: {
