@@ -10,7 +10,7 @@ const endpoints = {
     caption: '✨ Waifu untukmu~',
   },
   loli: {
-    url: 'https://api.waifu.im/sfw/waifu/?included_tags=maid',
+    url: 'https://api.waifu.im/search/?included_tags=maid',
     caption: 'Maid untukmu~',
   },
   husbu: {
@@ -42,7 +42,8 @@ const handler = async (m, { conn, command }) => {
       data.link ||
       data.message ||
       data.results?.[0]?.url ||
-      data.images?.[0]?.url;
+      data.images?.[0]?.url ||
+      data.data?.[0]?.url;
 
     if (!imageUrl)
       return conn.reply(m.chat, 'Gagal mendapatkan gambar.', m);
