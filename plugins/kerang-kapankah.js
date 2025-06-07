@@ -1,35 +1,29 @@
-// let handler = async (m, { conn }) => {
-//   // Pastikan bot hanya merespon di chat biasa (bukan status/story)
-//   if (!m.isGroup && !m.isPrivate) return;
-  
-//   // Cek jika pesan mengandung kata 'laurens' (case insensitive)
-//   if (/laurens/i.test(m.text || m.body)) {
-//     const responses = [
-//       "Ya, ada apa?",
-//       "Aku di sini!",
-//       "Laurens hadir!",
-//       "Butuh bantuan?",
-//       "Katakan saja...",
-//       "Aku mendengarmu",
-//       "Hai, ada yang bisa dibantu?"
-//     ];
-    
-//     // Pilih respon acak
-//     const replyMsg = responses[Math.floor(Math.random() * responses.length)];
-    
-//     // Kirim balasan dengan mention pengirim
-//     await conn.sendMessage(m.chat, { 
-//       text: replyMsg,
-//       mentions: [m.sender]
-//     }, { quoted: m });
-//   }
-// }
+let handler = async (m, { conn, text }) => {
+  conn.reply(m.chat, `Kayaknya ${Math.floor(Math.random() * 100)} ${pickRandom(['detik', 'menit', 'jam', 'hari', 'minggu', 'bulan', 'tahun', 'abad'])} lagi ...
+`.trim(), m, m.mentionedJid ? {
+  contextInfo: {
+    mentionedJid: m.mentionedJid
+  }
+} : {})
+}
+handler.help = ['', 'kah'].map(v => 'kapan' + v + ' <text>?')
+handler.tags = ['kerang']
+handler.customPrefix = /(\?$)/
+handler.command = /^kapan(kah)?$/i
+handler.owner = false
+handler.mods = false
+handler.premium = false
+handler.group = false
+handler.private = false
 
-// // Handler settings
-// handler.help = ['laurens'];
-// handler.tags = ['general'];
-// handler.command = false; // Nonaktifkan command handler
-// handler.group = true;
-// handler.private = true;
+handler.admin = false
+handler.botAdmin = false
 
-// module.exports = handler;
+handler.fail = null
+
+module.exports = handler
+
+function pickRandom(list) {
+  return list[Math.floor(Math.random() * list.length)]
+}
+
