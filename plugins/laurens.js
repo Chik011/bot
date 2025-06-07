@@ -1,38 +1,40 @@
-let handler = async (m, { conn }) => {
-  // Debug: Tampilkan pesan yang diterima
-  console.log('Pesan masuk:', m.body);
-  
-  if (/laurens/i.test(m.body)) {
-    const responses = [
-      "Ya, ada apa?",
-      "Aku di sini, ada yang bisa dibantu?",
-      "Memanggilku?",
-      "Laurens hadir!",
-      "Aku mendengarmu, katakan saja."
+let handler = async (m, { conn, text }) => {
+  // Check if message contains "laurens" (case insensitive)
+  if (/laurens/i.test(text)) {
+    const freeResponses = [
+      "Aku di sini, butuh bantuan apa?",
+      "Ya, panggil aku?",
+      "Laurens siap membantu!",
+      "Hmm? Ada yang bisa kubantu?",
+      "Kamu memanggilku?",
+      "Aku mendengarmu...",
+      "Hai! Ada apa?",
+      "Laurens online! Ada yang bisa dibantu?",
+      "Yep, aku di sini",
+      "Katakan saja, aku dengar kok"
     ];
     
-    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+    const randomResponse = pickRandom(freeResponses);
     
-    // Alternatif 1: Menggunakan reply
-    await conn.reply(
-      m.chat, 
-      randomResponse, 
-      m, 
-      { mentions: [m.sender] }
-    );
-    
-    // Alternatif 2: Menggunakan sendMessage
-    // await conn.sendMessage(
-    //   m.chat,
-    //   { text: randomResponse, mentions: [m.sender] },
-    //   { quoted: m }
-    // );
+    conn.reply(m.chat, randomResponse, m, m.mentionedJid ? {
+      contextInfo: {
+        mentionedJid: m.mentionedJid
+      }
+    } : {});
   }
 }
 
-// Nonaktifkan command handler
-handler.command = false;
-handler.group = true;
-handler.private = true;
+handler.help = ['laurens <text>']
+handler.tags = ['fun']
+handler.customPrefix = /^/i  // Respond to any message
+handler.command = false  // Disable command mode
+handler.group = true
+handler.private = true
 
-module.exports = handler;
+handler.fail = null
+
+module.exports = handler
+
+function pickRandom(list) {
+  return list[Math.floor(Math.random() * list.length)]
+}
