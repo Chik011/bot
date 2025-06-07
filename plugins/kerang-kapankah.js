@@ -1,36 +1,35 @@
-let handler = async (m, { conn, text }) => {
-  // Check if message contains "laurens" (case insensitive)
-  if (/laurens/i.test(m.text)) {
+let handler = async (m, { conn }) => {
+  // Pastikan bot hanya merespon di chat biasa (bukan status/story)
+  if (!m.isGroup && !m.isPrivate) return;
+  
+  // Cek jika pesan mengandung kata 'laurens' (case insensitive)
+  if (/laurens/i.test(m.text || m.body)) {
     const responses = [
-      "Aku Laurens, bot siap membantu!",
-      "Hai! Ada yang bisa kubantu?",
-      "Laurens di sini, ngomong aja ya.",
-      "Butuh bantuan? Tanyakan ke Laurens!",
-      "Aku bot sederhana, tapi siap menemani kamu.",
-      "Ya, panggil aku?",
-      "Laurens siap membantu!",
-      "Hmm? Ada yang bisa kubantu?",
-      "Kamu memanggilku?",
-      "Aku mendengarmu..."
+      "Ya, ada apa?",
+      "Aku di sini!",
+      "Laurens hadir!",
+      "Butuh bantuan?",
+      "Katakan saja...",
+      "Aku mendengarmu",
+      "Hai, ada yang bisa dibantu?"
     ];
     
-    const randomResponse = pickRandom(responses);
+    // Pilih respon acak
+    const replyMsg = responses[Math.floor(Math.random() * responses.length)];
     
-    await conn.reply(m.chat, randomResponse, m, {
-      mentions: m.mentionedJid ? m.mentionedJid : []
-    });
+    // Kirim balasan dengan mention pengirim
+    await conn.sendMessage(m.chat, { 
+      text: replyMsg,
+      mentions: [m.sender]
+    }, { quoted: m });
   }
 }
 
 // Handler settings
 handler.help = ['laurens'];
 handler.tags = ['general'];
-handler.command = false; // Disable command mode
-handler.group = true; // Enable in groups
-handler.private = true; // Enable in private chats
+handler.command = false; // Nonaktifkan command handler
+handler.group = true;
+handler.private = true;
 
 module.exports = handler;
-
-function pickRandom(list) {
-  return list[Math.floor(Math.random() * list.length)];
-}
