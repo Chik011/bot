@@ -11,8 +11,11 @@ const {
 } = require('@adiwajshing/baileys')
 
 let handler = async (m, { conn }) => {
-    // Check if message contains 'laurens' (case insensitive)
-    if (/laurens/i.test(m.text)) {
+    // Skip if message is from status or doesn't contain text
+    if (m.isStatus || !m.text) return
+    
+    // Check if message contains 'laurens' (case insensitive) as a whole word
+    if (/\blaurens\b/i.test(m.text)) {
         const responses = [
             "Ya, ada apa?",
             "Aku di sini, ada yang bisa dibantu?",
@@ -39,8 +42,7 @@ let handler = async (m, { conn }) => {
 // Handler configuration
 handler.help = ['laurens'];
 handler.tags = ['general'];
-handler.command = /^(laurens|bot)$/i;  // Responds to both 'laurens' and 'bot' commands
-handler.group = true;
-handler.private = true;
+handler.command = false; // Disable command handler completely
+
 
 module.exports = handler;
