@@ -5,6 +5,7 @@ global.numberowner = '62895329092414' // Nomor Owner
 global.mail = 'c' 
 global.gc = ''
 global.instagram = 'h'
+global.prefix = '' // TANPA tanda apapun
 global.wm = '© '
 global.wait = '_*Tunggu sedang di proses...*_'
 global.eror = '_*Server Error*_'
