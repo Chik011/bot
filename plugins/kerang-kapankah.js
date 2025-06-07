@@ -8,7 +8,7 @@ let handler = async (m, { conn, text }) => {
 }
 handler.help = ['', ''].map(v => 'laurens' + v + ' <text>')
 handler.tags = ['kerang']
-handler.customPrefix = /(\$)/
+handler.customPrefix = /(\laurens$)/
 handler.command = /^laurens()$/i
 handler.owner = false
 handler.mods = false
