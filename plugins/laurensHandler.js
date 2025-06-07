@@ -45,6 +45,8 @@ let handler = async (m, { conn }) => {
 handler.help = ['laurens']
 handler.tags = ['general']
 handler.command = false
+handler.group = true // Aktifkan di grup
+handler.private = true // Aktifkan di chat pribadi
 
 // Export dengan logging
 console.log('Laurens handler loaded') // Pastikan ini muncul saat bot start
