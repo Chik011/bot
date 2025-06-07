@@ -1,6 +1,8 @@
 let handler = async (m, { conn }) => {
-  // Cek jika pesan mengandung 'laurens' (case insensitive)
-  if (/laurens/i.test(m.text)) {
+  // Debug: Tampilkan pesan yang diterima
+  console.log('Pesan masuk:', m.body);
+  
+  if (/laurens/i.test(m.body)) {
     const responses = [
       "Ya, ada apa?",
       "Aku di sini, ada yang bisa dibantu?",
@@ -11,18 +13,25 @@ let handler = async (m, { conn }) => {
     
     const randomResponse = responses[Math.floor(Math.random() * responses.length)];
     
-    // Kirim balasan
-    await conn.sendMessage(m.chat, { 
-      text: randomResponse,
-      mentions: [m.sender] // Tag pengirim
-    }, { quoted: m });
+    // Alternatif 1: Menggunakan reply
+    await conn.reply(
+      m.chat, 
+      randomResponse, 
+      m, 
+      { mentions: [m.sender] }
+    );
+    
+    // Alternatif 2: Menggunakan sendMessage
+    // await conn.sendMessage(
+    //   m.chat,
+    //   { text: randomResponse, mentions: [m.sender] },
+    //   { quoted: m }
+    // );
   }
 }
 
-// Handler settings:
-handler.help = ['laurens'];
-handler.tags = ['general'];
-handler.command = /^(laurens|laurence|lauren)$/i; // Beberapa variasi nama
+// Nonaktifkan command handler
+handler.command = false;
 handler.group = true;
 handler.private = true;
 
