@@ -1,32 +1,38 @@
-const LAURENS_REGEX = /laurens/i;
+let { performance } = require('perf_hooks');
 
 let handler = async (m, { conn }) => {
-  try {
-    const text = m.text || m.body || (m.message && m.message.conversation) || '';
-    if (!text || m.isStatus || !LAURENS_REGEX.test(text)) return;
+  const boost = pickRandom([
+    "Ya, ada apa?",
+    "Aku di sini, ada yang bisa dibantu?",
+    "Laurens hadir!",
+    "Memanggilku?",
+    "Aku mendengarmu, katakan saja...",
+    "Hai! Ada yang bisa Laurens bantu?",
+    "Bot Laurens siap membantu!",
+    "Kamu memanggil?",
+    "Laurens online!",
+    "Butuh bantuan apa?"
+  ]);
 
-    console.log('[LAURENS MATCH]', text);
-
-    const responses = [
-      "Ya, ada apa?",
-      "Aku di sini!",
-      "Laurens hadir!",
-      "Memanggilku?",
-    ];
-
-    const response = responses[Math.floor(Math.random() * responses.length)];
-
-    await conn.sendMessage(m.chat, {
-      text: response,
-      mentions: [m.sender],
-    }, { quoted: m });
-  } catch (error) {
-    console.error('ERROR:', error);
-  }
+  await m.reply(boost);
+  // Jika Anda memang ingin membalas lagi, isi pesan balasan ini dengan sesuatu.
+  // Contoh tambahan balasan setelah `boost`:
+  await conn.reply(m.chat, "Silakan ketik perintah yang kamu butuhkan.", m);
 };
 
-handler.help = ['laurens'];
-handler.tags = ['general'];
-handler.command = false;
-handler.all = true; // ini penting!
+handler.help = ['laurens', 'bot'];
+handler.tags = ['info'];
+handler.command = /^laurens|bot/i;
+handler.mods = false;
+handler.premium = false;
+handler.group = false;
+handler.private = false;
+handler.admin = false;
+handler.botAdmin = false;
+handler.fail = null;
+
 module.exports = handler;
+
+function pickRandom(list) {
+  return list[Math.floor(Math.random() * list.length)];
+}
