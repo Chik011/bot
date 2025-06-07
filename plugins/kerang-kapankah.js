@@ -1,33 +1,36 @@
 let handler = async (m, { conn, text }) => {
-  conn.reply(m.chat, `${Math.floor(Math.random() * 100)} ${pickRandom(["Aku Laurens, bot siap membantu!",
+  // Check if message contains "laurens" (case insensitive)
+  if (/laurens/i.test(m.text)) {
+    const responses = [
+      "Aku Laurens, bot siap membantu!",
       "Hai! Ada yang bisa kubantu?",
       "Laurens di sini, ngomong aja ya.",
       "Butuh bantuan? Tanyakan ke Laurens!",
-      "Aku bot sederhana, tapi siap menemani kamu."])}
-`.trim(), m, m.mentionedJid ? {
-  contextInfo: {
-    mentionedJid: m.mentionedJid
+      "Aku bot sederhana, tapi siap menemani kamu.",
+      "Ya, panggil aku?",
+      "Laurens siap membantu!",
+      "Hmm? Ada yang bisa kubantu?",
+      "Kamu memanggilku?",
+      "Aku mendengarmu..."
+    ];
+    
+    const randomResponse = pickRandom(responses);
+    
+    await conn.reply(m.chat, randomResponse, m, {
+      mentions: m.mentionedJid ? m.mentionedJid : []
+    });
   }
-} : {})
 }
-handler.help = [''].map(v => 'laurens')
-handler.tags = ['kerang']
-handler.customPrefix = /(\?$)/
-handler.command = /^laurens?$/i
-handler.owner = false
-handler.mods = false
-handler.premium = false
-handler.group = false
-handler.private = false
 
-handler.admin = false
-handler.botAdmin = false
+// Handler settings
+handler.help = ['laurens'];
+handler.tags = ['general'];
+handler.command = false; // Disable command mode
+handler.group = true; // Enable in groups
+handler.private = true; // Enable in private chats
 
-handler.fail = null
-
-module.exports = handler
+module.exports = handler;
 
 function pickRandom(list) {
-  return list[Math.floor(Math.random() * list.length)]
+  return list[Math.floor(Math.random() * list.length)];
 }
-
