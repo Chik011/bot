@@ -1,6 +1,7 @@
 const simple = require('./lib/simple')
 const util = require('util')
 
+
 const isNumber = x => typeof x === 'number' && !isNaN(x)
 const delay = ms => isNumber(ms) && new Promise(resolve => setTimeout(resolve, ms))
 

@@ -1,4 +1,16 @@
 let handler = async (m, { conn }) => {
+  let text = m.text || ''
+  let body = text.trim().toLowerCase()
+
+  // Daftar prefix yang ingin kamu dukung
+  const prefixes = [''] // titik dan tanpa prefix
+
+  // Deteksi jika pesan cocok dengan salah satu prefix + 'laurens'
+  let matched = prefixes.some(prefix => body === prefix + 'laurens')
+
+  if (!matched) return // kalau bukan, hentikan di sini
+
+  // Jika cocok, kirimkan respons
   const boost = pickRandom([
     "Ya, ada apa?",
     "Aku di sini, ada yang bisa dibantu?",
@@ -10,24 +22,13 @@ let handler = async (m, { conn }) => {
     "Kamu memanggil?",
     "Laurens online!",
     "Butuh bantuan apa?"
-  ]);
+  ])
 
-  await m.reply(boost);
-};
+  await m.reply(boost)
+}
 
-handler.help = ['laurens'];
-handler.tags = ['info'];
-handler.command = /^laurens$/i; // hanya cocok jika isi pesan: laurens (tanpa titik, tanpa spasi)
-handler.mods = false;
-handler.premium = false;
-handler.group = false;
-handler.private = false;
-handler.admin = false;
-handler.botAdmin = false;
-handler.fail = null;
-
-module.exports = handler;
+module.exports = handler
 
 function pickRandom(list) {
-  return list[Math.floor(Math.random() * list.length)];
+  return list[Math.floor(Math.random() * list.length)]
 }
