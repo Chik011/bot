@@ -1,5 +1,5 @@
-let handler = async (m, { conn, text }) => {
-  // Pengecekan lebih fleksibel untuk pesan yang mengandung "laurens"
+let handler = async (m, { conn }) => {
+  // Cek jika pesan mengandung 'laurens' (case insensitive)
   if (/laurens/i.test(m.text)) {
     const responses = [
       "Ya, ada apa?",
@@ -11,19 +11,19 @@ let handler = async (m, { conn, text }) => {
     
     const randomResponse = responses[Math.floor(Math.random() * responses.length)];
     
-    await conn.reply(m.chat, randomResponse, m, {
-      contextInfo: {
-        mentionedJid: m.mentionedJid ? m.mentionedJid : []
-      }
-    });
+    // Kirim balasan
+    await conn.sendMessage(m.chat, { 
+      text: randomResponse,
+      mentions: [m.sender] // Tag pengirim
+    }, { quoted: m });
   }
 }
 
-// Handler settings yang lebih tepat:
-handler.help = ['laurens <text>']
-handler.tags = ['fun']
-handler.command = /^/i  // Menerima semua pesan
-handler.group = true
-handler.private = true
+// Handler settings:
+handler.help = ['laurens'];
+handler.tags = ['general'];
+handler.command = /^(laurens|laurence|lauren)$/i; // Beberapa variasi nama
+handler.group = true;
+handler.private = true;
 
-module.exports = handler
+module.exports = handler;
