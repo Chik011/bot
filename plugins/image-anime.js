@@ -9,7 +9,7 @@ const endpoints = {
     url: 'https://api.waifu.pics/sfw/waifu',
     caption: '✨ Waifu untukmu~',
   },
-  loli: {
+  maid: {
     url: 'https://api.waifu.im/search/?included_tags=maid',
     caption: 'Maid untukmu~',
   },
@@ -22,7 +22,7 @@ const endpoints = {
     caption: '🐱 Neko lucu untukmu~',
   },
   mommy: {
-    url: 'https://pic.re/api/v1/images?tags=milf',
+    url: 'https://waifuserv.onrender.com/search/milf',
     caption: '🌸 Mommy untukmu~',
   }
 };
