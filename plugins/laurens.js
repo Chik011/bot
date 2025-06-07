@@ -1,3 +1,4 @@
+
 let handler = async (m, { conn, text }) => {
   if (/laurens/i.test(text)) {
     // Jawaban keyword Laurens yang bisa kamu tambah
@@ -24,8 +25,4 @@ handler.group = true;
 handler.private = true;
 handler.fail = null;
 
-<<<<<<< HEAD
 module.exports = handler;
-=======
-module.exports = handler;
->>>>>>> 83b62ef10fa63961fe584f72213ea940952bc76a
