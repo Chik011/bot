@@ -1,5 +1,3 @@
-let { performance } = require('perf_hooks');
-
 let handler = async (m, { conn }) => {
   const boost = pickRandom([
     "Ya, ada apa?",
@@ -15,14 +13,11 @@ let handler = async (m, { conn }) => {
   ]);
 
   await m.reply(boost);
-  // Jika Anda memang ingin membalas lagi, isi pesan balasan ini dengan sesuatu.
-  // Contoh tambahan balasan setelah `boost`:
-  await conn.reply(m.chat, "Silakan ketik perintah yang kamu butuhkan.", m);
 };
 
-handler.help = ['laurens', 'bot'];
+handler.help = ['laurens'];
 handler.tags = ['info'];
-handler.command = /^laurens|bot/i;
+handler.command = /^laurens$/i; // hanya cocok jika isi pesan: laurens (tanpa titik, tanpa spasi)
 handler.mods = false;
 handler.premium = false;
 handler.group = false;
