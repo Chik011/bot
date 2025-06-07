@@ -3,7 +3,7 @@ let handler = async (m, { conn }) => {
   let body = text.trim().toLowerCase()
 
   // Daftar prefix yang ingin kamu dukung
-  const prefixes = [''] // titik dan tanpa prefix
+  const prefixes = ['.',''] // titik dan tanpa prefix
 
   // Deteksi jika pesan cocok dengan salah satu prefix + 'laurens'
   let matched = prefixes.some(prefix => body === prefix + 'laurens')
