@@ -1,45 +1,29 @@
-/**
- * Laurens response handler for WA bot.
- * 
- * Responds with a random message when the command 'laurens' is invoked.
- */
+let handler = async (m, { conn, text }) => {
+  conn.reply(m.chat, `iya ${Math.floor(Math.random() * 100)} ${pickRandom(['ada apa', 'kenapa', ', kamu siapa'])} ?
+`.trim(), m, m.mentionedJid ? {
+  contextInfo: {
+    mentionedJid: m.mentionedJid
+  }
+} : {})
+}
+handler.help = ['', ''].map(v => 'laurens' + v + ' <text>')
+handler.tags = ['kerang']
+handler.customPrefix = /(\$)/
+handler.command = /^laurens()$/i
+handler.owner = false
+handler.mods = false
+handler.premium = false
+handler.group = false
+handler.private = false
 
-const pickRandom = (list) => list[Math.floor(Math.random() * list.length)];
+handler.admin = false
+handler.botAdmin = false
 
-let handler = async (m, { conn }) => {
-    // Generate a random number and pick a random response
-    const randomNumber = Math.floor(Math.random() * 100);
-    const randomResponse = pickRandom(['ada apa', 'kenapa', 'kamu siapa']);
+handler.fail = null
 
-    // Construct the reply message
-    const replyMessage = `iya ${randomNumber} ${randomResponse}`;
+module.exports = handler
 
-    // Send the reply, mentioning the user if applicable
-    await conn.reply(m.chat, replyMessage.trim(), m, m.mentionedJid ? {
-        contextInfo: {
-            mentionedJid: m.mentionedJid
-        }
-    } : {});
+function pickRandom(list) {
+  return list[Math.floor(Math.random() * list.length)]
 }
 
-// Help command configuration
-handler.help = ['', ''].map(v => 'laurens' + v + ' <text>');
-handler.tags = ['kerang'];
-
-// Update command regex to remove the question mark
-handler.command = /^laurens$/i;
-
-// Permissions
-handler.owner = false;
-handler.mods = false;
-handler.premium = false;
-handler.group = false;
-handler.private = false;
-handler.admin = false;
-handler.botAdmin = false;
-
-// Fail handling
-handler.fail = null;
-
-// Export the handler
-module.exports = handler;
