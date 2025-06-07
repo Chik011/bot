@@ -1,6 +1,6 @@
 let handler = async (m, { conn, text }) => {
-  // Check if the message contains "laurens" (case insensitive)
-  if (/laurens/i.test(text)) {
+  // Pengecekan lebih fleksibel untuk pesan yang mengandung "laurens"
+  if (/laurens/i.test(m.text)) {
     const responses = [
       "Ya, ada apa?",
       "Aku di sini, ada yang bisa dibantu?",
@@ -9,32 +9,21 @@ let handler = async (m, { conn, text }) => {
       "Aku mendengarmu, katakan saja."
     ];
     
-    // Random response when Laurens is mentioned
     const randomResponse = responses[Math.floor(Math.random() * responses.length)];
     
-    conn.reply(m.chat, randomResponse, m, m.mentionedJid ? {
+    await conn.reply(m.chat, randomResponse, m, {
       contextInfo: {
-        mentionedJid: m.mentionedJid
+        mentionedJid: m.mentionedJid ? m.mentionedJid : []
       }
-    } : {});
-  } else {
-    // Default response if Laurens isn't mentioned
-    conn.reply(m.chat, "Kamu perlu memanggilku (Laurens) untuk mendapatkan respon.", m);
+    });
   }
 }
 
+// Handler settings yang lebih tepat:
 handler.help = ['laurens <text>']
 handler.tags = ['fun']
-handler.command = /^(laurens)$/i
-handler.owner = false
-handler.mods = false
-handler.premium = false
+handler.command = /^/i  // Menerima semua pesan
 handler.group = true
-handler.private = false
-
-handler.admin = false
-handler.botAdmin = false
-
-handler.fail = null
+handler.private = true
 
 module.exports = handler
