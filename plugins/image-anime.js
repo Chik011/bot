@@ -10,8 +10,8 @@ const endpoints = {
     caption: '✨ Waifu untukmu~',
   },
   loli: {
-    url: 'https://api.waifu.pics/sfw/waifu',
-    caption: '🧒 Loli default dari waifu.pics',
+    url: 'https://api.waifu.im/sfw/waifu/?included_tags=maid',
+    caption: 'Maid untukmu~',
   },
   husbu: {
     url: 'https://nekos.best/api/v2/husbando',
@@ -22,7 +22,7 @@ const endpoints = {
     caption: '🐱 Neko lucu untukmu~',
   },
   mommy: {
-    url: 'https://api.waifu.im/search/?included_tags=mommy',
+    url: 'https://pic.re/api/v1/images?tags=milf',
     caption: '🌸 Mommy untukmu~',
   }
 };
