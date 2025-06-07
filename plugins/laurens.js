@@ -1,5 +1,6 @@
-let handler = async (m, { conn, text }) => {
-  // Check if message contains "laurens" (case insensitive)
+let handler = async (m, { conn }) => {
+  const text = m.text || '';
+
   if (/laurens/i.test(text)) {
     const freeResponses = [
       "Aku di sini, butuh bantuan apa?",
@@ -13,28 +14,26 @@ let handler = async (m, { conn, text }) => {
       "Yep, aku di sini",
       "Katakan saja, aku dengar kok"
     ];
-    
+
     const randomResponse = pickRandom(freeResponses);
-    
-    conn.reply(m.chat, randomResponse, m, m.mentionedJid ? {
+
+    await conn.reply(m.chat, randomResponse, m, {
       contextInfo: {
-        mentionedJid: m.mentionedJid
+        mentionedJid: m.mentionedJid || []
       }
-    } : {});
+    });
   }
-}
+};
 
-handler.help = ['laurens <text>']
-handler.tags = ['fun']
-handler.customPrefix = /^/i  // Respond to any message
-handler.command = false  // Disable command mode
-handler.group = true
-handler.private = true
+handler.help = ['laurens <text>'];
+handler.tags = ['fun'];
+handler.command = false;
+handler.group = true;
+handler.private = true;
+handler.fail = null;
 
-handler.fail = null
-
-module.exports = handler
+module.exports = handler;
 
 function pickRandom(list) {
-  return list[Math.floor(Math.random() * list.length)]
+  return list[Math.floor(Math.random() * list.length)];
 }
