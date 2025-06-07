@@ -10,11 +10,11 @@ const endpoints = {
     caption: '✨ Waifu untukmu~',
   },
   loli: {
-    url: 'https://api.nekosapi.com/v4/images?tags=loli',
-    caption: 'Pedo banget',
+    url: 'https://api.waifu.pics/sfw/waifu',
+    caption: '🧒 Loli default dari waifu.pics',
   },
   husbu: {
-    url: 'https://api.nekosapi.com/v4/images?tags=husbando',
+    url: 'https://nekos.best/api/v2/husbando',
     caption: '✨ Husbando keren untukmu~',
   },
   neko: {
@@ -22,7 +22,7 @@ const endpoints = {
     caption: '🐱 Neko lucu untukmu~',
   },
   mommy: {
-    url: 'https://api.waifu.im/sfw/mommy',
+    url: 'https://api.waifu.im/search/?included_tags=mommy',
     caption: '🌸 Mommy untukmu~',
   }
 };
@@ -35,7 +35,14 @@ const handler = async (m, { conn, command }) => {
       return conn.reply(m.chat, 'Fitur tidak tersedia.', m);
 
     const { data } = await axios.get(endpoint.url);
-    const imageUrl = data.url || data.link || data.message;
+
+    // Parsing berbagai struktur response API yang mungkin berbeda
+    const imageUrl =
+      data.url ||
+      data.link ||
+      data.message ||
+      data.results?.[0]?.url ||
+      data.images?.[0]?.url;
 
     if (!imageUrl)
       return conn.reply(m.chat, 'Gagal mendapatkan gambar.', m);
