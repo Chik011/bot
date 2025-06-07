@@ -36,14 +36,15 @@ const handler = async (m, { conn, command }) => {
 
     const { data } = await axios.get(endpoint.url);
 
-    // Parsing berbagai struktur response API yang mungkin berbeda
+    // Handle berbagai format respons
     const imageUrl =
-      data.url ||
-      data.link ||
-      data.message ||
-      data.results?.[0]?.url ||
-      data.images?.[0]?.url ||
-      data.data?.[0]?.url;
+      data?.url ||
+      data?.link ||
+      data?.message ||
+      data?.results?.[0]?.url ||
+      data?.images?.[0]?.url ||
+      data?.data?.[0]?.url ||
+      (Array.isArray(data) && data[0]?.url); // fix untuk waifuserv array response
 
     if (!imageUrl)
       return conn.reply(m.chat, 'Gagal mendapatkan gambar.', m);
