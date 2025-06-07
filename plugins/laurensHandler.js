@@ -2,15 +2,12 @@ let handler = async (m, { conn }) => {
   let text = m.text || ''
   let body = text.trim().toLowerCase()
 
-  // Daftar prefix yang ingin kamu dukung
-  const prefixes = ['.',''] // titik dan tanpa prefix
+  const prefixes = ['.', ''] // titik & tanpa prefix
 
-  // Deteksi jika pesan cocok dengan salah satu prefix + 'laurens'
   let matched = prefixes.some(prefix => body === prefix + 'laurens')
 
-  if (!matched) return // kalau bukan, hentikan di sini
+  if (!matched) return // Bukan target kita, abaikan
 
-  // Jika cocok, kirimkan respons
   const boost = pickRandom([
     "Ya, ada apa?",
     "Aku di sini, ada yang bisa dibantu?",
@@ -27,6 +24,7 @@ let handler = async (m, { conn }) => {
   await m.reply(boost)
 }
 
+handler.custom = true // Ini WAJIB agar handler tetap dijalankan
 module.exports = handler
 
 function pickRandom(list) {
