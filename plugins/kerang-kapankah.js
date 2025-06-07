@@ -6,10 +6,10 @@ let handler = async (m, { conn, text }) => {
   }
 } : {})
 }
-handler.help = ['', ''].map(v => 'laurens' + v + ' <text>')
+handler.help = ['', ''].map(v => 'aurens' + v + ' <text>')
 handler.tags = ['kerang']
 handler.customPrefix = /(\l$)/
-handler.command = /^aurens()$/i
+handler.command = /^l()$/i
 handler.owner = false
 handler.mods = false
 handler.premium = false
