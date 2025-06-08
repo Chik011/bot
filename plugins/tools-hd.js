@@ -1,8 +1,7 @@
 const fetch = require('node-fetch');
 const uploadImage = require('../lib/uploadImage');
 
-const DEEPAI_API_KEY = '3fa6e275-e12b-4cd5-8e72-5485bcf094bf'; // 🔑 API Key dari https://deepai.org/
-const wm = '© Laurens'; // Watermark
+const wm = '© Laurens'; // Watermark yang akan ditampilkan ke user
 const wait = '_Sedang diproses, tunggu sebentar..._';
 
 let handler = async (m, { conn, usedPrefix, command }) => {
@@ -16,35 +15,20 @@ let handler = async (m, { conn, usedPrefix, command }) => {
       const img = await q.download();
       const out = await uploadImage(img);
 
-      let imageUrl;
+      // Endpoint gratis tanpa API key
+      const api = `https://api.lann.my.id/api/photooxy/remini2?image_url=${encodeURIComponent(out)}`;
+      const res = await fetch(api);
+      const json = await res.json();
 
-      if (['hd', 'hd2', 'hd3'].includes(command)) {
-        const response = await fetch('https://api.deepai.org/api/torch-srgan', {
-          method: 'POST',
-          headers: {
-            'Api-Key': DEEPAI_API_KEY,
-            'Content-Type': 'application/x-www-form-urlencoded'
-          },
-          body: `image=${encodeURIComponent(out)}`
-        });
+      if (!json.status || !json.result) throw new Error('❌ Gagal memperjelas gambar.');
 
-        const result = await response.json();
-        if (!result.output_url) throw new Error('❌ Gagal meningkatkan kualitas gambar.');
-        imageUrl = result.output_url;
-
-      } else {
-        return m.reply(`❌ Perintah *${command}* tidak dikenali atau belum didukung.`);
-      }
-
-      await conn.sendFile(m.chat, imageUrl, 'enhanced.jpg', wm, m);
-
+      await conn.sendFile(m.chat, json.result, 'hd.jpg', wm, m);
     } else {
-      m.reply(`📸 Kirim gambar dengan caption *${usedPrefix + command}* atau tag gambar yang sudah dikirim.`);
+      m.reply(`📸 Kirim gambar dengan caption *${usedPrefix + command}* atau balas gambar dengan perintah.`);
     }
-
   } catch (e) {
     console.error(e);
-    m.reply('🚩 *Terjadi kesalahan:*\n\n' + e.message);
+    m.reply('🚩 Terjadi kesalahan saat memproses gambar:\n\n' + e.message);
   }
 };
 
