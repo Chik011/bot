@@ -1,8 +1,8 @@
 const fetch = require('node-fetch');
 const uploadImage = require('../lib/uploadImage');
 
-const btc = 'ISI_APIKEY_KAMU'; // 🔑 Ganti dengan API key dari https://api.botcahx.eu.org
-const wm = '© YourBot'; // 🖋️ Watermark atau credit yang dikirim ke user
+const DEEPAI_API_KEY = '3fa6e275-e12b-4cd5-8e72-5485bcf094bf'; // 🔑 API Key dari https://deepai.org/
+const wm = '© Laurens'; // Watermark
 const wait = '_Sedang diproses, tunggu sebentar..._';
 
 let handler = async (m, { conn, usedPrefix, command }) => {
@@ -16,44 +16,39 @@ let handler = async (m, { conn, usedPrefix, command }) => {
       const img = await q.download();
       const out = await uploadImage(img);
 
-      let endpoint = '';
-      if (command === 'hd') {
-        endpoint = `remini`;
-      } else if (command === 'hd2') {
-        endpoint = `remini-v2`;
-      } else if (command === 'hd3') {
-        endpoint = `remini-v3&resolusi=4`;
-      } else if (command === 'removebg' || command === 'nobg') {
-        endpoint = `removebg`;
+      let imageUrl;
+
+      if (['hd', 'hd2', 'hd3'].includes(command)) {
+        const response = await fetch('https://api.deepai.org/api/torch-srgan', {
+          method: 'POST',
+          headers: {
+            'Api-Key': DEEPAI_API_KEY,
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: `image=${encodeURIComponent(out)}`
+        });
+
+        const result = await response.json();
+        if (!result.output_url) throw new Error('❌ Gagal meningkatkan kualitas gambar.');
+        imageUrl = result.output_url;
+
+      } else {
+        return m.reply(`❌ Perintah *${command}* tidak dikenali atau belum didukung.`);
       }
 
-      const url = `https://api.botcahx.eu.org/api/tools/${endpoint}?url=${encodeURIComponent(out)}&apikey=${btc}`;
-
-      const api = await fetch(url);
-      if (!api.ok) throw new Error(`API Error: ${api.status} ${api.statusText}`);
-
-      let image;
-      try {
-        image = await api.json();
-      } catch (err) {
-        throw new Error(`Gagal parse JSON: ${err.message}`);
-      }
-
-      if (!image.url) throw new Error('❌ Tidak berhasil mendapatkan URL gambar hasil.');
-
-      await conn.sendFile(m.chat, image.url, 'result.jpg', wm, m);
+      await conn.sendFile(m.chat, imageUrl, 'enhanced.jpg', wm, m);
 
     } else {
-      m.reply(`Kirim gambar dengan caption *${usedPrefix + command}* atau tag gambar yang sudah dikirim.`);
+      m.reply(`📸 Kirim gambar dengan caption *${usedPrefix + command}* atau tag gambar yang sudah dikirim.`);
     }
 
   } catch (e) {
     console.error(e);
-    m.reply('🚩 *Terjadi kesalahan pada server atau API.*\n\n' + e.message);
+    m.reply('🚩 *Terjadi kesalahan:*\n\n' + e.message);
   }
 };
 
-handler.command = handler.help = ['hd', 'hd2', 'hd3', 'removebg', 'nobg'];
+handler.command = handler.help = ['hd', 'hd2', 'hd3'];
 handler.tags = ['tools'];
 handler.premium = false;
 handler.limit = false;
