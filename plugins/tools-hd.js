@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 const uploadImage = require('../lib/uploadImage');
 
-const wm = '© Laurens'; // Watermark yang akan ditampilkan ke user
+const wm = '© Laurens';
 const wait = '_Sedang diproses, tunggu sebentar..._';
 
 let handler = async (m, { conn, usedPrefix, command }) => {
@@ -15,20 +15,22 @@ let handler = async (m, { conn, usedPrefix, command }) => {
       const img = await q.download();
       const out = await uploadImage(img);
 
-      // Endpoint gratis tanpa API key
-      const api = `https://api.lann.my.id/api/photooxy/remini2?image_url=${encodeURIComponent(out)}`;
+      const api = `https://apiflash.top/api/remini?url=${encodeURIComponent(out)}`;
       const res = await fetch(api);
-      const json = await res.json();
+      const raw = await res.text();
+      console.log(raw); // Debugging
+
+      const json = JSON.parse(raw);
 
       if (!json.status || !json.result) throw new Error('❌ Gagal memperjelas gambar.');
 
       await conn.sendFile(m.chat, json.result, 'hd.jpg', wm, m);
     } else {
-      m.reply(`📸 Kirim gambar dengan caption *${usedPrefix + command}* atau balas gambar dengan perintah.`);
+      m.reply(`📸 Kirim gambar lalu balas dengan perintah *${usedPrefix + command}*`);
     }
   } catch (e) {
     console.error(e);
-    m.reply('🚩 Terjadi kesalahan saat memproses gambar:\n\n' + e.message);
+    m.reply('🚩 *Gagal memproses gambar:*\n\n' + e.message);
   }
 };
 
