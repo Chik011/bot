@@ -922,13 +922,190 @@ Venena
 Diff⚔: Ultimate`, m)
       return;
     }
+    let handler = async (m, { command, args, conn }) => {
+  if (command === 'farm' && args.length === 0) {
+    return conn.reply(m.chat, `📦 *Pilih Jenis Farm Mats:*
+• .farm kain
+• .farm obat
+• .farm logam
+• .farm mana
+• .farm kayu`, m)
+  }
+
+  switch (args[0]) {
+    case 'kain':
+      await conn.reply(m.chat, `🧵 *Farm Mats Kain*
+
+1. *Underground Nemico* 🔹  
+• Unsur: 🌪 Wind  
+• HP: -- unknown --  
+• XP: -- unknown --  
+• Peta: Saluran Bawah Tanah Ultimea: Tenggara  
+• Drop:  
+  - Bijih Mithril (13pts / 8s)  
+  - Tameng Imperial (55pts / 110s)  
+  - Kuping Kelelawar  
+  - Syal Lembut
+
+2. *Potum Semedi* 🔹  
+• Unsur: ☄ Fire  
+• HP: -- unknown --  
+• XP: -- unknown --  
+• Peta: Koridor Heresi  
+• Drop:  
+  - Celemek Robek  
+  - Sayap Nirwana  
+  - Vaccine I  
+  - Gelang Nirwana
+
+3. *Laduro* 🔹  
+• Unsur: 🌱 Earth  
+• HP: -- unknown --  
+• XP: -- unknown --  
+• Peta: Terowongan Cobaan  
+• Drop:  
+  - Kain Maling  
+  - Mineral Cantik  
+  - Bola Mata Redup  
+  - Tudung Mencurigakan`, m)
+      break
+
+    case 'obat':
+    case 'logam': // karena sama
+      await conn.reply(m.chat, `💊 *Farm Mats ${args[0] === 'logam' ? 'Logam' : 'Obat'}*
+
+1. *Grape Jelly* 🔹  
+• Unsur: 🌌 Space  
+• HP: 7,000  
+• XP: 128  
+• Peta: Saluran Bawah Tanah Ultimea: Tenggara  
+• Drop:  
+  - Ribbon  
+  - Cairan Asam Manis  
+  - Agar-Agar Merah Ungu  
+  - Batu Ultimea
+
+2. *Lettacia* 🔹  
+• Unsur: 🌱 Earth  
+• HP: -- unknown --  
+• XP: 264  
+• Peta: Depan Boma Konda  
+• Drop:  
+  - Daun Kepala  
+  - Ekor Spiral  
+  - Air Mata Saponin  
+  - Jepit Rambut Schmet`, m)
+      break
+
+    case 'mana':
+      await conn.reply(m.chat, `🌀 *Farm Mats Mana*
+
+📌 *Non Event Summer*
+
+1. *Laduro* 🔹  
+• Unsur: 🌱 Earth  
+• HP: -- unknown --  
+• XP: -- unknown --  
+• Peta: Terowongan Cobaan  
+• Drop:  
+  - Kain Maling  
+  - Mineral Cantik  
+  - Bola Mata Redup  
+  - Tudung Mencurigakan
+
+📌 *Event Summer*
+
+2. *Venomsch* 🔹  
+• Unsur: 💧 Water  
+• Peta: Saluran Bawah Tanah Ultimea: Selatan  
+• Drop:  
+  - CSPD+100  
+  - Jarum Beracun  
+  - Racun Katak  
+  - Lidah Kuat  
+  - *Summer Shell 🐚*
+
+3. *Malaikat Gelembung (Biru)* 🔹  
+• Unsur: 💧 Water  
+• Peta: Kuil Para Dewa: Area 2  
+• Drop:  
+  - Cincin Prisma  
+  - Halo Terputus  
+  - Kain Berkilau Misterius  
+  - Kerikil Dewa  
+  - *Summer Shell 🐚*
+
+4. *Breppa* 🔹  
+• Unsur: 💧 Water  
+• HP: 28,064  
+• Peta: Lorong Dingin  
+• Drop:  
+  - Bijih Mithril  
+  - Kaki Mengkristal  
+  - Ekor Mengkristal  
+  - Tetesan Air Mata  
+  - *Summer Shell II 🐚*
+
+5. *Wolfelar* 🔹  
+• Unsur: 💧 Water  
+• HP: 19,090  
+• Peta: Lorong Dingin  
+• Drop:  
+  - Ranting Dingin  
+  - Bulu Serigala Es  
+  - Kumis Lembut Serigala Es  
+  - *Summer Shell II 🐚*
+
+6. *Glafur* 🔹  
+• Unsur: 💧 Water  
+• HP: 21,400  
+• Peta: Lorong Dingin  
+• Drop:  
+  - Bulu Beku  
+  - Ayam Dingin  
+  - Cakar Beku  
+  - *Summer Shell II 🐚*`, m)
+      break
+
+    case 'kayu':
+      await conn.reply(m.chat, `🌲 *Farm Mats Kayu*
+
+1. *Ivy* 🔹  
+• Unsur: 🌱 Earth  
+• XP: 220  
+• Peta: Kuil Naga Kegelapan: Tengah  
+• Drop:  
+  - Sulur Rambat  
+  - Batang Tebal Muda  
+  - Kentang  
+  - Panah Duri
+
+2. *Pohon Parasit* 🔹  
+• Unsur: 🌱 Earth  
+• XP: 94  
+• Peta: Distrik Altoale  
+• Drop:  
+  - Akar Pengisap Kehidupan  
+  - Benih Gulma  
+  - Azimat Pohon  
+  - Daun Kering`, m)
+      break
+
+    default:
+      await conn.reply(m.chat, `❌ *Sub-kategori tidak ditemukan.*
+Ketik *.farm* untuk melihat daftar kategori.`, m)
+      break
+  }
+}
   } catch (err) {
     console.error(err)
     throw "🚩 Terjadi kesalahan"
   }
 };
-handler.command = handler.help = ['buff','lvlg','pembolong', 'lvlgbs', 'tas', 'mq', 'lvlgbuff', 'lvlgpet'];
+handler.command = handler.help = ['buff','lvlg','pembolong', 'lvlgbs', 'tas', 'bahanmq', 'lvlgbuff', 'lvlgpet', 'farm'];
 handler.tags = ['toram']
 handler.limit = false;
 handler.premium = false;
 module.exports = handler;
+handler.command = /^farm$/i
+export default handler
