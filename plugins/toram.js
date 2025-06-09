@@ -929,9 +929,12 @@ Diff⚔: Ultimate`, m)
         // Tampilkan daftar submenu farm
         await conn.reply(m.chat, `
 Menu Farm:
-1. fkayu - Kayu
-2. fobat - Obat
-3. flogam - Logam
+1. kayu
+2. obat
+3. logam
+4. mana
+5. fauna
+6. kain
 Ketik .farm <nama_submenu> contoh .farm kayu
         `.trim(), m)
       } else {
