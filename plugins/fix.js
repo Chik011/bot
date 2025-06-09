@@ -39,7 +39,7 @@ let handler = async (conn, m, args) => {
 handler.command = handler.help = ['fix', 'perbaiki'];
 handler.tags = ['tools'];
 handler.group = true;
-handler.admin = true; // bisa diganti rowner
+handler.admin = true;
 handler.limit = false;
 
 module.exports = handler;
