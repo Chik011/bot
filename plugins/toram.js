@@ -927,7 +927,7 @@ Diff⚔: Ultimate`, m)
     throw "🚩 Terjadi kesalahan"
   }
 };
-handler.command = handler.help = ['buff','lvlg','pembolong', 'lvlgbs'];
+handler.command = handler.help = ['buff','lvlg','pembolong', 'lvlgbs', 'slot tas', 'bahan mq', 'lvlg buff', 'lvlg pet'];
 handler.tags = ['toram']
 handler.limit = false;
 handler.premium = false;
