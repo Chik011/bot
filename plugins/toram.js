@@ -924,13 +924,32 @@ Diff⚔: Ultimate`, m)
       return;
     }
 
-    if (command == 'farm') {
-      await conn.reply(m.chat, `masih percobaan menu farm
-        fkayu farm kayu`, m)
-      return;
-    }
-    if (command == 'fkayu') {
-      await conn.reply(m.chat, `ini kayu`, m)
+     if (command === 'farm') {
+      if (!args[0]) {
+        // Tampilkan daftar submenu farm
+        await conn.reply(m.chat, `
+Menu Farm:
+1. fkayu - Kayu
+2. fobat - Obat
+3. flogam - Logam
+Ketik .farm <nama_submenu> untuk lihat detail.
+        `.trim(), m)
+      } else {
+        // Submenu farm yang dipilih user
+        switch(args[0].toLowerCase()) {
+          case 'fkayu':
+            await conn.reply(m.chat, 'Ini detail farm Kayu...', m)
+            break;
+          case 'fobat':
+            await conn.reply(m.chat, 'Ini detail farm Obat...', m)
+            break;
+          case 'flogam':
+            await conn.reply(m.chat, 'Ini detail farm Logam...', m)
+            break;
+          default:
+            await conn.reply(m.chat, `Submenu farm '${args[0]}' tidak ditemukan.`, m)
+        }
+      }
       return;
     }
 
@@ -939,7 +958,7 @@ Diff⚔: Ultimate`, m)
     throw "🚩 Terjadi kesalahan"
   }
 };
-handler.command = handler.help = ['buff','lvlg','pembolong', 'lvlgbs', 'slottas', 'bahanmq', 'lvlgbuff', 'lvlgpet', 'farm', 'fkayu'];
+handler.command = handler.help = ['buff','lvlg','pembolong', 'lvlgbs', 'slottas', 'bahanmq', 'lvlgbuff', 'lvlgpet', 'farm',];
 handler.tags = ['toram']
 handler.limit = false;
 handler.premium = false;
