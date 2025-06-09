@@ -932,19 +932,19 @@ Menu Farm:
 1. fkayu - Kayu
 2. fobat - Obat
 3. flogam - Logam
-Ketik .farm <nama_submenu> untuk lihat detail.
+Ketik .farm <nama_submenu> contoh .farm kayu
         `.trim(), m)
       } else {
         // Submenu farm yang dipilih user
         switch(args[0].toLowerCase()) {
-          case 'fkayu':
-            await conn.reply(m.chat, 'Ini detail farm Kayu...', m)
+          case 'kayu':
+            await conn.reply(m.chat, 'masih buat', m)
             break;
-          case 'fobat':
-            await conn.reply(m.chat, 'Ini detail farm Obat...', m)
+          case 'obat':
+            await conn.reply(m.chat, 'masih buat', m)
             break;
-          case 'flogam':
-            await conn.reply(m.chat, 'Ini detail farm Logam...', m)
+          case 'logam':
+            await conn.reply(m.chat, 'masih buat', m)
             break;
           default:
             await conn.reply(m.chat, `Submenu farm '${args[0]}' tidak ditemukan.`, m)
