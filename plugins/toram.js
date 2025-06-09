@@ -1097,12 +1097,6 @@ Diff⚔: Ultimate`, m)
           default:
             return conn.reply(m.chat, `❌ Subkategori *${args[0]}* tidak ditemukan. Ketik *.farm* untuk melihat daftar.`, m)
         }
-        break
-
-      // Tambahkan handler lain di bawah jika ada (buff, lvlg, dll.)
-
-      default:
-        return conn.reply(m.chat, `❓ Tidak ada perintah seperti *${command}*`, m)
     }
 
   } catch (err) {
@@ -1110,6 +1104,7 @@ Diff⚔: Ultimate`, m)
     throw "🚩 Terjadi kesalahan"
   }
 };
+
 handler.command = handler.help = ['buff','lvlg','pembolong', 'lvlgbs', 'tas', 'bahanmq', 'lvlgbuff', 'lvlgpet', 'farm'];
 handler.tags = ['toram']
 handler.limit = false;
