@@ -607,7 +607,7 @@ Versi BS Tombak/Tinju,MD/Staff
 ▫250-300 Gak Tau`, m)
       return;
     }
-    if (command == 'slot tas') {
+    if (command == 'tas') {
       await conn.reply(m.chat, `
         List Bahan Untuk Upgrade Slot Tas Koleksi 
 ▪ 50-51
@@ -779,7 +779,7 @@ Versi BS Tombak/Tinju,MD/Staff
 - Kulit Pelik x30 (Mata Jahat; Padang Morga: Area 1)`, m)
       return;
     }
-    if (command == 'bahan mq') {
+    if (command == 'mq') {
       await conn.reply(m.chat, `LIST BAHAN Main Quest
 
 Bab 1
@@ -864,7 +864,7 @@ Bab 12
 > buat yg mau farm bahannya`, m)
       return;
     }
-    if (command == 'lvlg buff') {
+    if (command == 'lvlgbuff') {
       await conn.reply(m.chat, `
         LEVELING BUFF
 
@@ -890,7 +890,7 @@ Level 10
 ╰┈➤ ❝ exp = 1533 ❞`, m)
       return;
     }
-    if (command == 'lvlg pet') {
+    if (command == 'lvlgpet') {
       await conn.reply(m.chat, `Leveling Pet
 
 01-->>40 
@@ -927,7 +927,7 @@ Diff⚔: Ultimate`, m)
     throw "🚩 Terjadi kesalahan"
   }
 };
-handler.command = handler.help = ['buff','lvlg','pembolong', 'lvlgbs', 'slot tas', 'bahan mq', 'lvlg buff', 'lvlg pet'];
+handler.command = handler.help = ['buff','lvlg','pembolong', 'lvlgbs', 'tas', 'mq', 'lvlgbuff', 'lvlgpet'];
 handler.tags = ['toram']
 handler.limit = false;
 handler.premium = false;
