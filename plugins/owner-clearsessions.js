@@ -43,5 +43,6 @@ handler.help = ['clearsession'];
 handler.tags = ['owner'];
 handler.command = /^(clearsession|clearsessions)$/i;
 handler.rowner = true;
+handler.admin = true;
 
 module.exports = handler;
