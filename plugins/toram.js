@@ -922,181 +922,189 @@ Venena
 Diff⚔: Ultimate`, m)
       return;
     }
-    let handler = async (m, { command, args, conn }) => {
-  if (command === 'farm' && args.length === 0) {
-    return conn.reply(m.chat, `📦 *Pilih Jenis Farm Mats:*
+    
+        switch (command) {
+      case 'farm':
+        if (!args[0]) {
+          return conn.reply(m.chat, `📦 *Pilih Jenis Farm Mats:*
 • .farm kain
 • .farm obat
 • .farm logam
 • .farm mana
 • .farm kayu`, m)
-  }
+        }
 
-  switch (args[0]) {
-    case 'kain':
-      await conn.reply(m.chat, `🧵 *Farm Mats Kain*
+        switch (args[0].toLowerCase()) {
+          case 'kain':
+            return conn.reply(m.chat, `🧵 *Farm Mats Kain*
 
-1. *Underground Nemico* 🔹  
-• Unsur: 🌪 Wind  
-• HP: -- unknown --  
-• XP: -- unknown --  
-• Peta: Saluran Bawah Tanah Ultimea: Tenggara  
-• Drop:  
-  - Bijih Mithril (13pts / 8s)  
-  - Tameng Imperial (55pts / 110s)  
-  - Kuping Kelelawar  
+🔹 *Underground Nemico*
+• Unsur: 🌪
+• Lokasi: Saluran Bawah Tanah Ultimea: Tenggara
+• Drop:
+  - Bijih Mithril (13pts / 8s)
+  - Tameng Imperial (55pts / 110s)
+  - Kuping Kelelawar
   - Syal Lembut
 
-2. *Potum Semedi* 🔹  
-• Unsur: ☄ Fire  
-• HP: -- unknown --  
-• XP: -- unknown --  
-• Peta: Koridor Heresi  
-• Drop:  
-  - Celemek Robek  
-  - Sayap Nirwana  
-  - Vaccine I  
+🔹 *Potum Semedi*
+• Unsur: ☄
+• Lokasi: Koridor Heresi
+• Drop:
+  - Celemek Robek
+  - Sayap Nirwana
+  - Vaccine I
   - Gelang Nirwana
 
-3. *Laduro* 🔹  
-• Unsur: 🌱 Earth  
-• HP: -- unknown --  
-• XP: -- unknown --  
-• Peta: Terowongan Cobaan  
-• Drop:  
-  - Kain Maling  
-  - Mineral Cantik  
-  - Bola Mata Redup  
+🔹 *Laduro*
+• Unsur: 🌱
+• Lokasi: Terowongan Cobaan
+• Drop:
+  - Kain Maling
+  - Mineral Cantik
+  - Bola Mata Redup
   - Tudung Mencurigakan`, m)
-      break
 
-    case 'obat':
-    case 'logam': // karena sama
-      await conn.reply(m.chat, `💊 *Farm Mats ${args[0] === 'logam' ? 'Logam' : 'Obat'}*
+          case 'obat':
+            return conn.reply(m.chat, `💊 *Farm Mats Obat*
 
-1. *Grape Jelly* 🔹  
-• Unsur: 🌌 Space  
-• HP: 7,000  
-• XP: 128  
-• Peta: Saluran Bawah Tanah Ultimea: Tenggara  
-• Drop:  
-  - Ribbon  
-  - Cairan Asam Manis  
-  - Agar-Agar Merah Ungu  
+🔹 *Grape Jelly*
+• Unsur: 🌌
+• HP: 7,000 | XP: 128
+• Lokasi: Saluran Bawah Tanah Ultimea: Tenggara
+• Drop:
+  - Ribbon
+  - Cairan Asam Manis
+  - Agar-Agar Merah Ungu
   - Batu Ultimea
 
-2. *Lettacia* 🔹  
-• Unsur: 🌱 Earth  
-• HP: -- unknown --  
-• XP: 264  
-• Peta: Depan Boma Konda  
-• Drop:  
-  - Daun Kepala  
-  - Ekor Spiral  
-  - Air Mata Saponin  
+🔹 *Lettacia*
+• Unsur: 🌱
+• XP: 264
+• Lokasi: Depan Boma Konda
+• Drop:
+  - Daun Kepala
+  - Ekor Spiral
+  - Air Mata Saponin
   - Jepit Rambut Schmet`, m)
-      break
 
-    case 'mana':
-      await conn.reply(m.chat, `🌀 *Farm Mats Mana*
+          case 'logam':
+            return conn.reply(m.chat, `🪨 *Farm Mats Logam*
 
-📌 *Non Event Summer*
+🔹 *Grape Jelly*
+• Unsur: 🌌
+• HP: 7,000 | XP: 128
+• Lokasi: Saluran Bawah Tanah Ultimea: Tenggara
+• Drop:
+  - Ribbon
+  - Cairan Asam Manis
+  - Agar-Agar Merah Ungu
+  - Batu Ultimea
 
-1. *Laduro* 🔹  
-• Unsur: 🌱 Earth  
-• HP: -- unknown --  
-• XP: -- unknown --  
-• Peta: Terowongan Cobaan  
-• Drop:  
-  - Kain Maling  
-  - Mineral Cantik  
-  - Bola Mata Redup  
+🔹 *Lettacia*
+• Unsur: 🌱
+• XP: 264
+• Lokasi: Depan Boma Konda
+• Drop:
+  - Daun Kepala
+  - Ekor Spiral
+  - Air Mata Saponin
+  - Jepit Rambut Schmet`, m)
+
+          case 'mana':
+            return conn.reply(m.chat, `🔮 *Farm Mats Mana*
+
+*Non-event*
+🔹 *Laduro*
+• Unsur: 🌱
+• Lokasi: Terowongan Cobaan
+• Drop:
+  - Kain Maling
+  - Mineral Cantik
+  - Bola Mata Redup
   - Tudung Mencurigakan
 
-📌 *Event Summer*
+*Event Summer*
+🔹 *Venomsch*
+• Unsur: 💧
+• Lokasi: Saluran Bawah Tanah Ultimea: Selatan
+• Drop:
+  - CSPD+100
+  - Jarum Beracun
+  - Racun Katak
+  - Lidah Kuat
+  - 🐚 Summer shell
 
-2. *Venomsch* 🔹  
-• Unsur: 💧 Water  
-• Peta: Saluran Bawah Tanah Ultimea: Selatan  
-• Drop:  
-  - CSPD+100  
-  - Jarum Beracun  
-  - Racun Katak  
-  - Lidah Kuat  
-  - *Summer Shell 🐚*
+🔹 *Malaikat Gelembung (Biru)*
+• Unsur: 💧
+• Lokasi: Kuil Para Dewa: Area 2
+• Drop:
+  - Cincin Prisma
+  - Halo Terputus
+  - Kain Berkilau Misterius
+  - Kerikil Dewa
+  - 🐚 Summer shell
 
-3. *Malaikat Gelembung (Biru)* 🔹  
-• Unsur: 💧 Water  
-• Peta: Kuil Para Dewa: Area 2  
-• Drop:  
-  - Cincin Prisma  
-  - Halo Terputus  
-  - Kain Berkilau Misterius  
-  - Kerikil Dewa  
-  - *Summer Shell 🐚*
+🔹 *Breppa*
+• Unsur: 💧 | HP: 28.064
+• Lokasi: Lorong Dingin
+• Drop:
+  - Bijih Mithril
+  - Kaki Mengkristal
+  - Ekor Mengkristal
+  - Tetesan Air Mata
+  - 🐚 Summer shell II
 
-4. *Breppa* 🔹  
-• Unsur: 💧 Water  
-• HP: 28,064  
-• Peta: Lorong Dingin  
-• Drop:  
-  - Bijih Mithril  
-  - Kaki Mengkristal  
-  - Ekor Mengkristal  
-  - Tetesan Air Mata  
-  - *Summer Shell II 🐚*
+🔹 *Wolfelar*
+• Unsur: 💧 | HP: 19.090
+• Lokasi: Lorong Dingin
+• Drop:
+  - Ranting Dingin
+  - Bulu Serigala Es
+  - Kumis Lembut Serigala Es
+  - 🐚 Summer shell II
 
-5. *Wolfelar* 🔹  
-• Unsur: 💧 Water  
-• HP: 19,090  
-• Peta: Lorong Dingin  
-• Drop:  
-  - Ranting Dingin  
-  - Bulu Serigala Es  
-  - Kumis Lembut Serigala Es  
-  - *Summer Shell II 🐚*
+🔹 *Glafur*
+• Unsur: 💧 | HP: 21.400
+• Lokasi: Lorong Dingin
+• Drop:
+  - Bulu Beku
+  - Ayam Dingin
+  - Cakar Beku
+  - 🐚 Summer shell II`, m)
 
-6. *Glafur* 🔹  
-• Unsur: 💧 Water  
-• HP: 21,400  
-• Peta: Lorong Dingin  
-• Drop:  
-  - Bulu Beku  
-  - Ayam Dingin  
-  - Cakar Beku  
-  - *Summer Shell II 🐚*`, m)
-      break
+          case 'kayu':
+            return conn.reply(m.chat, `🌳 *Farm Mats Kayu*
 
-    case 'kayu':
-      await conn.reply(m.chat, `🌲 *Farm Mats Kayu*
-
-1. *Ivy* 🔹  
-• Unsur: 🌱 Earth  
-• XP: 220  
-• Peta: Kuil Naga Kegelapan: Tengah  
-• Drop:  
-  - Sulur Rambat  
-  - Batang Tebal Muda  
-  - Kentang  
+🔹 *Ivy*
+• Unsur: 🌱 | XP: 220
+• Lokasi: Kuil Naga Kegelapan: Tengah
+• Drop:
+  - Sulur Rambat
+  - Batang Tebal Muda
+  - Kentang
   - Panah Duri
 
-2. *Pohon Parasit* 🔹  
-• Unsur: 🌱 Earth  
-• XP: 94  
-• Peta: Distrik Altoale  
-• Drop:  
-  - Akar Pengisap Kehidupan  
-  - Benih Gulma  
-  - Azimat Pohon  
+🔹 *Pohon Parasit*
+• Unsur: 🌱 | XP: 94
+• Lokasi: Distrik Altoale
+• Drop:
+  - Akar Pengisap Kehidupan
+  - Benih Gulma
+  - Azimat Pohon
   - Daun Kering`, m)
-      break
 
-    default:
-      await conn.reply(m.chat, `❌ *Sub-kategori tidak ditemukan.*
-Ketik *.farm* untuk melihat daftar kategori.`, m)
-      break
-  }
-}
+          default:
+            return conn.reply(m.chat, `❌ Subkategori *${args[0]}* tidak ditemukan. Ketik *.farm* untuk melihat daftar.`, m)
+        }
+        break
+
+      // Tambahkan handler lain di bawah jika ada (buff, lvlg, dll.)
+
+      default:
+        return conn.reply(m.chat, `❓ Tidak ada perintah seperti *${command}*`, m)
+    }
+
   } catch (err) {
     console.error(err)
     throw "🚩 Terjadi kesalahan"
@@ -1106,6 +1114,4 @@ handler.command = handler.help = ['buff','lvlg','pembolong', 'lvlgbs', 'tas', 'b
 handler.tags = ['toram']
 handler.limit = false;
 handler.premium = false;
-module.exports = handler;
-handler.command = /^farm$/i
 export default handler
