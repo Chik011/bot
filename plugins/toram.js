@@ -938,13 +938,208 @@ Ketik .farm <nama_submenu> contoh .farm kayu
         // Submenu farm yang dipilih user
         switch(args[0].toLowerCase()) {
           case 'kayu':
-            await conn.reply(m.chat, 'masih buat', m)
-            break;
+  await conn.reply(m.chat, `
+*Farm Mats Kayu*
+
+*Ivy* 🔹  
+Unsur: 🌱  
+HP: -- unknown --  
+XP: 220  
+Peta: Kuil Naga Kegelapan: Tengah  
+Drop:  
+- Sulur Rambat  
+- Batang Tebal Muda  
+- Kentang  
+- Panah Duri  
+
+*Pohon Parasit* 🔹  
+Unsur: 🌱  
+HP: -- unknown --  
+XP: 94  
+Peta: Distrik Altoale  
+Drop:  
+- Akar Pengisap Kehidupan  
+- Benih Gulma  
+- Azimat Pohon  
+- Daun Kering
+  `.trim(), m);
+  break;
+
           case 'obat':
-            await conn.reply(m.chat, 'masih buat', m)
-            break;
+  await conn.reply(m.chat, `
+*Farm Mats Obat*
+
+*Grape Jelly* 🔹  
+Unsur: 🌌  
+HP: 7,000  
+XP: 128  
+Lokasi: Saluran Bawah Tanah Ultimea: Tenggara  
+Drop:  
+- Ribbon  
+- Cairan Asam Manis  
+- Agar-Agar Merah Ungu  
+- Batu Ultimea  
+
+*Lettacia* 🔹  
+Unsur: 🌱  
+XP: 264  
+Lokasi: Depan Boma Konda  
+Drop:  
+- Daun Kepala  
+- Ekor Spiral  
+- Air Mata Saponin  
+- Jepit Rambut Schmet
+  `.trim(), m);
+  break;
+
           case 'logam':
-            await conn.reply(m.chat, 'masih buat', m)
+  await conn.reply(m.chat, `
+*Farm Mats Logam*
+
+*Celeng Kecil Mesin* 🔹  
+Unsur: 🌱  
+HP: 3,500  
+XP: 79  
+Peta: Lembah Dalam Sykea  
+Drop:  
+- Azimat Taring Hewan (2s / 1s)  
+- Bulu Hewan Kasar  
+- Tanduk Baja  
+- Botol Tenaga  
+
+*Malaikat Gelembung (Biru)* 🔹  
+Unsur: 💧  
+HP: -- unknown --  
+XP: -- unknown --  
+Peta: Kuil Para Dewa: Area 2  
+Drop:  
+- Cincin Prisma  
+- Halo Terputus  
+- Kain Berkilau Misterius  
+- Kerikil Dewa  
+
+*Laduro* 🔹  
+Unsur: 🌱  
+HP: -- unknown --  
+XP: -- unknown --  
+Peta: Terowongan Cobaan  
+Drop:  
+- Kain Maling  
+- Mineral Cantik  
+- Bola Mata Redup  
+- Tudung Mencurigakan
+  `.trim(), m);
+  break;
+
+          case 'mana':
+  await conn.reply(m.chat, `
+*Farm Mats Mana*
+
+*Ghost Potum* 🔹  
+Unsur: ☄  
+HP: -- unknown --  
+XP: -- unknown --  
+Peta: Koridor Heresi  
+Drop:  
+- Tali Roh  
+- Pot Bunga  
+- Energi Misterius  
+- Fragment Magic  
+
+*Ghost Lantern* 🔹  
+Unsur: ☄  
+HP: -- unknown --  
+XP: -- unknown --  
+Peta: Koridor Heresi / Kuil Para Dewa  
+Drop:  
+- Inti Cahaya  
+- Sumbu Terkutuk  
+- Lentera Tua  
+- Debu Roh  
+
+*Flare Volg* 🔹 (Mini Boss)  
+Unsur: 🔥  
+HP: 600,000+  
+XP: 1,200  
+Peta: Lantai Dasar Gunung Lahar  
+Drop:  
+- Inti Api  
+- Debu Mana  
+- Paku Hangus  
+- Sisik Volg
+  `.trim(), m);
+  break;
+
+          case 'fauna':
+  await conn.reply(m.chat, `
+*Farm Mats Fauna*
+
+*Rafflesia* 🔹  
+Unsur: 🌱  
+HP: -- unknown --  
+XP: -- unknown --  
+Peta: Lantai 3 Istana Lahar  
+Drop:  
+- Cairan Bunga Busuk  
+- Serbuk Beracun  
+- Akar Gatal  
+- Kelopak Mengerikan  
+
+*Goblin* 🔹  
+Unsur: 🌪  
+HP: -- unknown --  
+XP: -- unknown --  
+Peta: Hutan Rugio  
+Drop:  
+- Kain Robek  
+- Taring Goblin  
+- Botol Kecil  
+- Sarung Tangan Lusuh  
+
+*Tigris* 🔹  
+Unsur: 🌪  
+HP: -- unknown --  
+XP: -- unknown --  
+Peta: Lantai Atas Gunung Lahar  
+Drop:  
+- Cakar Lembut  
+- Bulu Belang  
+- Daging Segar  
+- Mata Binatang
+  `.trim(), m);
+  break;
+
+          case 'kain':
+            await conn.reply(m.chat, `
+*Farm Mats Kain*
+
+*Underground Nemico* 🔹  
+Unsur: 🌪  
+Lokasi: Saluran Bawah Tanah Ultimea: Tenggara  
+Drop:  
+- Bijih Mithril (13pts / 8s)  
+- Tameng Imperial (55pts / 110s)  
+- Kuping Kelelawar  
+- Syal Lembut  
+
+*Potum Semedi* 🔹  
+Unsur: ☄  
+Lokasi: Koridor Heresi  
+Drop:  
+- Celemek Robek  
+- Sayap Nirwana  
+- Vaccine I  
+- Gelang Nirwana  
+
+*Laduro* 🔹  
+Unsur: 🌱  
+Lokasi: Terowongan Cobaan  
+Drop:  
+- Kain Maling  
+- Mineral Cantik  
+- Bola Mata Redup  
+- Tudung Mencurigakan
+            `.trim(), m);
             break;
           default:
             await conn.reply(m.chat, `Submenu farm '${args[0]}' tidak ditemukan.`, m)
