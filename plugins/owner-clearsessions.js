@@ -42,6 +42,7 @@ let handler = async (m, { conn, usedPrefix, args }) => {
 handler.help = ['clearsession'];
 handler.tags = ['owner'];
 handler.command = /^(clearsession|clearsessions)$/i;
-handler.admin = true;
+handler.rowner = true;
+handler.owner = true; // Ensure this command is only for the owner
 
 module.exports = handler;
