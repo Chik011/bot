@@ -1,56 +1,75 @@
-const fetch = require('node-fetch'); // pastikan sudah install via: npm install node-fetch
+let axios = require('axios');
 
-let handler = async (m, { text, conn }) => {
-  // Hanya merespon jika pesan mengandung kata "laurens"
-  if (!text || !/(laurens)/i.test(text)) return;
+let handler = async (m, { conn, text, usedPrefix, command }) => {
+    conn.sessionAI = conn.sessionAI ? conn.sessionAI : {};
 
-  try {
-    const response = await askGemini(text);
-    conn.reply(m.chat, response, m);
-  } catch (err) {
-    console.error(err);
-    conn.reply(m.chat, 'Maaf, Laurens sedang error 😔', m);
-  }
+    if (!text) throw `🚩 ${usedPrefix + command} *enable/disable*`;
+
+    if (text === "enable") {
+        conn.sessionAI[m.sender] = { sessionChat: [] };
+        m.reply("Success create sessions chat!");
+    } else if (text === "disable") {
+        delete conn.sessionAI[m.sender];
+        m.reply("Success delete sessions chat!");
+    }
 };
 
-handler.help = ['laurens <pertanyaan>'];
-handler.tags = ['ai', 'chat'];
-handler.customPrefix = null; // tidak menggunakan prefix khusus
-handler.command = null; // tidak menggunakan command regex
-handler.owner = false;
-handler.mods = false;
-handler.premium = false;
-handler.group = false;
-handler.private = false;
-handler.admin = false;
-handler.botAdmin = false;
-handler.fail = null;
+handler.before = async (m, { conn }) => {
+    conn.sessionAI = conn.sessionAI ? conn.sessionAI : {};
+    if (m.isBaileys && m.fromMe) return;
+    if (!m.text) return;
+    if (!conn.sessionAI[m.sender]) return;
+    if ([".", "#", "!", "/", "\\"].some(prefix => m.text.startsWith(prefix))) return;
+
+    if (conn.sessionAI[m.sender] && m.text) {    
+        const previousMessages = conn.sessionAI[m.sender].sessionChat || [];
+/**
+ * @description Ubah prompt ini sesuai dengan keinginanmu.
+ * @note Usahakan memberikan logika yang masuk akal dan mudah dipahami!
+ */
+        const messages = [
+            { role: "system", content: "Kamu adalah Laurens, asisten pribadi virtual yang ramah, sopan, dan cerdas. Jawablah sebagai Laurens, bukan Google atau Gemini." },
+            { role: "assistant", content: `Saya Laurens, asisten pribadi yang siap membantu kamu kapan pun! Apa yang bisa saya bantu hari ini?` },
+            ...previousMessages.map((msg, i) => ({ role: i % 2 === 0 ? 'user' : 'assistant', content: msg })),
+            { role: "user", content: m.text }
+        ];
+
+        try {
+            const chat = async function(message) {
+                return new Promise(async (resolve, reject) => {
+                    try {
+                        const params = {
+                            message: message,
+                            apikey: btc
+                        };
+                        const { data } = await axios.post('AIzaSyC7pdUvBcUjfGButfzv1i1oeYERfJ7_dHo', params);
+                        resolve(data);
+                    } catch (error) {
+                        reject(error);
+                    }
+                });
+            };
+
+            let res = await chat(messages);
+            if (res && res.result) {
+                await m.reply(res.result);
+                conn.sessionAI[m.sender].sessionChat = [
+                    ...conn.sessionAI[m.sender].sessionChat,
+                    m.text,
+                    res.result
+                ];
+            } else {
+                m.reply("Kesalahan dalam mengambil data");
+            }
+        } catch (e) {
+            throw eror
+        }
+    }
+};
+
+handler.command = ['autoai'];
+handler.tags = ['ai'];
+handler.help = ['autoai'].map(a => a + ' *enable/disable*');
+handler.limit = true
 
 module.exports = handler;
-
-// Fungsi pemanggil Google Gemini API dengan identitas Laurens
-async function askGemini(userPrompt) {
-  const apiKey = 'AIzaSyC7pdUvBcUjfGButfzv1i1oeYERfJ7_dHo'; // Ganti dengan API key kamu
-  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`;
-
-  const identity = `Kamu adalah Laurens, asisten pribadi virtual yang ramah, sopan, dan cerdas. Jawablah sebagai Laurens, bukan Google atau Gemini.`;
-
-  const res = await fetch(endpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      contents: [
-        { role: 'user', parts: [{ text: identity }] },
-        { role: 'user', parts: [{ text: userPrompt }] }
-      ]
-    })
-  });
-
-  const json = await res.json();
-
-  if (json.error) throw new Error(json.error.message);
-  const output = json.candidates?.[0]?.content?.parts?.[0]?.text || 'Maaf, aku tidak tahu harus menjawab apa.';
-  return output;
-}
