@@ -1,75 +1,74 @@
-let axios = require('axios');
+const axios = require('axios');
 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
-    conn.sessionAI = conn.sessionAI ? conn.sessionAI : {};
+  conn.sessionAI = conn.sessionAI || {};
 
-    if (!text) throw `🚩 ${usedPrefix + command} *enable/disable*`;
+  if (!text) throw `🚩 Gunakan perintah: ${usedPrefix + command} enable / disable`;
 
-    if (text === "enable") {
-        conn.sessionAI[m.sender] = { sessionChat: [] };
-        m.reply("Success create sessions chat!");
-    } else if (text === "disable") {
-        delete conn.sessionAI[m.sender];
-        m.reply("Success delete sessions chat!");
-    }
+  if (text.toLowerCase() === "enable") {
+    conn.sessionAI[m.sender] = { sessionChat: [] };
+    m.reply("✅ Chat session Laurens berhasil *diaktifkan*.");
+  } else if (text.toLowerCase() === "disable") {
+    delete conn.sessionAI[m.sender];
+    m.reply("❌ Chat session Laurens berhasil *dimatikan*.");
+  } else {
+    throw `⚠️ Pilihan hanya: *enable* atau *disable*`;
+  }
 };
 
+// Intercept pesan
 handler.before = async (m, { conn }) => {
-    conn.sessionAI = conn.sessionAI ? conn.sessionAI : {};
-    if (m.isBaileys && m.fromMe) return;
-    if (!m.text) return;
-    if (!conn.sessionAI[m.sender]) return;
-    if ([".", "#", "!", "/", "\\"].some(prefix => m.text.startsWith(prefix))) return;
+  conn.sessionAI = conn.sessionAI || {};
 
-    if (conn.sessionAI[m.sender] && m.text) {    
-        const previousMessages = conn.sessionAI[m.sender].sessionChat || [];
-/**
- * @description Ubah prompt ini sesuai dengan keinginanmu.
- * @note Usahakan memberikan logika yang masuk akal dan mudah dipahami!
- */
-        const messages = [
-            { role: "system", content: "Kamu adalah Laurens, asisten pribadi virtual yang ramah, sopan, dan cerdas. Jawablah sebagai Laurens, bukan Google atau Gemini." },
-            { role: "assistant", content: `Saya Laurens, asisten pribadi yang siap membantu kamu kapan pun! Apa yang bisa saya bantu hari ini?` },
-            ...previousMessages.map((msg, i) => ({ role: i % 2 === 0 ? 'user' : 'assistant', content: msg })),
-            { role: "user", content: m.text }
-        ];
+  // Filter yang tidak perlu
+  if (m.isBaileys || m.fromMe || !m.text) return;
+  if (!conn.sessionAI[m.sender]) return;
+  if (/^[!#./\\]/.test(m.text)) return;
 
-        try {
-            const chat = async function(message) {
-                return new Promise(async (resolve, reject) => {
-                    try {
-                        const params = {
-                            message: message,
-                            apikey: btc
-                        };
-                        const { data } = await axios.post('AIzaSyC7pdUvBcUjfGButfzv1i1oeYERfJ7_dHo', params);
-                        resolve(data);
-                    } catch (error) {
-                        reject(error);
-                    }
-                });
-            };
+  const session = conn.sessionAI[m.sender].sessionChat || [];
 
-            let res = await chat(messages);
-            if (res && res.result) {
-                await m.reply(res.result);
-                conn.sessionAI[m.sender].sessionChat = [
-                    ...conn.sessionAI[m.sender].sessionChat,
-                    m.text,
-                    res.result
-                ];
-            } else {
-                m.reply("Kesalahan dalam mengambil data");
-            }
-        } catch (e) {
-            throw eror
-        }
+  // Format pesan ke Gemini
+  const contextPrompt = [
+    {
+      role: "user",
+      parts: [{ text: "Kamu adalah Laurens, asisten pribadi virtual yang ramah, sopan, dan cerdas. Jawablah sebagai Laurens, bukan Google atau Gemini." }]
+    },
+    ...session.map((msg, i) => ({
+      role: i % 2 === 0 ? "user" : "model",
+      parts: [{ text: msg }]
+    })),
+    {
+      role: "user",
+      parts: [{ text: m.text }]
     }
+  ];
+
+  try {
+    const { data } = await axios.post(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyC7pdUvBcUjfGButfzv1i1oeYERfJ7_dHo`,
+      { contents: contextPrompt },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+
+    const output = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'Maaf, Laurens tidak bisa menjawab.';
+    await m.reply(output);
+
+    // Simpan sesi untuk percakapan berikutnya
+    conn.sessionAI[m.sender].sessionChat = [
+      ...session.slice(-10), // batasi max 10 riwayat agar hemat kuota
+      m.text,
+      output
+    ];
+
+  } catch (e) {
+    console.error(e);
+    m.reply('😔 Maaf, Laurens mengalami error.');
+  }
 };
 
 handler.command = ['autoai'];
+handler.help = ['autoai enable', 'autoai disable'];
 handler.tags = ['ai'];
-handler.help = ['autoai'].map(a => a + ' *enable/disable*');
-handler.limit = true
+handler.limit = false;
 
 module.exports = handler;
