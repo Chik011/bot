@@ -1,36 +1,39 @@
-const fetch = require('node-fetch'); // pastikan sudah install: npm install node-fetch
+const fetch = require('node-fetch'); // pastikan sudah install via: npm install node-fetch
 
 let handler = async (m, { text, conn }) => {
-  if (!text || !/(laurens)/i.test(text)) return; // hanya tanggapi kalau ada kata 'laurens'
+  // Hanya merespon jika pesan mengandung kata "laurens"
+  if (!text || !/(laurens)/i.test(text)) return;
 
   try {
-    const geminiResponse = await askGemini(text);
-    conn.reply(m.chat, geminiResponse, m);
+    const response = await askGemini(text);
+    conn.reply(m.chat, response, m);
   } catch (err) {
     console.error(err);
-    conn.reply(m.chat, 'Maaf, Laurens sedang mengalami gangguan 😔', m);
+    conn.reply(m.chat, 'Maaf, Laurens sedang error 😔', m);
   }
 };
 
-handler.help = ['laurens <pertanyaan>']
-handler.tags = ['ai', 'chat']
-handler.customPrefix = null // tidak pakai prefix custom
-handler.command = null // tidak pakai command
-handler.owner = false
-handler.mods = false
-handler.premium = false
-handler.group = false
-handler.private = false
-handler.admin = false
-handler.botAdmin = false
-handler.fail = null
+handler.help = ['laurens <pertanyaan>'];
+handler.tags = ['ai', 'chat'];
+handler.customPrefix = null; // tidak menggunakan prefix khusus
+handler.command = null; // tidak menggunakan command regex
+handler.owner = false;
+handler.mods = false;
+handler.premium = false;
+handler.group = false;
+handler.private = false;
+handler.admin = false;
+handler.botAdmin = false;
+handler.fail = null;
 
 module.exports = handler;
 
-// Fungsi untuk memanggil Google Gemini API
-async function askGemini(prompt) {
+// Fungsi pemanggil Google Gemini API dengan identitas Laurens
+async function askGemini(userPrompt) {
   const apiKey = 'AIzaSyC7pdUvBcUjfGButfzv1i1oeYERfJ7_dHo'; // Ganti dengan API key kamu
   const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`;
+
+  const identity = `Kamu adalah Laurens, asisten pribadi virtual yang ramah, sopan, dan cerdas. Jawablah sebagai Laurens, bukan Google atau Gemini.`;
 
   const res = await fetch(endpoint, {
     method: 'POST',
@@ -39,10 +42,8 @@ async function askGemini(prompt) {
     },
     body: JSON.stringify({
       contents: [
-        {
-          parts: [{ text: prompt }],
-          role: 'user'
-        }
+        { role: 'user', parts: [{ text: identity }] },
+        { role: 'user', parts: [{ text: userPrompt }] }
       ]
     })
   });
@@ -50,7 +51,6 @@ async function askGemini(prompt) {
   const json = await res.json();
 
   if (json.error) throw new Error(json.error.message);
-
-  const output = json.candidates?.[0]?.content?.parts?.[0]?.text || 'Aku tidak tahu harus berkata apa.';
+  const output = json.candidates?.[0]?.content?.parts?.[0]?.text || 'Maaf, aku tidak tahu harus menjawab apa.';
   return output;
 }
