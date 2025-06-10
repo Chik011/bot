@@ -8,8 +8,8 @@ let handler = async (m, { conn, text }) => {
 }
 handler.help = ['siapa <teks>?']
 handler.tags = ['kerang']
-handler.customPrefix = /(\?$)/
-handler.command = /^siapa$/i
+handler.customPrefix = /(\iapa$)/
+handler.command = /^s()$/i
 handler.owner = false
 
 handler.fail = null
