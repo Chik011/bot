@@ -1,15 +1,15 @@
 let handler = async (m, { conn, text }) => {
-  conn.reply(m.chat, `${pickRandom(['Yap','iya', 'tentu saja', 'sudah pasti','Sepertinya Begitu','Kayaknya','Kayaknya nggak','Nggak','Nggak mungkin'])}
+  conn.reply(m.chat, `${pickRandom(['gak tau','mantan mu','pacar mu','peliharaan','monyet','calon ibu','ibumu mu',])}
 `.trim(), m, m.mentionedJid ? {
   contextInfo: {
     mentionedJid: m.mentionedJid
   }
 } : {})
 }
-handler.help = ['apakah <teks>?']
+handler.help = ['siapa <teks>?']
 handler.tags = ['kerang']
-handler.customPrefix = /(\pakah$)/
-handler.command = /^a()$/i
+handler.customPrefix = /(\?$)/
+handler.command = /^siapa$/i
 handler.owner = false
 
 handler.fail = null
