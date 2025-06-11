@@ -43,12 +43,12 @@ handler.before = async (m, { conn }) => {
     }
   ];
 
-  try {
-    const { data } = await axios.post(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyC7pdUvBcUjfGButfzv1i1oeYERfJ7_dHo`,
-      { contents: contextPrompt },
-      { headers: { 'Content-Type': 'application/json' } }
-    );
+try {
+  const { data } = await axios.post(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=AIzaSyC7pdUvBcUjfGButfzv1i1oeYERfJ7_dHo`,
+    { contents: contextPrompt },
+    { headers: { 'Content-Type': 'application/json' } }
+  );
 
     const output = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'Maaf, Laurens tidak bisa menjawab.';
     await m.reply(output);
