@@ -61,9 +61,10 @@ handler.before = async (m, { conn }) => {
     ];
 
   } catch (e) {
-    console.error(e);
-    m.reply('😔 Maaf, Laurens mengalami error.');
-  }
+  console.error("Gemini API Error:", e?.response?.data || e.message || e);
+  m.reply('😔 Maaf, Laurens mengalami error.\n' + (e?.response?.data?.error?.message || ''));
+}
+
 };
 
 handler.command = ['autoai'];
