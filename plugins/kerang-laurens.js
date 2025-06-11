@@ -1,38 +1,21 @@
 const axios = require('axios');
 
-let handler = async (m, { conn, text, usedPrefix, command }) => {
-  conn.sessionAI = conn.sessionAI || {};
-
-  if (!text) throw `🚩 Gunakan perintah: ${usedPrefix + command} enable / disable`;
-
-  if (text.toLowerCase() === "enable") {
-    conn.sessionAI[m.sender] = { sessionChat: [] };
-    m.reply("✅ Chat session Laurens berhasil *diaktifkan*.");
-  } else if (text.toLowerCase() === "disable") {
-    delete conn.sessionAI[m.sender];
-    m.reply("❌ Chat session Laurens berhasil *dimatikan*.");
-  } else {
-    throw `⚠️ Pilihan hanya: *enable* atau *disable*`;
-  }
-};
-
-// Intercept pesan
-handler.before = async (m, { conn }) => {
-  conn.sessionAI = conn.sessionAI || {};
-
+let handler = async (m, { conn }) => {
   // Filter pesan yang tidak relevan
   if (m.isBaileys || m.fromMe || !m.text) return;
-  if (!conn.sessionAI[m.sender]) return;
 
-  const lowerText = m.text.trim().toLowerCase();
-  if (!lowerText.startsWith("laurens")) return;
+  const lowerText = m.text.toLowerCase();
+  if (!lowerText.includes("laurens")) return; // Cek apakah nama Laurens disebut
 
-  // Hilangkan kata "laurens" dari pesan agar tidak dikirim ke AI
-  const userMessage = m.text.replace(/^laurens[\s,:-]*/i, '');
+  // Ambil pesan pengguna tanpa nama "laurens" (opsional)
+  const userMessage = m.text.replace(/laurens[:,]?/gi, '').trim();
+  if (!userMessage) return;
 
-  const session = conn.sessionAI[m.sender].sessionChat || [];
+  // Sesi per user
+  conn.sessionAI = conn.sessionAI || {};
+  const session = conn.sessionAI[m.sender]?.sessionChat || [];
 
-  // Format pesan ke Gemini
+  // Format percakapan ke Gemini
   const contextPrompt = [
     {
       role: "user",
@@ -58,21 +41,19 @@ handler.before = async (m, { conn }) => {
     const output = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'Maaf, Laurens tidak bisa menjawab.';
     await m.reply(output);
 
-    // Simpan sesi untuk percakapan berikutnya
-    conn.sessionAI[m.sender].sessionChat = [
-      ...session.slice(-10), // simpan max 10 riwayat
-      userMessage,
-      output
-    ];
+    // Simpan sesi
+    conn.sessionAI[m.sender] = {
+      sessionChat: [
+        ...session.slice(-10),
+        userMessage,
+        output
+      ]
+    };
   } catch (e) {
     console.error("Gemini API Error:", e?.response?.data || e.message || e);
     m.reply('😔 Maaf, Laurens mengalami error.\n' + (e?.response?.data?.error?.message || ''));
   }
 };
 
-handler.command = ['autoai'];
-handler.help = ['autoai enable', 'autoai disable'];
-handler.tags = ['ai'];
-handler.limit = false;
-
+handler.before = handler;
 module.exports = handler;
