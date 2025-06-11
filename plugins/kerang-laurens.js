@@ -5,10 +5,11 @@ let handler = async (m, { conn }) => {
   if (m.isBaileys || m.fromMe || !m.text) return;
 
   const lowerText = m.text.toLowerCase();
-  if (!lowerText.includes("laurens")) return; // Cek apakah nama Laurens disebut
+  // Cek apakah menyebut Laurens dalam variasi apa pun
+  if (!/(laurens|lauren|lau|rens)/i.test(lowerText)) return;
 
-  // Ambil pesan pengguna tanpa nama "laurens" (opsional)
-  const userMessage = m.text.replace(/laurens[:,]?/gi, '').trim();
+  // Ambil pesan pengguna tanpa nama panggilan Laurens (opsional)
+  const userMessage = m.text.replace(/\b(laurens|lauren|lau|rens)[:,]?\b/gi, '').trim();
   if (!userMessage) return;
 
   // Sesi per user
