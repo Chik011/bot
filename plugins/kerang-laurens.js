@@ -19,7 +19,7 @@ let handler = async (m, { conn }) => {
   const contextPrompt = [
     {
       role: "user",
-      parts: [{ text: "Kamu adalah Laurens, asisten pribadi virtual yang ramah, sopan, dan cerdas. Jawablah sebagai Laurens, bukan Google atau Gemini." }]
+      parts: [{ text: "Kamu adalah Laurens, asisten pribadi virtual yang ramah, sopan, dan cerdas. Jawablah sebagai Laurens, bukan Google atau Gemini, dan jawablah secara ringkas dan mudah di mengerti" }]
     },
     ...session.map((msg, i) => ({
       role: i % 2 === 0 ? "user" : "model",
