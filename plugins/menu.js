@@ -120,8 +120,8 @@ let handler = async (m, { conn, usedPrefix: _p, args = [], command }) => {
                         externalAdReply: {
                             title: 'Grup Resmi Laurens Bot',
                             body: 'Klik untuk bergabung ke grup komunitas',
-                            thumbnailUrl: 'https://envs.sh/mR4.jpg/IMG20250612411.jpg', // Ganti dengan URL thumbnail kamu
-                            sourceUrl: 'https://chat.whatsapp.com/ABCDEFG123456789', // Ganti dengan link grup WA
+                            thumbnailUrl: 'https://envs.sh/mR4.jpg/IMG20250612411.jpg',
+                            sourceUrl: 'https://www.whatsapp.com/channel/0029Vb6CSaw77qVKwJVFFq1c',
                             mediaType: 1,
                             previewType: 1,
                             renderLargerThumbnail: true
