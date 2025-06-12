@@ -28,8 +28,7 @@ let arrayMenu = [
   'fun',
   'image',
   'owner'
-  ];
-
+]
 
 const allTags = {
     'all': 'SEMUA MENU',
@@ -67,7 +66,7 @@ let handler = async (m, { conn, usedPrefix: _p, args = [], command }) => {
         let { min, xp, max } = levelling.xpRange(level, global.multiplier)
         let name = `@${m.sender.split`@`[0]}`
         let teks = args[0] || ''
-        
+
         let d = new Date(new Date + 3600000)
         let locale = 'id'
         let date = d.toLocaleDateString(locale, {
@@ -75,16 +74,14 @@ let handler = async (m, { conn, usedPrefix: _p, args = [], command }) => {
             month: 'long',
             year: 'numeric'
         })
-        
         let time = d.toLocaleTimeString(locale, {
             hour: 'numeric',
             minute: 'numeric',
             second: 'numeric'
         })
-
         let _uptime = process.uptime() * 1000
         let uptime = clockString(_uptime)
-        
+
         let help = Object.values(global.plugins).filter(plugin => !plugin.disabled).map(plugin => {
             return {
                 help: Array.isArray(plugin.help) ? plugin.help : [plugin.help],
@@ -96,6 +93,15 @@ let handler = async (m, { conn, usedPrefix: _p, args = [], command }) => {
             }
         })
 
+        let replace = {
+            '%': '%',
+            p: _p,
+            uptime,
+            name,
+            date,
+            time
+        }
+
         if (!teks) {
             let menuList = `${defaultMenu.before}\n\n┌  ◦ *DAFTAR MENU*\n`
             for (let tag of arrayMenu) {
@@ -104,36 +110,25 @@ let handler = async (m, { conn, usedPrefix: _p, args = [], command }) => {
                 }
             }
             menuList += `└  \n\n${defaultMenu.after}`
-
-            let replace = {
-                '%': '%',
-                p: _p, 
-                uptime,
-                name, 
-                date,
-                time
-            }
-
-            let text = menuList.replace(new RegExp(`%(${Object.keys(replace).sort((a, b) => b.length - a.length).join`|`})`, 'g'), 
-                (_, name) => '' + replace[name])
+            let text = menuList.replace(new RegExp(`%(${Object.keys(replace).sort((a, b) => b.length - a.length).join`|`})`, 'g'), (_, name) => '' + replace[name])
 
             await conn.relayMessage(m.chat, {
-            extendedTextMessage:{
-                text: text, 
-                contextInfo: {
-                    mentionedJid: [m.sender],
-                    externalAdReply: {
-                        title: date,
-                        mediaType: 1,
-                        previewType: 0,
-                        renderLargerThumbnail: true,
-                        thumbnailUrl: 'https://whatsapp.com/channel/0029Vb6CSaw77qVKwJVFFq1c',//thumbnail foto wa//
-                        sourceUrl: 'https://whatsapp.com/channel/0029Vb6CSaw77qVKwJVFFq1c'
+                extendedTextMessage: {
+                    text: text,
+                    contextInfo: {
+                        mentionedJid: [m.sender],
+                        externalAdReply: {
+                            title: 'Grup Resmi Laurens Bot',
+                            body: 'Klik untuk bergabung ke grup komunitas',
+                            thumbnailUrl: 'https://envs.sh/mR4.jpg/IMG20250612411.jpg', // Ganti dengan URL thumbnail kamu
+                            sourceUrl: 'https://chat.whatsapp.com/ABCDEFG123456789', // Ganti dengan link grup WA
+                            mediaType: 1,
+                            previewType: 1,
+                            renderLargerThumbnail: true
+                        }
                     }
-                }, 
-                mentions: [m.sender]
-            }
-        }, {})
+                }
+            }, {})
             return
         }
 
@@ -142,13 +137,10 @@ let handler = async (m, { conn, usedPrefix: _p, args = [], command }) => {
         }
 
         let menuCategory = defaultMenu.before + '\n\n'
-        
         if (teks === 'all') {
-            // category all
             for (let tag of arrayMenu) {
                 if (tag !== 'all' && allTags[tag]) {
                     menuCategory += defaultMenu.header.replace(/%category/g, allTags[tag]) + '\n'
-                    
                     let categoryCommands = help.filter(menu => menu.tags && menu.tags.includes(tag) && menu.help)
                     for (let menu of categoryCommands) {
                         for (let help of menu.help) {
@@ -163,7 +155,6 @@ let handler = async (m, { conn, usedPrefix: _p, args = [], command }) => {
             }
         } else {
             menuCategory += defaultMenu.header.replace(/%category/g, allTags[teks]) + '\n'
-            
             let categoryCommands = help.filter(menu => menu.tags && menu.tags.includes(teks) && menu.help)
             for (let menu of categoryCommands) {
                 for (let help of menu.help) {
@@ -177,34 +168,23 @@ let handler = async (m, { conn, usedPrefix: _p, args = [], command }) => {
         }
 
         menuCategory += '\n' + defaultMenu.after
-        
-        let replace = {
-            '%': '%',
-            p: _p, 
-            uptime, 
-            name,
-            date,
-            time
-        }
-
-        let text = menuCategory.replace(new RegExp(`%(${Object.keys(replace).sort((a, b) => b.length - a.length).join`|`})`, 'g'), 
-            (_, name) => '' + replace[name])
+        let text = menuCategory.replace(new RegExp(`%(${Object.keys(replace).sort((a, b) => b.length - a.length).join`|`})`, 'g'), (_, name) => '' + replace[name])
 
         await conn.relayMessage(m.chat, {
-            extendedTextMessage:{
-                text: text, 
+            extendedTextMessage: {
+                text: text,
                 contextInfo: {
                     mentionedJid: [m.sender],
                     externalAdReply: {
-                        title: date,
+                        title: 'Grup Resmi Laurens Bot',
+                        body: 'Klik untuk gabung ke grup komunitas',
+                        thumbnailUrl: 'https://envs.sh/mR4.jpg/IMG20250612411.jpg', // Ganti dengan URL thumbnail kamu
+                        sourceUrl: 'https://whatsapp.com/channel/0029Vb6CSaw77qVKwJVFFq1c', // Ganti dengan link grup WA
                         mediaType: 1,
-                        previewType: 0,
-                        renderLargerThumbnail: true,
-                        thumbnailUrl: '',
-                        sourceUrl: ''
+                        previewType: 1,
+                        renderLargerThumbnail: true
                     }
-                }, 
-                mentions: [m.sender]
+                }
             }
         }, {})
     } catch (e) {
@@ -217,7 +197,6 @@ handler.help = ['menu']
 handler.tags = ['main']
 handler.command = /^(menu|help)$/i
 handler.exp = 3
-
 module.exports = handler
 
 function clockString(ms) {
