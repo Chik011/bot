@@ -127,7 +127,7 @@ let handler = async (m, { conn, usedPrefix: _p, args = [], command }) => {
                         mediaType: 1,
                         previewType: 0,
                         renderLargerThumbnail: true,
-                        thumbnailUrl: 'https://ibb.co/0y6BH2Wk',//thumbnail foto wa//
+                        thumbnailUrl: 'https://imgur.com/a/FrjwqGR',//thumbnail foto wa//
                         sourceUrl: 'https://whatsapp.com/channel/0029Vb6CSaw77qVKwJVFFq1c'
                     }
                 }, 
