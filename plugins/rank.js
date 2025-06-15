@@ -29,6 +29,14 @@ let handler = async (m, { conn }) => {
           rudish: '48',
           mimyu: '59'
         }
+      },
+      {
+        teamName: 'tim nameless',
+        members: ['zancy', 'shinizami'],
+        times: {
+          rudish: '24',
+          mimyu: '14'
+        }
       }
     ];
 
