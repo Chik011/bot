@@ -4,72 +4,66 @@ let handler = async (m, { conn }) => {
   await conn.reply(m.chat, wait, m);
 
   try {
-    const rawData = `
-tim king jawa = rend & Albany rudish 43 mimyu 40
-tim duo nubie = Savita & hanica mimyu 1:28 rudish 2:35
-tim Godbeyonder = kimizui & grewup rudish 48 mimyu 59
-    `.trim();
-
-    const teams = rawData.split('\n');
-    const knownBosses = ['mimyu', 'rudish']; // urutan tetap
-
-    let results = [];
-
-    for (let line of teams) {
-      const [teamNameRaw, membersRaw] = line.split('=');
-      if (!teamNameRaw || !membersRaw) continue;
-
-      const teamName = teamNameRaw.trim();
-      const tokens = membersRaw.trim().split(/\s+/);
-
-      let memberNames = [];
-      let bossTimes = {};
-      let totalSeconds = 0;
-      let mode = 'members';
-
-      for (let i = 0; i < tokens.length; i++) {
-        const token = tokens[i];
-
-        if (mode === 'members') {
-          if (/^\d+(:\d+)?$/.test(token)) {
-            mode = 'boss';
-            i--;
-            continue;
-          }
-
-          if (token === '&') {
-            const prev = memberNames.pop() || '';
-            const next = tokens[i + 1] || '';
-            memberNames.push(`${prev} & ${next}`);
-            i++;
-          } else {
-            memberNames.push(token);
-          }
-        } else if (mode === 'boss') {
-          const bossName = tokens[i];
-          const timeStr = tokens[i + 1];
-
-          if (!timeStr || !/^\d+(:\d+)?$/.test(timeStr)) continue;
-
-          let seconds = 0;
-          if (timeStr.includes(':')) {
-            const [min, sec] = timeStr.split(':').map(Number);
-            seconds = min * 60 + sec;
-          } else {
-            seconds = parseInt(timeStr);
-          }
-
-          bossTimes[bossName] = {
-            timeStr,
-            seconds
-          };
-
-          totalSeconds += seconds;
-          i++;
+    // 🔧 Ganti bagian ini aja!
+    const data = [
+      {
+        teamName: 'tim king jawa',
+        members: ['rend', 'Albany'],
+        times: {
+          mimyu: '40',
+          rudish: '43'
+        }
+      },
+      {
+        teamName: 'tim duo nubie',
+        members: ['Savita', 'hanica'],
+        times: {
+          mimyu: '1:28',
+          rudish: '2:35'
+        }
+      },
+      {
+        teamName: 'tim Godbeyonder',
+        members: ['kimizui', 'grewup'],
+        times: {
+          rudish: '48',
+          mimyu: '59'
         }
       }
+    ];
 
-      results.push({ teamName, memberNames, bossTimes, totalSeconds });
+    const knownBosses = ['mimyu', 'rudish'];
+    let results = [];
+
+    for (let team of data) {
+      let totalSeconds = 0;
+      let bossTimes = {};
+
+      for (let boss of knownBosses) {
+        const timeStr = team.times[boss];
+        if (!timeStr) {
+          bossTimes[boss] = null;
+          continue;
+        }
+
+        let seconds = 0;
+        if (timeStr.includes(':')) {
+          const [min, sec] = timeStr.split(':').map(Number);
+          seconds = min * 60 + sec;
+        } else {
+          seconds = parseInt(timeStr);
+        }
+
+        totalSeconds += seconds;
+        bossTimes[boss] = { timeStr, seconds };
+      }
+
+      results.push({
+        teamName: team.teamName,
+        members: team.members,
+        bossTimes,
+        totalSeconds
+      });
     }
 
     results.sort((a, b) => a.totalSeconds - b.totalSeconds);
@@ -81,22 +75,19 @@ tim Godbeyonder = kimizui & grewup rudish 48 mimyu 59
       const seconds = team.totalSeconds % 60;
       const formattedTotal = minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`;
 
-      const membersList = team.memberNames.join(', ');
-
       output += `*${i + 1}. ${team.teamName}*\n`;
-      output += `👥 *Anggota*: ${membersList}\n`;
+      output += `👥 *Anggota*: ${team.members.join(', ')}\n`;
       output += `👹 *Boss:*\n`;
 
       for (let boss of knownBosses) {
-        const bossData = team.bossTimes[boss];
-        output += `• ${boss}: ${bossData ? bossData.timeStr : '-'}\n`;
+        const b = team.bossTimes[boss];
+        output += `• ${boss}: ${b ? b.timeStr : '-'}\n`;
       }
 
       output += `⏱️ *Total*: ${formattedTotal}\n\n`;
     });
 
     await conn.reply(m.chat, output.trim(), m);
-
   } catch (err) {
     console.error(err);
     throw "🚩 Terjadi kesalahan saat memproses ranking.";
