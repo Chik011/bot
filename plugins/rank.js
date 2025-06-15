@@ -43,7 +43,7 @@ let handler = async (m, { conn }) => {
         members: ['orpheuz', 'windsdy'],
         times: {
           rudish: '19',
-          mimyu: '21'
+          mimyu: '12'
         }
       },
       {
