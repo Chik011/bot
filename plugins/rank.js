@@ -4,7 +4,6 @@ let handler = async (m, { conn }) => {
   await conn.reply(m.chat, wait, m);
 
   try {
-    // Data input langsung di dalam kode
     const rawData = `
 tim king jawa = rend & Albany rudish 43 mimyu 40
 tim duo nubie = Savita & hanica mimyu 1:28 rudish 2:35
@@ -12,6 +11,8 @@ tim Godbeyonder = kimizui & grewup rudish 48 mimyu 59
     `.trim();
 
     const teams = rawData.split('\n');
+    const knownBosses = ['mimyu', 'rudish']; // urutan tetap
+
     let results = [];
 
     for (let line of teams) {
@@ -22,7 +23,7 @@ tim Godbeyonder = kimizui & grewup rudish 48 mimyu 59
       const tokens = membersRaw.trim().split(/\s+/);
 
       let memberNames = [];
-      let bossTimes = [];
+      let bossTimes = {};
       let totalSeconds = 0;
       let mode = 'members';
 
@@ -32,7 +33,7 @@ tim Godbeyonder = kimizui & grewup rudish 48 mimyu 59
         if (mode === 'members') {
           if (/^\d+(:\d+)?$/.test(token)) {
             mode = 'boss';
-            i--; // proses ulang di mode boss
+            i--;
             continue;
           }
 
@@ -58,31 +59,39 @@ tim Godbeyonder = kimizui & grewup rudish 48 mimyu 59
             seconds = parseInt(timeStr);
           }
 
-          bossTimes.push({ bossName, timeStr, seconds });
+          bossTimes[bossName] = {
+            timeStr,
+            seconds
+          };
+
           totalSeconds += seconds;
-          i++; // skip waktu (sudah diproses)
+          i++;
         }
       }
 
       results.push({ teamName, memberNames, bossTimes, totalSeconds });
     }
 
-    // Urutkan berdasarkan total waktu dari yang tercepat
     results.sort((a, b) => a.totalSeconds - b.totalSeconds);
 
-    // Format hasil
     let output = `🏁 *Ranking Semua Tim (Terkecil ke Terbesar)*\n\n`;
 
     results.forEach((team, i) => {
       const minutes = Math.floor(team.totalSeconds / 60);
       const seconds = team.totalSeconds % 60;
       const formattedTotal = minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`;
+
       const membersList = team.memberNames.join(', ');
-      const bossList = team.bossTimes.map(b => `• ${b.bossName}: ${b.timeStr}`).join('\n');
 
       output += `*${i + 1}. ${team.teamName}*\n`;
       output += `👥 *Anggota*: ${membersList}\n`;
-      output += `👹 *Boss:*\n${bossList}\n`;
+      output += `👹 *Boss:*\n`;
+
+      for (let boss of knownBosses) {
+        const bossData = team.bossTimes[boss];
+        output += `• ${boss}: ${bossData ? bossData.timeStr : '-'}\n`;
+      }
+
       output += `⏱️ *Total*: ${formattedTotal}\n\n`;
     });
 
