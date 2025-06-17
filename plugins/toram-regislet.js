@@ -33,7 +33,7 @@ let handler = async (m, { conn, args, command }) => {
 
     if (command === 'regis') {
       const keyword = args.join(' ').toLowerCase();
-      if (!keyword) throw '🔍 Contoh penggunaan: *.regis sunbath* atau *.regis basuhan mentari*';
+      if (!keyword) throw '🔍 Contoh penggunaan: *.regis sunbath* atau *.regis basuhan mentari* atau allregis untuk menampilkan semua';
 
       const result = regisData.find(r =>
         r.en.toLowerCase().includes(keyword) ||
