@@ -1156,7 +1156,7 @@ Drop:
     throw "🚩 Terjadi kesalahan"
   }
 };
-handler.command = handler.help = ['buff','lvlg','pembolong', 'lvlgbs', 'slottas', 'bahanmq', 'lvlgbuff', 'lvlgpet', 'farm', 'rank',];
+handler.command = handler.help = ['buff','lvlg','pembolong', 'lvlgbs', 'slottas', 'bahanmq', 'lvlgbuff', 'lvlgpet', 'farm', 'rank', 'regislet'];
 handler.tags = ['toram']
 handler.limit = false;
 handler.premium = false;
