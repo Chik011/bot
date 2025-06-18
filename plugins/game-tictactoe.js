@@ -22,23 +22,26 @@ const tictactoeHandler = async (m, { conn, command, text }) => {
   if (command === 'tictactoe') {
     if (tictactoe[chatId]) return conn.reply(chatId, '⚠️ Masih ada game yang berjalan!\nKetik *!nyerah* untuk menyerah.', m);
 
-    const mentionUser = m.mentionedJid?.[0];
-    if (!mentionUser) return conn.reply(chatId, '📌 Tag lawan main kamu!\nContoh: *!tictactoe @username*', m);
-
-    if (mentionUser === m.sender) return conn.reply(chatId, '🚫 Kamu tidak bisa bermain melawan diri sendiri.', m);
-
     const board = Array(9).fill('⬜');
     const turn = m.sender;
 
+    // Set playerX as the one who starts the game and playerO as the opponent
+    const playerX = m.sender;
+    const playerO = m.mentionedJid?.[0] || null; // Allow for a random opponent or self-play
+
+    if (!playerO) {
+      return conn.reply(chatId, '📌 Kamu tidak memiliki lawan. Ketik *!tictactoe* untuk bermain melawan diri sendiri.', m);
+    }
+
     tictactoe[chatId] = {
       board,
-      playerX: m.sender,
-      playerO: mentionUser,
+      playerX,
+      playerO,
       turn
     };
 
-    return conn.reply(chatId, `🎮 *TicTacToe Dimulai!*\n❌ = @${tictactoe[chatId].playerX.split('@')[0]}\n⭕ = @${tictactoe[chatId].playerO.split('@')[0]}\n\n${renderBoard(board)}\n\nGiliran: @${turn.split('@')[0]}\nKetik *angka 1-9* untuk memilih posisi.`, m, {
-      mentions: [tictactoe[chatId].playerX, tictactoe[chatId].playerO]
+    return conn.reply(chatId, `🎮 *TicTacToe Dimulai!*\n❌ = @${playerX.split('@')[0]}\n⭕ = @${playerO.split('@')[0]}\n\n${renderBoard(board)}\n\nGiliran: @${turn.split('@')[0]}\nKetik *angka 1-9* untuk memilih posisi.`, m, {
+      mentions: [playerX, playerO]
     });
   }
 

@@ -61,7 +61,7 @@ let handler = async (m, { conn, command, text }) => {
 2022222   STR Lv 10
 6011415   STR Lv 9`,
 
-cr: `🎯 CRITICAL RATE
+    cr: `🎯 CRITICAL RATE
 1037777   CR Lv 10
 6065000   CR Lv 10
 7162029   CR Lv 10
@@ -78,8 +78,7 @@ cr: `🎯 CRITICAL RATE
 6021230   CR Lv 10
 3180777   CR Lv 10`,
 
-
-watk: `⚔ WEAPON ATK
+    watk: `⚔ WEAPON ATK
 1011122   WATK Lv 10
 1010810   WATK Lv 10
 1067777   WATK Lv 10
@@ -95,18 +94,15 @@ watk: `⚔ WEAPON ATK
 3070028   WATK Lv 9
 7162029   WATK Lv 9`,
 
-
- dex: `🏹 DEX
+    dex: `🏹 DEX
 1010058   DEX Lv 10
 5010092   DEX Lv 10
 2020222   DEX Lv 10
 3111999   DEX Lv 10
 3220777   DEX Lv 10
-1010261   DEX Lv 10
-7010014   DEX Lv 9`,
+1010261   DEX Lv 9`,
 
-
- int: `🧪 INT
+    int: `🧪 INT
 2020707   INT Lv 10
 6010701   INT Lv 10
 1032222   INT Lv 10
@@ -116,8 +112,7 @@ watk: `⚔ WEAPON ATK
 7130001   INT Lv 10
 1014230   INT Lv 10`,
 
-
- agi: `🏃 AGI
+    agi: `🏃 AGI
 7162029   AGI Lv 10
 1110033   AGI Lv 10
 1220777   AGI Lv 10
@@ -126,20 +121,17 @@ watk: `⚔ WEAPON ATK
 4010228   AGI Lv 9
 1010498   AGI Lv 8`,
 
-
-  vit: `🛡 VIT
+    vit: `🛡 VIT
 5130123   VIT Lv 10`,
 
-
- acc: `🎯 ACCURACY
+    acc: `🎯 ACCURACY
 4261111   ACC Lv 10
 2010308   ACC Lv 10
 1010013   ACC Lv 9
 7010077   ACC Lv 9
 3188000   ACC Lv 8`,
 
-
-mrest: `🧙‍♂ MAGICAL RESIST
+    mrest: `🧙‍♂ MAGICAL RESIST
 1111575   MRest Lv 10
 2020505   MRest Lv 10
 5200052   MRest Lv 10
@@ -147,8 +139,7 @@ mrest: `🧙‍♂ MAGICAL RESIST
 7010016   MRest Lv 10
 4080087   MRest Lv 9`,
 
-
-prest: `🛡 PHYSICAL RESIST
+    prest: `🛡 PHYSICAL RESIST
 6010701   Prest Lv 10
 1100000   Prest Lv 10
 1020001   PRest Lv 10
@@ -159,8 +150,7 @@ prest: `🛡 PHYSICAL RESIST
 2200117   PRest Lv 10
 6011415   PRest Lv 9`,
 
-
-fracBarrier: `🛡 FRACTIONAL BARRIER
+    fracBarrier: `🛡 FRACTIONAL BARRIER
 4010024   Frac Barrier Lv 10
 53010043  Frac Barrier Lv 10
 6150029   Frac Barrier Lv 10
@@ -169,15 +159,13 @@ fracBarrier: `🛡 FRACTIONAL BARRIER
 6181999   Frac Barrier Lv 8
 6010062   Frac Barrier Lv 8`,
 
-
- mbarrier: `🛡 Pelindung Sihir
+    mbarrier: `🛡 Pelindung Sihir
 2020505   Mbarrier Lv 9`,
 
-  pbarrier: `🛡 Pelindung Fisik
+    pbarrier: `🛡 Pelindung Fisik
 2020111   PBarrier Lv 10`,
 
-
-aggroPlus: `📈 +AGGRO%
+    aggroPlus: `📈 +AGGRO%
 2010136   +Aggro Lv 10
 53010043  +Aggro Lv 10
 7171717   +Aggro Lv 10
@@ -187,7 +175,7 @@ aggroPlus: `📈 +AGGRO%
 3158668   +Aggro Lv 10
 6262000   +Aggro Lv 9`,
 
-  aggroMinus: `📉 -AGGRO%
+    aggroMinus: `📉 -AGGRO%
 1010261   -Aggro Lv 10
 1010002   -Aggro Lv 10
 1010147   -Aggro Lv 10
@@ -196,7 +184,7 @@ aggroPlus: `📈 +AGGRO%
 3061206   -Aggro Lv 8
 3134610   -Aggro Lv 9`,
 
-  dteEarth: `🌍 DTE EARTH
+    dteEarth: `🌍 DTE EARTH
 2020202   DTE Earth Lv 10
 3210103   DTE Earth Lv 10
 1011001   DTE Earth Lv 9
@@ -205,8 +193,7 @@ aggroPlus: `📈 +AGGRO%
 1010002   DTE Earth Lv 8
 5236969   DTE Earth Lv 8`,
 
-
-dteWind: `💨 DTE WIND
+    dteWind: `💨 DTE WIND
 3030303   DTE Wind Lv 10
 3210101   DTE Wind Lv 9
 3062111   DTE Wind Lv 8
@@ -214,7 +201,7 @@ dteWind: `💨 DTE WIND
 4099876   DTE Wind Lv 7   
 1010055   DTE Wind Lv 7`,
 
-  dteWater: `💧 DTE WATER
+    dteWater: `💧 DTE WATER
 1110111   DTE Water Lv 10
 7150030   DTE Water Lv 10
 3210100   DTE Water Lv 10
@@ -222,7 +209,7 @@ dteWind: `💨 DTE WIND
 3010018   DTE Water Lv 8
 3062111   DTE Water Lv 8`,
 
-  dteFire: `🔥 DTE FIRE
+    dteFire: `🔥 DTE FIRE
 3210106   DTE Fire Lv 10
 1121212   DTE Fire Lv 9
 7088807   DTE Fire Lv 9
@@ -230,13 +217,13 @@ dteWind: `💨 DTE WIND
 7011001   DTE Fire Lv 8
 2010091   DTE Fire Lv 6`,
 
-dteLight: `💡 DTE LIGHT
+    dteLight: `💡 DTE LIGHT
 3210105   DTE Light Lv 10
 1020345   DTE Light Lv 9
 4046666   DTE Light Lv 8
 4016699   DTE Light Lv 8`,
 
-  dteDark: `🌑 DTE DARK
+    dteDark: `🌑 DTE DARK
 5010092   DTE Dark Lv 10
 1190020   DTE Dark Lv 10
 6116116   DTE Dark Lv 10
@@ -250,7 +237,7 @@ dteLight: `💡 DTE LIGHT
 1091111   DTE Dark Lv 7
 3030069   DTE Dark Lv 7`,
 
-  dteNeutral: `⚪ DTE NEUTRAL
+    dteNeutral: `⚪ DTE NEUTRAL
 1018530   DTE Neutral Lv 9
 1199999   DTE Neutral Lv 9
 1019696   DTE Neutral Lv 8
@@ -258,24 +245,9 @@ dteLight: `💡 DTE LIGHT
 1011902   DTE Neutral Lv 7
 6061294   DTE Neutral Lv 7`,
 
-
-dteWater: `💧 DTE WATER
-6150029   DTE Water Lv 10`,
-
-  dteDark: `🌑 DTE DARK
-2020707 LV 9
-1020001 LV 6`,
-
-  dteEarth: `🌍 DTE EARTH
-2020606   DTE Earth Lv 9
-2020404   DTE Earth Lv 9
-6150029   DTE Earth Lv 9`,
-
-  dropRate: `📦 DROP RATE
+    dropRate: `📦 DROP RATE
 4196969   Drop Rate Lv 6
-1010084   Drop Rate Lv 6`
-
-    // ... tambahkan kategori buff lainnya jika perlu
+1010084   Drop Rate Lv 6`
   };
 
   if (command === 'allbuff') {
