@@ -295,8 +295,8 @@ Contoh: *.${command} str*`, m);
   await conn.reply(m.chat, buffData[text.toLowerCase()], m);
 };
 
-handler.command = ['torambuff', 'allbuff'];
+handler.command = ['buff', 'allbuff'];
 handler.tags = ['toram'];
-handler.help = ['torambuff [jenis]', 'allbuff'];
+handler.help = ['buff [jenis]', 'allbuff'];
 
 module.exports = handler;
