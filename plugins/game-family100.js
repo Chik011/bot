@@ -44,6 +44,119 @@ let family100Handler = async (m, { conn, command }) => {
           { jawab: 'gurita', poin: 10 },
           { jawab: 'kerang', poin: 5 }
         ]
+      },
+      {
+        soal: "Sebutkan makanan yang dimakan saat sarapan!",
+        jawaban: [
+          { jawab: 'nasi goreng', poin: 30 },
+          { jawab: 'roti', poin: 20 },
+          { jawab: 'telur', poin: 15 },
+          { jawab: 'sereal', poin: 10 },
+          { jawab: 'bubur', poin: 10 },
+          { jawab: 'mie instan', poin: 10 },
+          { jawab: 'kopi', poin: 5 }
+        ]
+      },
+      {
+        soal: "Sebutkan hewan yang bisa terbang!",
+        jawaban: [
+          { jawab: 'burung', poin: 30 },
+          { jawab: 'kelelawar', poin: 20 },
+          { jawab: 'nyamuk', poin: 15 },
+          { jawab: 'lalat', poin: 10 },
+          { jawab: 'lebah', poin: 10 },
+          { jawab: 'kupu-kupu', poin: 10 },
+          { jawab: 'capung', poin: 5 }
+        ]
+      },
+      {
+        soal: "Sebutkan warna pelangi!",
+        jawaban: [
+          { jawab: 'merah', poin: 15 },
+          { jawab: 'jingga', poin: 15 },
+          { jawab: 'kuning', poin: 15 },
+          { jawab: 'hijau', poin: 15 },
+          { jawab: 'biru', poin: 15 },
+          { jawab: 'nila', poin: 15 },
+          { jawab: 'ungu', poin: 10 }
+        ]
+      },
+      {
+        soal: "Sebutkan jenis olahraga yang populer!",
+        jawaban: [
+          { jawab: 'sepak bola', poin: 30 },
+          { jawab: 'basket', poin: 25 },
+          { jawab: 'badminton', poin: 20 },
+          { jawab: 'renang', poin: 10 },
+          { jawab: 'lari', poin: 10 },
+          { jawab: 'voli', poin: 5 }
+        ]
+      },
+      {
+        soal: "Sebutkan sesuatu yang berwarna putih!",
+        jawaban: [
+          { jawab: 'susu', poin: 30 },
+          { jawab: 'salju', poin: 25 },
+          { jawab: 'beras', poin: 20 },
+          { jawab: 'kapas', poin: 10 },
+          { jawab: 'kertas', poin: 10 },
+          { jawab: 'gigi', poin: 5 }
+        ]
+      },
+      {
+        soal: "Sebutkan alat yang digunakan untuk menulis!",
+        jawaban: [
+          { jawab: 'pena', poin: 30 },
+          { jawab: 'pensil', poin: 25 },
+          { jawab: 'spidol', poin: 20 },
+          { jawab: 'kuas', poin: 10 },
+          { jawab: 'krayon', poin: 10 },
+          { jawab: 'kapur', poin: 5 }
+        ]
+      },
+      {
+        soal: "Sebutkan sesuatu yang bisa ditemukan di kamar mandi!",
+        jawaban: [
+          { jawab: 'sabun', poin: 30 },
+          { jawab: 'sampo', poin: 25 },
+          { jawab: 'sikat gigi', poin: 20 },
+          { jawab: 'pasta gigi', poin: 10 },
+          { jawab: 'shower', poin: 10 },
+          { jawab: 'handuk', poin: 5 }
+        ]
+      },
+      {
+        soal: "Sebutkan alat transportasi di darat!",
+        jawaban: [
+          { jawab: 'mobil', poin: 30 },
+          { jawab: 'motor', poin: 25 },
+          { jawab: 'bus', poin: 20 },
+          { jawab: 'kereta', poin: 10 },
+          { jawab: 'sepeda', poin: 10 },
+          { jawab: 'truk', poin: 5 }
+        ]
+      },
+      {
+        soal: "Sebutkan buah yang berwarna merah!",
+        jawaban: [
+          { jawab: 'apel', poin: 30 },
+          { jawab: 'semangka', poin: 25 },
+          { jawab: 'stroberi', poin: 20 },
+          { jawab: 'ceri', poin: 10 },
+          { jawab: 'jambu', poin: 10 },
+          { jawab: 'delima', poin: 5 }
+        ]
+      },
+      {
+        soal: "Sebutkan benda yang sering ada di meja kerja!",
+        jawaban: [
+          { jawab: 'laptop', poin: 30 },
+          { jawab: 'pulpen', poin: 25 },
+          { jawab: 'kertas', poin: 20 },
+          { jawab: 'notebook', poin: 10 },
+          { jawab: 'mouse', poin: 10 },
+          { jawab: 'stapler', poin: 5 }
+        ]
       }
     ];
 
