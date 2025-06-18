@@ -24,7 +24,11 @@ function findRange(level) {
   return null;
 }
 
+const wait = 'Tunggu sebentar...';
+
 let handler = async (m, { conn, text, command }) => {
+  await conn.reply(m.chat, wait, m);
+
   if (!text) {
     let list = Object.keys(levelData).map(k => `• *Level ${k}*`).join('\n');
     return conn.reply(m.chat, `📋 *Level yang tersedia:*
@@ -41,8 +45,10 @@ Contoh: *.${command} 1*`, m);
 
   const range = findRange(levelNum);
   if (!range) {
+    let list = Object.keys(levelData).map(k => `• *Level ${k}*`).join('\n');
     return conn.reply(m.chat, `❌ Level ${levelNum} tidak ditemukan.
-Silakan pilih level dari daftar berikut:`, m);
+Silakan pilih level dari daftar berikut:
+${list}`, m);
   }
 
   const { mob, boss, location } = levelData[range];
@@ -59,12 +65,16 @@ Silakan pilih level dari daftar berikut:`, m);
   await conn.reply(m.chat, response, m);
 };
 
-handler.command = ['lvlg'];
-
-module.exports = handler;
+handler.command = ['lvlg']; // Set command to lvlg
+handler.help = ['lvlg']; // Help command
+handler.tags = ['toram']; // Tag for categorization
+handler.limit = false; // No limit
+handler.premium = false; // Not premium
 
 // Handler for all levels
 let handlerAll = async (m, { conn }) => {
+  await conn.reply(m.chat, wait, m);
+
   const keys = Object.keys(levelData);
   for (let key of keys) {
     const { mob, boss, location } = levelData[key];
@@ -74,12 +84,14 @@ let handlerAll = async (m, { conn }) => {
     else response += `Mob: ${mob}\n`;
     
     response += `Lokasi: ${location}\n\n`;
-    
     await conn.reply(m.chat, response, m);
   }
 };
 
-handlerAll.command = ['alllvlg'];
+handlerAll.command = ['alllvlg']; // Command for all levels
+handlerAll.help = ['alllvlg']; // Help command for all levels
+handlerAll.tags = ['toram']; // Tag for categorization
+handlerAll.limit = false; // No limit
+handlerAll.premium = false; // Not premium
 
-module.exports = [handler, handlerAll];
-
+module.exports = [handler, handlerAll]; // Export both handlers
