@@ -1,109 +1,108 @@
 let tictactoe = {};
 
-const tictactoeHandler = async (m, { conn, command, text, mentionedJid }) => {
+const tictactoeHandler = async (m, { conn, command, text, sender }) => {
     const chatId = m.chat;
-    const sender = m.sender; // Pemain yang mengirim command
-
-    // --- Command: .nyerah ---
-    if (command === 'nyerah') {
-        if (!tictactoe[chatId]) {
-            return conn.reply(chatId, '🚫 Tidak ada sesi TicTacToe yang aktif di grup ini.', m);
-        }
-
-        const game = tictactoe[chatId];
-        const loser = sender;
-        
-        // Pastikan yang menyerah adalah salah satu pemain yang terlibat dalam game
-        if (loser !== game.playerX && loser !== game.playerO) {
-            return conn.reply(chatId, '❌ Kamu bukan bagian dari game ini, jadi tidak bisa menyerah.', m);
-        }
-
-        const winner = game.playerX === loser ? game.playerO : game.playerX;
-
-        conn.reply(chatId, `🏳️ *${conn.getName(loser)} menyerah!*\n🏆 *${conn.getName(winner)} menang!*`, m, {
-            mentions: [loser, winner]
-        });
-        delete tictactoe[chatId]; // Hapus sesi game
-        return;
-    }
 
     // --- Command: .ttt ---
     if (command === 'ttt') {
         if (tictactoe[chatId]) {
-            return conn.reply(chatId, '⚠️ Masih ada game yang berjalan di grup ini!\nKetik *!nyerah* untuk menyerah jika ingin memulai yang baru.', m);
-        }
-
-        const board = Array(9).fill('⬜');
-        let playerX = sender;
-        let playerO = null;
-
-        // Cek apakah ada mention lawan
-        if (mentionedJid && mentionedJid[0]) {
-            playerO = mentionedJid[0];
-            if (playerO === playerX) {
-                return conn.reply(chatId, '😅 Tidak bisa bermain melawan diri sendiri. Mention temanmu untuk bermain.', m);
-            }
-        } else {
-            // Jika tidak ada mention, minta pengguna untuk mention lawan
-            return conn.reply(chatId, '👥 Kamu perlu mention lawan untuk bermain TicTacToe!\nContoh: *.ttt @tagteman*', m);
+            return conn.reply(chatId, '⚠️ Game sudah dibuat. Ketik *.join* untuk bergabung.', m);
         }
 
         tictactoe[chatId] = {
-            board,
-            playerX,
-            playerO,
-            turn: playerX // Player X selalu memulai game
+            board: Array(9).fill('⬜'),
+            playerX: sender,
+            playerO: null,
+            turn: null, // Game belum mulai
+            status: 'waiting'
         };
 
-        return conn.reply(chatId, `🎮 *TicTacToe Dimulai!*\n❌ = @${playerX.split('@')[0]}\n⭕ = @${playerO.split('@')[0]}\n\n${renderBoard(board)}\n\nGiliran: @${tictactoe[chatId].turn.split('@')[0]}\nKetik *angka 1-9* untuk memilih posisi.`, m, {
-            mentions: [playerX, playerO, tictactoe[chatId].turn]
+        const nameX = await conn.getName(sender);
+        return conn.reply(chatId, `🎮 *TicTacToe Dimulai!*\n👤 Pemain pertama (❌): @${sender.split('@')[0]}\n\nMenunggu pemain kedua... Ketik *.join* untuk bergabung.`, m, {
+            mentions: [sender]
         });
     }
 
-    // --- Menangani Giliran Pemain ---
-    // Hanya memproses jika ada game aktif dan pesan adalah angka 1-9
+    // --- Command: .join ---
+    if (command === 'join') {
+        const game = tictactoe[chatId];
+        if (!game || game.status !== 'waiting') {
+            return conn.reply(chatId, '🚫 Tidak ada game yang menunggu pemain di grup ini.', m);
+        }
+
+        if (sender === game.playerX) {
+            return conn.reply(chatId, '😅 Kamu tidak bisa bermain melawan dirimu sendiri.', m);
+        }
+
+        game.playerO = sender;
+        game.turn = game.playerX; // Pemain X mulai
+        game.status = 'active';
+
+        const nameX = await conn.getName(game.playerX);
+        const nameO = await conn.getName(game.playerO);
+
+        return conn.reply(chatId,
+            `✅ Pemain kedua (⭕) bergabung: @${sender.split('@')[0]}\n\n🎮 *Game Dimulai!*\n❌ = @${game.playerX.split('@')[0]}\n⭕ = @${game.playerO.split('@')[0]}\n\n${renderBoard(game.board)}\n\nGiliran: @${game.turn.split('@')[0]}\nKetik angka 1–9 untuk memilih posisi.`,
+            m,
+            { mentions: [game.playerX, game.playerO, game.turn] });
+    }
+
+    // --- Command: .nyerah ---
+    if (command === 'nyerah') {
+        const game = tictactoe[chatId];
+        if (!game) return conn.reply(chatId, '🚫 Tidak ada sesi TicTacToe yang aktif.', m);
+
+        if (sender !== game.playerX && sender !== game.playerO) {
+            return conn.reply(chatId, '❌ Kamu bukan bagian dari game ini.', m);
+        }
+
+        const winner = sender === game.playerX ? game.playerO : game.playerX;
+        const loserName = await conn.getName(sender);
+        const winnerName = await conn.getName(winner);
+
+        conn.reply(chatId, `🏳️ *${loserName} menyerah!*\n🏆 *${winnerName} menang!*`, m, { mentions: [sender, winner] });
+        delete tictactoe[chatId];
+        return;
+    }
+
+    // --- Proses Angka 1-9 ---
     if (tictactoe[chatId] && /^[1-9]$/.test(text)) {
         const game = tictactoe[chatId];
 
-        // Pastikan yang bermain adalah salah satu dari playerX atau playerO
-        if (sender !== game.playerX && sender !== game.playerO) {
+        if (game.status !== 'active') {
+            return conn.reply(chatId, '⏳ Game belum dimulai. Tunggu pemain kedua join dengan *.join*', m);
+        }
+
+        if (![game.playerX, game.playerO].includes(sender)) {
             return conn.reply(chatId, '🚫 Kamu bukan pemain dalam game ini.', m);
         }
 
-        // Pastikan ini giliran pemain yang benar
         if (sender !== game.turn) {
-            return conn.reply(chatId, `⏳ Bukan giliranmu! Giliran @${game.turn.split('@')[0]}`, m, {
+            return conn.reply(chatId, `⏳ Bukan giliranmu! Giliran: @${game.turn.split('@')[0]}`, m, {
                 mentions: [game.turn]
             });
         }
 
-        const pos = parseInt(text) - 1; // Konversi input ke indeks array (0-8)
-
-        // Cek apakah posisi valid dan belum terisi
-        if (pos < 0 || pos >= 9 || game.board[pos] !== '⬜') {
-            return conn.reply(chatId, `❌ Posisi ${text} tidak valid atau sudah terisi! Pilih angka 1-9 pada kotak kosong.`, m);
+        const pos = parseInt(text) - 1;
+        if (game.board[pos] !== '⬜') {
+            return conn.reply(chatId, `❌ Posisi ${text} sudah diisi. Pilih yang lain.`, m);
         }
 
-        // Tentukan simbol pemain (X atau O)
-        game.board[pos] = (sender === game.playerX) ? '❌' : '⭕';
+        game.board[pos] = sender === game.playerX ? '❌' : '⭕';
 
         const winnerSymbol = checkWinner(game.board);
-
         if (winnerSymbol) {
-            // Ada pemenang
-            const winnerId = (winnerSymbol === '❌') ? game.playerX : game.playerO;
-            const winnerName = conn.getName(winnerId);
+            const winnerId = winnerSymbol === '❌' ? game.playerX : game.playerO;
+            const winnerName = await conn.getName(winnerId);
             conn.reply(chatId, `🎉 *${winnerName} menang!* 🎉\n\n${renderBoard(game.board)}`, m, {
                 mentions: [winnerId]
             });
-            delete tictactoe[chatId]; // Hapus sesi game
+            delete tictactoe[chatId];
         } else if (game.board.every(cell => cell !== '⬜')) {
-            // Seri (semua kotak terisi dan tidak ada pemenang)
-            conn.reply(chatId, `🤝 *Seri! Tidak ada yang menang.*\n\n${renderBoard(game.board)}`, m);
-            delete tictactoe[chatId]; // Hapus sesi game
+            conn.reply(chatId, `🤝 *Seri!* Tidak ada yang menang.\n\n${renderBoard(game.board)}`, m);
+            delete tictactoe[chatId];
         } else {
-            // Lanjut ke giliran berikutnya
-            game.turn = (sender === game.playerX) ? game.playerO : game.playerX;
+            game.turn = sender === game.playerX ? game.playerO : game.playerX;
             conn.reply(chatId, `✅ Posisi ${text} dipilih!\n\n${renderBoard(game.board)}\n\nGiliran: @${game.turn.split('@')[0]}`, m, {
                 mentions: [game.turn]
             });
@@ -111,36 +110,34 @@ const tictactoeHandler = async (m, { conn, command, text, mentionedJid }) => {
     }
 };
 
-// Fungsi untuk merender papan TicTacToe
+// Fungsi render papan
 function renderBoard(board) {
-    let rendered = '';
+    let b = '';
     for (let i = 0; i < 9; i++) {
-        rendered += board[i];
-        if ((i + 1) % 3 === 0 && i !== 8) { // Tambahkan newline setelah setiap 3 sel, kecuali di akhir
-            rendered += '\n';
-        }
+        b += board[i];
+        if ((i + 1) % 3 === 0 && i !== 8) b += '\n';
     }
-    return rendered;
+    return b;
 }
 
-// Fungsi untuk mengecek pemenang
+// Cek pemenang
 function checkWinner(board) {
-    const lines = [
-        [0, 1, 2], [3, 4, 5], [6, 7, 8], // Baris
-        [0, 3, 6], [1, 4, 7], [2, 5, 8], // Kolom
-        [0, 4, 8], [2, 4, 6]             // Diagonal
+    const wins = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+        [0, 4, 8], [2, 4, 6]
     ];
-    for (const [a, b, c] of lines) {
+    for (const [a, b, c] of wins) {
         if (board[a] !== '⬜' && board[a] === board[b] && board[b] === board[c]) {
-            return board[a]; // Mengembalikan simbol pemenang ('❌' atau '⭕')
+            return board[a];
         }
     }
-    return null; // Tidak ada pemenang
+    return null;
 }
 
-// Export handler
-tictactoeHandler.command = ['ttt', 'nyerah'];
-tictactoeHandler.help = ['ttt @user', 'nyerah'];
+// Ekspor handler
+tictactoeHandler.command = ['ttt', 'join', 'nyerah'];
+tictactoeHandler.help = ['ttt', 'join', 'nyerah'];
 tictactoeHandler.tags = ['game'];
 tictactoeHandler.limit = false;
 tictactoeHandler.premium = false;
