@@ -1,4 +1,4 @@
-const wait = 'Tunggu sebentar...';
+Const wait = 'Tunggu sebentar...'; // Make sure 'Const' is 'const'
 
 let tebakKata = {}; // Objek untuk menyimpan sesi game Tebak Kata
 
@@ -31,6 +31,12 @@ const MAX_GUESSES = 7; // Jumlah tebakan salah maksimal
 const tebakKataHandler = async (m, { conn, command, text }) => {
     const chatId = m.chat;
     const sender = m.sender;
+
+    // Safety check for sender, similar to tictactoe
+    if (typeof sender !== 'string' || !sender) {
+        console.error('Sender is not a valid string:', sender);
+        return conn.reply(chatId, 'Terjadi kesalahan: Informasi pengirim tidak valid.', m);
+    }
 
     // --- Command: .nyerahkata ---
     if (command === 'nyerahkata') {
@@ -78,19 +84,24 @@ const tebakKataHandler = async (m, { conn, command, text }) => {
     }
 
     // --- Menangani Tebakan (huruf atau kata) ---
-    if (tebakKata[chatId] && (text.length === 1 && /[A-Za-z]/.test(text)) || text.toLowerCase().startsWith('.tebak ')) {
+    // Check if there's an active game AND the message is a valid guess (single letter or .tebak command)
+    if (tebakKata[chatId] && ( (text && text.length === 1 && /[A-Za-z]/.test(text)) || (text && text.toLowerCase().startsWith('.tebak ')) )) {
         const game = tebakKata[chatId];
 
-        // Pastikan pemain yang menebak adalah yang memulai atau join
+        // Ensure the player is registered in the game's players array
         if (!game.players.includes(sender)) {
-            game.players.push(sender); // Otomatis join jika menebak
+            game.players.push(sender); // Automatically join if they make a guess
         }
 
         const guess = text.toUpperCase();
 
         if (guess.startsWith('.TEBAK ')) {
             // Tebak seluruh kata
-            const fullWordGuess = guess.substring('.TEBAK '.length).toUpperCase();
+            const fullWordGuess = guess.substring('.TEBAK '.length).trim().toUpperCase(); // Trim to remove extra spaces
+            if (!fullWordGuess) { // Handle empty guess after command
+                return conn.reply(chatId, '🤔 Masukkan kata yang ingin ditebak setelah *.tebak*.', m);
+            }
+
             if (fullWordGuess === game.secretWord) {
                 conn.reply(chatId, `🎉 *Selamat! @${sender.split('@')[0]} berhasil menebak kata: ${game.secretWord}!* 🎉`, m, { mentions: [sender] });
                 delete tebakKata[chatId];
@@ -100,16 +111,22 @@ const tebakKataHandler = async (m, { conn, command, text }) => {
                     conn.reply(chatId, `😞 *Maaf, tebakan kata salah dan kesempatan habis!* Kata rahasianya adalah: *${game.secretWord}*\n\nGame berakhir.`, m);
                     delete tebakKata[chatId];
                 } else {
-                    conn.reply(chatId, `❌ Tebakan kata salah! Sisa tebakan salah: *${MAX_GUESSES - game.wrongGuesses}*`, m);
+                    conn.reply(chatId, `❌ Tebakan kata salah! Sisa tebakan salah: *${MAX_GUESSES - game.wrongGuesses}*\n\n${renderGuessedWord(game.guessedLetters)}\n\nPetunjuk: *${game.hint}*`, m);
                 }
             }
         } else {
             // Tebak satu huruf
             const letter = guess[0];
 
-            if (game.guessedLetters.includes(letter)) {
-                return conn.reply(chatId, `⚠️ Huruf '${letter}' sudah pernah ditebak atau sudah terbuka. Coba huruf lain!`, m);
+            // Check if the letter has already been guessed correctly or incorrectly
+            if (game.guessedLetters.includes(letter) || game.secretWord.indexOf(letter) === -1 && game.wrongGuesses > 0) { // Check if wrong guess already counted
+                 if (game.guessedLetters.includes(letter)) {
+                     return conn.reply(chatId, `⚠️ Huruf '${letter}' sudah pernah ditebak atau sudah terbuka. Coba huruf lain!`, m);
+                 }
+                 // This part means the letter was a wrong guess before, no need to count again
+                 return conn.reply(chatId, `⚠️ Huruf '${letter}' sudah pernah ditebak salah. Coba huruf lain!`, m);
             }
+
 
             let found = false;
             for (let i = 0; i < game.secretWord.length; i++) {
@@ -121,7 +138,7 @@ const tebakKataHandler = async (m, { conn, command, text }) => {
 
             if (found) {
                 const board = renderGuessedWord(game.guessedLetters);
-                if (!game.guessedLetters.includes('_')) {
+                if (!game.guessedLetters.includes('_')) { // Check if all letters are revealed
                     conn.reply(chatId, `🎉 *Selamat! @${sender.split('@')[0]} berhasil menebak kata: ${game.secretWord}!* 🎉\n\n${board}`, m, { mentions: [sender] });
                     delete tebakKata[chatId];
                 } else {
