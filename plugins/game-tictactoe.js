@@ -1,9 +1,9 @@
 let tictactoe = {};
 
-const tictactoeHandler = async (m, { conn, command, text, sender }) => {
+const tictactoeHandler = async (m, { conn, command, text }) => {
     const chatId = m.chat;
+    const sender = m.sender;
 
-    // Ensure sender is a string before proceeding
     if (typeof sender !== 'string' || !sender) {
         console.error('Sender is not a valid string:', sender);
         return conn.reply(chatId, 'Terjadi kesalahan: Informasi pengirim tidak valid.', m);
@@ -19,14 +19,13 @@ const tictactoeHandler = async (m, { conn, command, text, sender }) => {
             board: Array(9).fill('⬜'),
             playerX: sender,
             playerO: null,
-            turn: null, // Game belum mulai
+            turn: null,
             status: 'waiting'
         };
 
-        // Safely get the name, assuming conn.getName is robust
-        const nameX = await conn.getName(sender);
-        
-        // Use sender.split('@')[0] only if sender is confirmed to be a string
+        let nameX = sender.split('@')[0];
+        try { nameX = await conn.getName(sender); } catch (e) {}
+
         return conn.reply(chatId, `🎮 *TicTacToe Dimulai!*\n👤 Pemain pertama (❌): @${sender.split('@')[0]}\n\nMenunggu pemain kedua... Ketik *.join* untuk bergabung.`, m, {
             mentions: [sender]
         });
@@ -44,11 +43,15 @@ const tictactoeHandler = async (m, { conn, command, text, sender }) => {
         }
 
         game.playerO = sender;
-        game.turn = game.playerX; // Pemain X mulai
+        game.turn = game.playerX;
         game.status = 'active';
 
-        const nameX = await conn.getName(game.playerX);
-        const nameO = await conn.getName(game.playerO);
+        let nameX = game.playerX.split('@')[0];
+        let nameO = game.playerO.split('@')[0];
+        try {
+            nameX = await conn.getName(game.playerX);
+            nameO = await conn.getName(game.playerO);
+        } catch (e) {}
 
         return conn.reply(chatId,
             `✅ Pemain kedua (⭕) bergabung: @${sender.split('@')[0]}\n\n🎮 *Game Dimulai!*\n❌ = @${game.playerX.split('@')[0]}\n⭕ = @${game.playerO.split('@')[0]}\n\n${renderBoard(game.board)}\n\nGiliran: @${game.turn.split('@')[0]}\nKetik angka 1–9 untuk memilih posisi.`,
@@ -66,15 +69,19 @@ const tictactoeHandler = async (m, { conn, command, text, sender }) => {
         }
 
         const winner = sender === game.playerX ? game.playerO : game.playerX;
-        const loserName = await conn.getName(sender);
-        const winnerName = await conn.getName(winner);
+        let loserName = sender.split('@')[0];
+        let winnerName = winner?.split('@')[0];
+        try {
+            loserName = await conn.getName(sender);
+            winnerName = await conn.getName(winner);
+        } catch (e) {}
 
         conn.reply(chatId, `🏳️ *${loserName} menyerah!*\n🏆 *${winnerName} menang!*`, m, { mentions: [sender, winner] });
         delete tictactoe[chatId];
         return;
     }
 
-    // --- Proses Angka 1-9 ---
+    // --- Input Angka 1-9 ---
     if (tictactoe[chatId] && /^[1-9]$/.test(text)) {
         const game = tictactoe[chatId];
 
@@ -102,7 +109,9 @@ const tictactoeHandler = async (m, { conn, command, text, sender }) => {
         const winnerSymbol = checkWinner(game.board);
         if (winnerSymbol) {
             const winnerId = winnerSymbol === '❌' ? game.playerX : game.playerO;
-            const winnerName = await conn.getName(winnerId);
+            let winnerName = winnerId.split('@')[0];
+            try { winnerName = await conn.getName(winnerId); } catch (e) {}
+
             conn.reply(chatId, `🎉 *${winnerName} menang!* 🎉\n\n${renderBoard(game.board)}`, m, {
                 mentions: [winnerId]
             });
@@ -119,7 +128,7 @@ const tictactoeHandler = async (m, { conn, command, text, sender }) => {
     }
 };
 
-// Fungsi render papan
+// Render papan
 function renderBoard(board) {
     let b = '';
     for (let i = 0; i < 9; i++) {
