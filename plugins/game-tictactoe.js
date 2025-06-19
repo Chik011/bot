@@ -19,7 +19,7 @@ const tictactoeHandler = async (m, { conn, command, text }) => {
   }
 
   // Mulai game baru
-  if (command === 'tictactoe') {
+  if (command === 'ttt') {
     if (tictactoe[chatId]) return conn.reply(chatId, '⚠️ Masih ada game yang berjalan!\nKetik *!nyerah* untuk menyerah.', m);
 
     const board = Array(9).fill('⬜');
@@ -30,7 +30,7 @@ const tictactoeHandler = async (m, { conn, command, text }) => {
     const playerO = m.mentionedJid?.[0] || null; // Allow for a random opponent or self-play
 
     if (!playerO) {
-      return conn.reply(chatId, '📌 Kamu tidak memiliki lawan. Ketik *!tictactoe* untuk bermain melawan diri sendiri.', m);
+      return conn.reply(chatId, '📌 Kamu tidak memiliki lawan. Ketik *.ttt* untuk bermain melawan diri sendiri.', m);
     }
 
     tictactoe[chatId] = {
@@ -94,8 +94,8 @@ function checkWinner(board) {
   return null;
 }
 
-tictactoeHandler.command = ['tictactoe', 'nyerah'];
-tictactoeHandler.help = ['tictactoe @user', 'nyerah'];
+tictactoeHandler.command = ['ttt', 'nyerah'];
+tictactoeHandler.help = ['ttt @user', 'nyerah'];
 tictactoeHandler.tags = ['game'];
 tictactoeHandler.limit = false;
 tictactoeHandler.premium = false;

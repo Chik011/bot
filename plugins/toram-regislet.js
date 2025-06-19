@@ -12,23 +12,101 @@ let handler = async (m, { conn, args, command }) => {
         level: [10, 20, 30]
       },
       {
-        id: '-',
-        name: '-',
-        en: '-',
-        level: [5, 15, 25]
+        id: 'Physical Attack Boost',
+        name: 'Serangan Fisik',
+        en: 'Physical Attack Boost',
+        level: [10, 30, 50, 70, 90, 110, 130, 150, 170, 190, 210]
       },
       {
-        id: '-',
-        name: '-',
-        en: '-',
-        level: [20, 30, 40]
+        id: 'magic attack',
+        name: 'serangan sihir',
+        en: 'magic attack boost',
+        level: [10, 30, 50, 70, 90, 110, 130, 150, 170, 190, 210]
       },
       {
-        id: '-',
-        name: '-',
-        en: '-',
-        level: [10, 50]
-      }
+        id: 'max hp',
+        name: 'Max HP',
+        en: 'max hp',
+        level: [10, 30, 50, 70, 90, 110, 130, 150, 170, 190, 210]
+      },
+      {
+        id: 'max mp',
+        name: 'max mp',
+        en: 'max mp',
+        level: [10, 30, 50, 70, 90, 110, 130, 150, 170, 190, 210]
+      },
+      {
+        id: 'physical defense',
+        name: 'Pertahanan Fisik',
+        en: 'Physical Defense',
+        level: [10, 30, 50, 70, 90, 110, 130, 150, 170, 190, 210]
+      },
+      {
+        id: 'magic defense',
+        name: 'Pertahanan Sihir',
+        en: 'magic defense',
+        level: [10, 30, 50, 70, 90, 110, 130, 150, 170, 190, 210]
+      },
+      {
+        id: 'accuracy',
+        name: 'accuracy',
+        en: 'accuracy',
+        level: [10, 30, 50, 70, 90, 110, 130, 150, 170, 190, 210]
+      },
+      {
+        id: 'dodge',
+        name: 'Menghindar',
+        en: 'dodge',
+        level: [10, 30, 50, 70, 90, 110, 130, 150, 170, 190, 210]
+      },
+      {
+        id: 'attack speed',
+        name: 'kecepatan serangan',
+        en: 'attack speed',
+        level: [10, 30, 50, 70, 90, 110, 130, 150, 170, 190, 210]
+      },
+      {
+        id: 'magic speed',
+        name: 'kecepatan sihir',
+        en: 'magic speed',
+        level: [10, 30, 50, 70, 90, 110, 130, 150, 170, 190, 210]
+      },
+      {
+        id: 'wayfarer',
+        name: 'wayfarer',
+        en: 'wayfarer',
+        level: [10, 30, 50, 70, 90,]
+      },
+      {
+        id: 'hard hit enhancer',
+        name: ' Peningkat Serangan Keras',
+        en: 'Hard Hit Enhancer',
+        level: [30, 50, 70, 90, 110, 130,]
+      },
+      {
+        id: 'power shot',
+        name: 'tembakan Kuat',
+        en: 'power shot',
+        level: [30, 50, 70, 90, 110, 130,]
+      },
+      {
+        id: 'sonic blade extender',
+        name: 'sonic blade extender',
+        en: 'sonic blade extender',
+        level: [30, 50, 70, 90, 110, 130,]
+      },
+      {
+        id: 'bullseye enhancer',
+        name: 'peningkat Bullseye',
+        en: 'bullseye enhancer',
+        level: [30, 50, 70, 90, 110, 130,]
+      },
+      {
+        id: 'magic arrow enhancer',
+        name: 'sihir panah enhancer',
+        en: 'magic arrow enhancer',
+        level: [30, 50, 70, 90, 110, 130,]
+      },
     ];
 
     if (command === 'regis') {
