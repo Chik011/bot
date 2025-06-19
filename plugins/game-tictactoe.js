@@ -3,6 +3,12 @@ let tictactoe = {};
 const tictactoeHandler = async (m, { conn, command, text, sender }) => {
     const chatId = m.chat;
 
+    // Ensure sender is a string before proceeding
+    if (typeof sender !== 'string' || !sender) {
+        console.error('Sender is not a valid string:', sender);
+        return conn.reply(chatId, 'Terjadi kesalahan: Informasi pengirim tidak valid.', m);
+    }
+
     // --- Command: .ttt ---
     if (command === 'ttt') {
         if (tictactoe[chatId]) {
@@ -17,7 +23,10 @@ const tictactoeHandler = async (m, { conn, command, text, sender }) => {
             status: 'waiting'
         };
 
+        // Safely get the name, assuming conn.getName is robust
         const nameX = await conn.getName(sender);
+        
+        // Use sender.split('@')[0] only if sender is confirmed to be a string
         return conn.reply(chatId, `🎮 *TicTacToe Dimulai!*\n👤 Pemain pertama (❌): @${sender.split('@')[0]}\n\nMenunggu pemain kedua... Ketik *.join* untuk bergabung.`, m, {
             mentions: [sender]
         });
