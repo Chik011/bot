@@ -150,7 +150,7 @@ let handler = async (m, { conn, command, text }) => {
 2200117   PRest Lv 10
 6011415   PRest Lv 9`,
 
-    fracBarrier: `🛡 FRACTIONAL BARRIER
+    fbarrier: `🛡 FRACTIONAL BARRIER
 4010024   Frac Barrier Lv 10
 53010043  Frac Barrier Lv 10
 6150029   Frac Barrier Lv 10
@@ -165,7 +165,7 @@ let handler = async (m, { conn, command, text }) => {
     pbarrier: `🛡 Pelindung Fisik
 2020111   PBarrier Lv 10`,
 
-    aggroPlus: `📈 +AGGRO%
+    aggroplus: `📈 +AGGRO%
 2010136   +Aggro Lv 10
 53010043  +Aggro Lv 10
 7171717   +Aggro Lv 10
@@ -175,7 +175,7 @@ let handler = async (m, { conn, command, text }) => {
 3158668   +Aggro Lv 10
 6262000   +Aggro Lv 9`,
 
-    aggroMinus: `📉 -AGGRO%
+    aggrominus: `📉 -AGGRO%
 1010261   -Aggro Lv 10
 1010002   -Aggro Lv 10
 1010147   -Aggro Lv 10
@@ -184,7 +184,7 @@ let handler = async (m, { conn, command, text }) => {
 3061206   -Aggro Lv 8
 3134610   -Aggro Lv 9`,
 
-    dteEarth: `🌍 DTE EARTH
+    dteearth: `🌍 DTE EARTH
 2020202   DTE Earth Lv 10
 3210103   DTE Earth Lv 10
 1011001   DTE Earth Lv 9
@@ -193,7 +193,7 @@ let handler = async (m, { conn, command, text }) => {
 1010002   DTE Earth Lv 8
 5236969   DTE Earth Lv 8`,
 
-    dteWind: `💨 DTE WIND
+    dtewind: `💨 DTE WIND
 3030303   DTE Wind Lv 10
 3210101   DTE Wind Lv 9
 3062111   DTE Wind Lv 8
@@ -201,7 +201,7 @@ let handler = async (m, { conn, command, text }) => {
 4099876   DTE Wind Lv 7   
 1010055   DTE Wind Lv 7`,
 
-    dteWater: `💧 DTE WATER
+    dtewater: `💧 DTE WATER
 1110111   DTE Water Lv 10
 7150030   DTE Water Lv 10
 3210100   DTE Water Lv 10
@@ -209,7 +209,7 @@ let handler = async (m, { conn, command, text }) => {
 3010018   DTE Water Lv 8
 3062111   DTE Water Lv 8`,
 
-    dteFire: `🔥 DTE FIRE
+    dtefire: `🔥 DTE FIRE
 3210106   DTE Fire Lv 10
 1121212   DTE Fire Lv 9
 7088807   DTE Fire Lv 9
@@ -217,13 +217,13 @@ let handler = async (m, { conn, command, text }) => {
 7011001   DTE Fire Lv 8
 2010091   DTE Fire Lv 6`,
 
-    dteLight: `💡 DTE LIGHT
+    dtelight: `💡 DTE LIGHT
 3210105   DTE Light Lv 10
 1020345   DTE Light Lv 9
 4046666   DTE Light Lv 8
 4016699   DTE Light Lv 8`,
 
-    dteDark: `🌑 DTE DARK
+    dtedark: `🌑 DTE DARK
 5010092   DTE Dark Lv 10
 1190020   DTE Dark Lv 10
 6116116   DTE Dark Lv 10
@@ -237,7 +237,7 @@ let handler = async (m, { conn, command, text }) => {
 1091111   DTE Dark Lv 7
 3030069   DTE Dark Lv 7`,
 
-    dteNeutral: `⚪ DTE NEUTRAL
+    dteneutral: `⚪ DTE NEUTRAL
 1018530   DTE Neutral Lv 9
 1199999   DTE Neutral Lv 9
 1019696   DTE Neutral Lv 8
@@ -245,7 +245,7 @@ let handler = async (m, { conn, command, text }) => {
 1011902   DTE Neutral Lv 7
 6061294   DTE Neutral Lv 7`,
 
-    dropRate: `📦 DROP RATE
+    droprate: `📦 DROP RATE
 4196969   Drop Rate Lv 6
 1010084   Drop Rate Lv 6`
   };
