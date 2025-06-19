@@ -120,7 +120,7 @@ let handler = async (m, { conn, args, command }) => {
       }
     ];
 
-    if (command === 'lvl') { // Command diganti menjadi 'lvl'
+    if (command === 'lvl', 'lvlg') { // Command diganti menjadi 'lvl'
       const inputLevel = parseInt(args[0]);
       if (isNaN(inputLevel) || inputLevel <= 0) {
         throw '🔍 Contoh penggunaan: *.lvl 50* atau *.alllvl* untuk menampilkan semua tempat leveling.';
@@ -180,7 +180,7 @@ let handler = async (m, { conn, args, command }) => {
   }
 };
 
-handler.command = ['lvl', 'alllvl']; // Perbarui command yang didaftarkan
+handler.command = ['lvl', 'alllvl', ]; // Perbarui command yang didaftarkan
 handler.tags = ['toram'];
 handler.help = ['lvl [level]', 'alllvl']; // Perbarui bantuan perintah
 handler.limit = false;
