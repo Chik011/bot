@@ -42,7 +42,7 @@ Halberd
 0-1: 7-12m
 1-2: 70-80m
 
-Armor
+Armor  
 Spirit Needle: 10m
 Legendary Needle: 400m+
 

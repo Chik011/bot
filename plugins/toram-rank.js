@@ -1,133 +1,50 @@
 const wait = 'Tunggu sebentar...';
+let qsData = [];
 
-let handler = async (m, { conn }) => {
-  await conn.reply(m.chat, wait, m);
-
-  try {
-    // 🔧 Ganti bagian ini aja!
-    const data = [
-      {
-        teamName: 'tim king jawa',
-        members: ['rend', 'Albany'],
-        times: {
-          mimyu: '40',
-          rudish: '43'
-        }
-      },
-      {
-        teamName: 'tim duo nubie',
-        members: ['Savita', 'hanica'],
-        times: {
-          mimyu: '1:28',
-          rudish: '2:35'
-        }
-      },
-      {
-        teamName: 'tim Godbeyonder',
-        members: ['kimizui', 'grewup'],
-        times: {
-          rudish: '48',
-          mimyu: '59'
-        }
-      },
-      {
-        teamName: 'tim nameless',
-        members: ['zancy', 'shinizami'],
-        times: {
-          rudish: '24',
-          mimyu: '14'
-        }
-      },
-      {
-        teamName: 'tim OW',
-        members: ['orpheuz', 'windsdy'],
-        times: {
-          rudish: '19',
-          mimyu: '12'
-        }
-      },
-      {
-        teamName: 'tim lid',
-        members: ['laurns', 'vin'],
-        times: {
-          rudish: '30',
-          mimyu: '24'
-        }
-      },
-      {
-        teamName: 'tim 5ingularitY',
-        members: ['Knightleyy', 'chiyoko'],
-        times: {
-          rudish: '54',
-          mimyu: '40'
-        }
-      }
-    ];
-
-    const knownBosses = ['mimyu', 'rudish'];
-    let results = [];
-
-    for (let team of data) {
-      let totalSeconds = 0;
-      let bossTimes = {};
-
-      for (let boss of knownBosses) {
-        const timeStr = team.times[boss];
-        if (!timeStr) {
-          bossTimes[boss] = null;
-          continue;
-        }
-
-        let seconds = 0;
-        if (timeStr.includes(':')) {
-          const [min, sec] = timeStr.split(':').map(Number);
-          seconds = min * 60 + sec;
-        } else {
-          seconds = parseInt(timeStr);
-        }
-
-        totalSeconds += seconds;
-        bossTimes[boss] = { timeStr, seconds };
+let handler = async (m, { conn, command, text, isOwner }) => {
+  switch (command) {
+    case 'qsadd':
+      if (!isOwner) return conn.reply(m.chat, '🚫 Hanya owner yang bisa menambahkan data QS.', m);
+      if (!text || !text.includes('|')) {
+        return conn.reply(m.chat, '❗ Format salah.\nGunakan: *.qsadd nama|reward*', m);
       }
 
-      results.push({
-        teamName: team.teamName,
-        members: team.members,
-        bossTimes,
-        totalSeconds
+      try {
+        const [name, reward] = text.split('|').map(s => s.trim());
+
+        qsData.push({ name, reward });
+        return conn.reply(m.chat, `✅ Berhasil menambahkan reward untuk *${name}*`, m);
+      } catch (e) {
+        console.error(e);
+        return conn.reply(m.chat, '❌ Gagal menambahkan data. Cek formatnya ya.', m);
+      }
+
+    case 'qs':
+      if (!qsData.length) {
+        return conn.reply(m.chat, '📭 Belum ada data quest serikat.\nGunakan *.qsadd* untuk menambahkan.', m);
+      }
+
+      let list = `🎁 *Reward Quest Serikat*\n\n`;
+
+      qsData.forEach((item, i) => {
+        list += `*${i + 1}. ${item.name}*\n🎉 Reward: ${item.reward}\n\n`;
       });
-    }
 
-    results.sort((a, b) => a.totalSeconds - b.totalSeconds);
+      return conn.reply(m.chat, list.trim(), m);
 
-    let output = `🏁 *Ranking Semua Tim (Terkecil ke Terbesar)*\n\n`;
+    case 'qsreset':
+      if (!isOwner) return conn.reply(m.chat, '🚫 Hanya owner yang bisa mereset data.', m);
+      qsData = [];
+      return conn.reply(m.chat, '♻️ Semua data quest serikat berhasil direset!', m);
 
-    results.forEach((team, i) => {
-      const minutes = Math.floor(team.totalSeconds / 60);
-      const seconds = team.totalSeconds % 60;
-      const formattedTotal = minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`;
-
-      output += `*${i + 1}. ${team.teamName}*\n`;
-      output += `👥 *Anggota*: ${team.members.join(', ')}\n`;
-      output += `👹 *Boss:*\n`;
-
-      for (let boss of knownBosses) {
-        const b = team.bossTimes[boss];
-        output += `• ${boss}: ${b ? b.timeStr : '-'}\n`;
-      }
-
-      output += `⏱️ *Total*: ${formattedTotal}\n\n`;
-    });
-
-    await conn.reply(m.chat, output.trim(), m);
-  } catch (err) {
-    console.error(err);
-    throw "🚩 Terjadi kesalahan saat memproses ranking.";
+    default:
+      return;
   }
 };
 
-handler.command = handler.help = ['rank'];
+handler.command = ['qsadd', 'qs', 'qsreset'];
 handler.tags = ['toram'];
+handler.help = ['qsadd nama|reward', 'qs', 'qsreset'];
 handler.limit = false;
 handler.premium = false;
 
