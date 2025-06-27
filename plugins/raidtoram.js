@@ -9,106 +9,105 @@ let raidTeams = {
 let handler = async (m, { conn, command, text, sender, isOwner }) => {
   switch (command) {
 
-    // ✅ JOIN RAID
+    // — JOIN RAID (satu IGN per panggilan)
     case 'joinraid':
       if (!text || !text.includes(' ')) {
-        return conn.reply(m.chat, '❗ Format salah.\nGunakan: *.joinraid ign tim1*\nContoh: *.joinraid laurens tim1*', m);
+        return conn.reply(m.chat,
+          '❗ Format salah.\n' +
+          'Gunakan: *.joinraid <IGN> <tim>*\n' +
+          'Contoh: *.joinraid chiko tim2*', m);
       }
 
       let [ign, team] = text.trim().split(/\s+/);
       team = team.toLowerCase();
 
       if (!raidTeams[team]) {
-        return conn.reply(m.chat, `❌ Tim tidak ditemukan.\nGunakan: tim1, tim2, tim3, tim4`, m);
+        return conn.reply(m.chat,
+          '❌ Tim tidak ditemukan. Gunakan: tim1, tim2, tim3, tim4', m);
       }
 
-      // Cek apakah sudah tergabung
+      // Cek apakah sender sudah tergabung (pakai ID)
       for (let key in raidTeams) {
-        let index = raidTeams[key].findIndex(member => member.id === sender);
-        if (index !== -1) {
+        let idx = raidTeams[key].findIndex(p => p.id === sender);
+        if (idx !== -1) {
           if (key === team) {
-            return conn.reply(m.chat, `✅ *${raidTeams[key][index].name}* sudah berada di *${team}*`, m);
-          } else {
-            if (raidTeams[team].length >= MAX_MEMBER) {
-              return conn.reply(m.chat, `❌ *${team}* sudah penuh (maksimal ${MAX_MEMBER} orang).`, m);
-            }
-            let moved = raidTeams[key].splice(index, 1)[0];
-            raidTeams[team].push({ id: sender, name: ign });
-            return conn.reply(m.chat, `🔄 *${moved.name}* pindah ke *${team}*`, m);
+            return conn.reply(m.chat,
+              `✅ *${raidTeams[key][idx].name}* sudah berada di *${team}*`, m);
           }
+          // Pindah tim
+          if (raidTeams[team].length >= MAX_MEMBER) {
+            return conn.reply(m.chat,
+              `❌ *${team}* sudah penuh (maks ${MAX_MEMBER}).`, m);
+          }
+          let moved = raidTeams[key].splice(idx, 1)[0];
+          raidTeams[team].push(moved);
+          return conn.reply(m.chat,
+            `🔄 *${moved.name}* pindah ke *${team}*`, m);
         }
       }
 
       // Join baru
       if (raidTeams[team].length >= MAX_MEMBER) {
-        return conn.reply(m.chat, `❌ *${team}* sudah penuh (maksimal ${MAX_MEMBER} orang).`, m);
+        return conn.reply(m.chat,
+          `❌ *${team}* sudah penuh (maks ${MAX_MEMBER}).`, m);
       }
 
       raidTeams[team].push({ id: sender, name: ign });
-      return conn.reply(m.chat, `🚀 *${ign}* bergabung ke *${team}*`, m);
+      return conn.reply(m.chat,
+        `🚀 *${ign}* bergabung ke *${team}*`, m);
 
-    // 📋 LIST RAID
+    // — LIST RAID
     case 'listraid':
-      let output = `📋 *DAFTAR TIM RAID TORAM*\n\n`;
-
-      for (let [key, members] of Object.entries(raidTeams)) {
-        output += `📌 *${key.toUpperCase()}* [${members.length}/${MAX_MEMBER}]\n`;
-        if (members.length === 0) {
-          output += `_Belum ada anggota_\n\n`;
+      let out = '📋 *DAFTAR TIM RAID TORAM*\n\n';
+      for (let [t, members] of Object.entries(raidTeams)) {
+        out += `📌 *${t.toUpperCase()}* [${members.length}/${MAX_MEMBER}]\n`;
+        if (!members.length) {
+          out += '_Belum ada anggota_\n\n';
         } else {
-          members.forEach((member, i) => {
-            output += `${i + 1}. ${member.name}\n`;
+          members.forEach((p, i) => {
+            out += `${i+1}. ${p.name}\n`;
           });
-          output += '\n';
+          out += '\n';
         }
       }
+      return conn.reply(m.chat, out.trim(), m);
 
-      return conn.reply(m.chat, output.trim(), m);
-
-    // ♻️ RESET RAID
+    // — RESET RAID (owner only)
     case 'resetraid':
-      if (!isOwner) return conn.reply(m.chat, '🚫 Hanya owner yang bisa mereset tim raid.', m);
+      if (!isOwner) return conn.reply(m.chat,
+        '🚫 Hanya owner yang bisa mereset tim raid.', m);
+      raidTeams = { tim1: [], tim2: [], tim3: [], tim4: [] };
+      return conn.reply(m.chat,
+        '♻️ Semua tim raid telah direset!', m);
 
-      raidTeams = {
-        tim1: [],
-        tim2: [],
-        tim3: [],
-        tim4: []
-      };
-
-      return conn.reply(m.chat, '♻️ Semua tim raid berhasil direset!', m);
-
-    // ❌ KICK RAID (by IGN)
+    // — KICK RAID (owner only, by IGN)
     case 'kickraid':
-      if (!isOwner) return conn.reply(m.chat, '🚫 Hanya owner yang bisa menghapus player dari tim.', m);
-      if (!text) return conn.reply(m.chat, '❗ Format salah.\nGunakan: *.kickraid ign*\nContoh: *.kickraid laurens*', m);
+      if (!isOwner) return conn.reply(m.chat,
+        '🚫 Hanya owner yang bisa menghapus player.', m);
+      if (!text) return conn.reply(m.chat,
+        '❗ Format salah.\nGunakan: *.kickraid <IGN>*', m);
 
-      let ignToKick = text.trim().toLowerCase();
-      let found = false;
-
-      for (let [team, members] of Object.entries(raidTeams)) {
-        let index = members.findIndex(member => member.name.toLowerCase() === ignToKick);
-        if (index !== -1) {
-          let removed = raidTeams[team].splice(index, 1)[0];
-          found = true;
-          return conn.reply(m.chat, `🗑️ *${removed.name}* telah dihapus dari *${team}*`, m);
+      let ignKick = text.trim().toLowerCase();
+      for (let [t, members] of Object.entries(raidTeams)) {
+        let idx = members.findIndex(p => p.name.toLowerCase() === ignKick);
+        if (idx !== -1) {
+          let removed = members.splice(idx, 1)[0];
+          return conn.reply(m.chat,
+            `🗑️ *${removed.name}* dihapus dari *${t}*`, m);
         }
       }
-
-      if (!found) {
-        return conn.reply(m.chat, `⚠️ Tidak ditemukan player dengan nama *${text.trim()}* di tim manapun.`, m);
-      }
-      break;
+      return conn.reply(m.chat,
+        `⚠️ Player *${text.trim()}* tidak ditemukan.`, m);
   }
 };
 
-handler.command = ['joinraid', 'listraid', 'resetraid', 'kickraid'];
+handler.command = ['joinraid','listraid','resetraid','kickraid'];
 handler.tags = ['toram'];
 handler.help = [
-  'joinraid ign tim1',
+  'joinraid <IGN> <tim1–4>',
   'listraid',
   'resetraid',
-  'kickraid ign'
+  'kickraid <IGN>'
 ];
 handler.limit = false;
 handler.premium = false;
