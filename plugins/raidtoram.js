@@ -1,9 +1,9 @@
 const MAX_MEMBER = 4;
 
-let handler = async (m, { conn, command, text, isOwner }) => {
+let handler = async (m, { conn, command, text, isOwner, isAdmin }) => {
   const chatId = m.chat;
 
-  // Inisialisasi struktur data tim per grup
+  // Inisialisasi data tim untuk grup
   conn.raidTeams = conn.raidTeams || {};
   conn.raidTeams[chatId] = conn.raidTeams[chatId] || {
     tim1: [],
@@ -15,6 +15,7 @@ let handler = async (m, { conn, command, text, isOwner }) => {
   const teams = conn.raidTeams[chatId];
 
   switch (command) {
+
     case 'joinraid':
       if (!text || !text.includes(' ')) {
         return conn.reply(m.chat,
@@ -30,25 +31,11 @@ let handler = async (m, { conn, command, text, isOwner }) => {
           '❌ Tim tidak ditemukan. Gunakan: tim1, tim2, tim3, tim4', m);
       }
 
-      // Cek apakah IGN sudah terdaftar di tim lain, lalu pindahkan
+      // Hapus IGN dari semua tim dulu
       for (let key in teams) {
-        let index = teams[key].findIndex(p => p.toLowerCase() === ign.toLowerCase());
-        if (index !== -1) {
-          if (key === team) {
-            return conn.reply(m.chat, `✅ *${ign}* sudah berada di *${team}*`, m);
-          }
-          if (teams[team].length >= MAX_MEMBER) {
-            return conn.reply(m.chat,
-              `❌ *${team}* sudah penuh (maks ${MAX_MEMBER}).`, m);
-          }
-          // Pindah tim
-          teams[key].splice(index, 1);
-          teams[team].push(ign);
-          return conn.reply(m.chat, `🔄 *${ign}* pindah ke *${team}*`, m);
-        }
+        teams[key] = teams[key].filter(p => p.toLowerCase() !== ign.toLowerCase());
       }
 
-      // Kalau IGN belum terdaftar di mana pun
       if (teams[team].length >= MAX_MEMBER) {
         return conn.reply(m.chat,
           `❌ *${team}* sudah penuh (maks ${MAX_MEMBER}).`, m);
@@ -73,10 +60,15 @@ let handler = async (m, { conn, command, text, isOwner }) => {
       return conn.reply(m.chat, out.trim(), m);
 
     case 'kickraid':
-      if (!isOwner) return conn.reply(m.chat,
-        '🚫 Hanya owner yang bisa menghapus anggota.', m);
-      if (!text) return conn.reply(m.chat,
-        '❗ Format salah. Gunakan: *.kickraid <IGN>*', m);
+      if (!(isOwner || m.isGroup && isAdmin)) {
+        return conn.reply(m.chat,
+          '🚫 Hanya *owner* atau *admin grup* yang bisa menghapus anggota.', m);
+      }
+
+      if (!text) {
+        return conn.reply(m.chat,
+          '❗ Format salah.\nGunakan: *.kickraid <IGN>*', m);
+      }
 
       let ignKick = text.trim().toLowerCase();
       for (let [key, members] of Object.entries(teams)) {
@@ -91,10 +83,16 @@ let handler = async (m, { conn, command, text, isOwner }) => {
         `⚠️ *${text.trim()}* tidak ditemukan di tim manapun.`, m);
 
     case 'resetraid':
-      if (!isOwner) return conn.reply(m.chat,
-        '🚫 Hanya owner yang bisa mereset tim.', m);
+      if (!(isOwner || m.isGroup && isAdmin)) {
+        return conn.reply(m.chat,
+          '🚫 Hanya *owner* atau *admin grup* yang bisa mereset tim.', m);
+      }
+
       conn.raidTeams[chatId] = {
-        tim1: [], tim2: [], tim3: [], tim4: []
+        tim1: [],
+        tim2: [],
+        tim3: [],
+        tim4: []
       };
       return conn.reply(m.chat, '♻️ Semua tim raid telah direset!', m);
   }
