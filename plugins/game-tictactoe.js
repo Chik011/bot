@@ -1,57 +1,76 @@
-const tictactoeInputHandler = async (m, { conn, text }) => {
+let tictactoe = {};
+
+const tictactoeHandler = async (m, { conn, command, text }) => {
     const chatId = m.chat;
     const sender = m.sender;
 
-    if (!tictactoe[chatId]) return;
-    if (!/^[1-9]$/.test(text)) return;
-
-    const game = tictactoe[chatId];
-
-    if (game.status !== 'active') {
-        return conn.reply(chatId, '⏳ Game belum dimulai. Tunggu pemain kedua join dengan *.join*', m);
+    if (typeof sender !== 'string' || !sender) {
+        return conn.reply(chatId, '❌ Pengirim tidak valid.', m);
     }
 
-    if (![game.playerX, game.playerO].includes(sender)) {
-        return conn.reply(chatId, '🚫 Kamu bukan pemain dalam game ini.', m);
+    // --- .ttt ---
+    if (command === 'ttt') {
+        if (tictactoe[chatId]) {
+            return conn.reply(chatId, '⚠️ Game sudah dibuat. Ketik *.join* untuk bergabung.', m);
+        }
+
+        tictactoe[chatId] = {
+            board: Array(9).fill('⬜'),
+            playerX: sender,
+            playerO: null,
+            turn: null,
+            status: 'waiting'
+        };
+
+        let nameX = await conn.getName(sender).catch(() => sender.split('@')[0]);
+        return conn.reply(chatId,
+            `🎮 *TicTacToe Dimulai!*\n👤 Pemain pertama (❌): @${sender.split('@')[0]}\n\nMenunggu pemain kedua... Ketik *.join* untuk bergabung.`,
+            m, { mentions: [sender] });
     }
 
-    if (sender !== game.turn) {
-        return conn.reply(chatId, `⏳ Bukan giliranmu! Giliran: @${game.turn.split('@')[0]}`, m, {
-            mentions: [game.turn]
-        });
+    // --- .join ---
+    if (command === 'join') {
+        const game = tictactoe[chatId];
+        if (!game || game.status !== 'waiting') {
+            return conn.reply(chatId, '🚫 Tidak ada game yang menunggu pemain.', m);
+        }
+
+        if (sender === game.playerX) {
+            return conn.reply(chatId, '😅 Kamu tidak bisa bermain melawan dirimu sendiri.', m);
+        }
+
+        game.playerO = sender;
+        game.turn = game.playerX;
+        game.status = 'active';
+
+        let nameX = await conn.getName(game.playerX).catch(() => game.playerX.split('@')[0]);
+        let nameO = await conn.getName(game.playerO).catch(() => game.playerO.split('@')[0]);
+
+        return conn.reply(chatId,
+            `✅ Pemain kedua (⭕): @${sender.split('@')[0]}\n\n🎮 *Game Dimulai!*\n❌ = @${game.playerX.split('@')[0]}\n⭕ = @${game.playerO.split('@')[0]}\n\n${renderBoard(game.board)}\n\nGiliran: @${game.turn.split('@')[0]}\nKetik angka 1–9 untuk memilih posisi.`,
+            m, { mentions: [game.playerX, game.playerO, game.turn] });
     }
 
-    const pos = parseInt(text) - 1;
-    if (game.board[pos] !== '⬜') {
-        return conn.reply(chatId, `❌ Posisi ${text} sudah diisi. Pilih yang lain.`, m);
-    }
+    // --- .nyerah ---
+    if (command === 'nyerah') {
+        const game = tictactoe[chatId];
+        if (!game) return conn.reply(chatId, '🚫 Tidak ada game yang aktif.', m);
 
-    game.board[pos] = sender === game.playerX ? '❌' : '⭕';
+        if (![game.playerX, game.playerO].includes(sender)) {
+            return conn.reply(chatId, '❌ Kamu bukan pemain game ini.', m);
+        }
 
-    const winnerSymbol = checkWinner(game.board);
-    if (winnerSymbol) {
-        const winnerId = winnerSymbol === '❌' ? game.playerX : game.playerO;
-        let winnerName = winnerId.split('@')[0];
-        try { winnerName = await conn.getName(winnerId); } catch (e) {}
+        const winner = sender === game.playerX ? game.playerO : game.playerX;
+        let loserName = await conn.getName(sender).catch(() => sender.split('@')[0]);
+        let winnerName = await conn.getName(winner).catch(() => winner?.split('@')[0]);
 
-        conn.reply(chatId, `🎉 *${winnerName} menang!* 🎉\n\n${renderBoard(game.board)}`, m, {
-            mentions: [winnerId]
-        });
+        conn.reply(chatId, `🏳️ *${loserName} menyerah!*\n🏆 *${winnerName} menang!*`, m, { mentions: [sender, winner] });
         delete tictactoe[chatId];
-    } else if (game.board.every(cell => cell !== '⬜')) {
-        conn.reply(chatId, `🤝 *Seri!* Tidak ada yang menang.\n\n${renderBoard(game.board)}`, m);
-        delete tictactoe[chatId];
-    } else {
-        game.turn = sender === game.playerX ? game.playerO : game.playerX;
-        conn.reply(chatId, `✅ Posisi ${text} dipilih!\n\n${renderBoard(game.board)}\n\nGiliran: @${game.turn.split('@')[0]}`, m, {
-            mentions: [game.turn]
-        });
     }
 };
 
-tictactoeInputHandler.command = /^[1-9]$/;
-tictactoeInputHandler.customPrefix = false;
-tictactoeInputHandler.limit = false;
-tictactoeInputHandler.premium = false;
-
-module.exports = [tictactoeHandler, tictactoeInputHandler];
+tictactoeHandler.command = ['ttt', 'join', 'nyerah'];
+tictactoeHandler.tags = ['game'];
+tictactoeHandler.help = ['ttt', 'join', 'nyerah'];
+tictactoeHandler.limit = false;
+tictactoeHandler.premium = false;
