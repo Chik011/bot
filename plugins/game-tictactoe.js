@@ -1,16 +1,19 @@
 global.tictactoe = global.tictactoe || {}
 
-const handler = async (m, { conn, command }) => {
+const handler = async (m, { conn, command, usedPrefix }) => {
   const id = m.chat
   const sender = m.sender
   const game = global.tictactoe[id]
+
+  // Daftar command angka
+  const angkaCmd = ['1','2','3','4','5','6','7','8','9']
 
   // Mulai Game
   if (command === 'ttt') {
     if (game) return m.reply('⚠️ Masih ada game berlangsung. Ketik *.nyerah* atau *.nyerahttt* jika ingin berhenti bermain.')
 
     global.tictactoe[id] = {
-      board: Array.from({ length: 9 }, (_, i) => `${i + 1}`), // isi 1–9
+      board: Array.from({ length: 9 }, (_, i) => `${i + 1}`), // Isi awal angka 1-9
       X: sender,
       O: null,
       turn: null,
@@ -37,7 +40,7 @@ const handler = async (m, { conn, command }) => {
     })
   }
 
-  // Menyerah / Nyerahttt
+  // Menyerah
   if (['nyerah', 'nyerahttt'].includes(command)) {
     if (!game) return m.reply('⚠️ Tidak ada game.')
     if (![game.X, game.O].includes(sender)) return m.reply('❌ Kamu bukan pemain dalam game ini.')
@@ -50,8 +53,8 @@ const handler = async (m, { conn, command }) => {
     })
   }
 
-  // Input posisi angka 1–9
-  if (/^[1-9]$/.test(command) && game && game.status === 'play') {
+  // Input angka 1–9
+  if (angkaCmd.includes(command) && game && game.status === 'play') {
     if (![game.X, game.O].includes(sender)) return
     if (sender !== game.turn) {
       return conn.reply(id, `⏳ Giliran: @${game.turn.split('@')[0]}`, m, {
@@ -83,11 +86,9 @@ const handler = async (m, { conn, command }) => {
   }
 }
 
-handler.command = /^ttt$|^join$|^nyerah$|^nyerahttt$|^[1-9]$/
-handler.customPrefix = /^\.([1-9]|ttt|join|nyerah|nyerahttt)$/i
-handler.explicit = true
+handler.command = ['ttt', 'join', 'nyerah', 'nyerahttt', '1','2','3','4','5','6','7','8','9']
 handler.tags = ['game']
-handler.help = ['ttt', 'join', 'nyerah', 'nyerahttt', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+handler.help = ['ttt', 'join', 'nyerah', 'nyerahttt', '1','2','3','4','5','6','7','8','9']
 handler.limit = false
 
 module.exports = handler
