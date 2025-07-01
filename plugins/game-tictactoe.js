@@ -10,7 +10,7 @@ const handler = async (m, { conn, command }) => {
     if (game) return m.reply('⚠️ Masih ada game berlangsung. Ketik *.nyerah* atau *.nyerahttt* jika ingin berhenti bermain.')
 
     global.tictactoe[id] = {
-      board: Array(9).fill('⬜'),
+      board: Array.from({ length: 9 }, (_, i) => `${i + 1}`), // isi 1–9
       X: sender,
       O: null,
       turn: null,
@@ -60,7 +60,7 @@ const handler = async (m, { conn, command }) => {
     }
 
     const pos = parseInt(command) - 1
-    if (game.board[pos] !== '⬜') return m.reply('❌ Posisi sudah diisi.')
+    if (['❌', '⭕'].includes(game.board[pos])) return m.reply('❌ Posisi sudah diisi.')
 
     game.board[pos] = sender === game.X ? '❌' : '⭕'
 
@@ -71,7 +71,7 @@ const handler = async (m, { conn, command }) => {
       })
     }
 
-    if (!game.board.includes('⬜')) {
+    if (!game.board.some(cell => /^[1-9]$/.test(cell))) {
       delete global.tictactoe[id]
       return conn.reply(id, `🤝 Seri!\n\n${render(game.board)}`, m)
     }
@@ -83,8 +83,9 @@ const handler = async (m, { conn, command }) => {
   }
 }
 
-// Perbaikan di bagian command
-handler.command = ['ttt', 'join', 'nyerah', 'nyerahttt', /^[1-9]$/]
+handler.command = /^ttt$|^join$|^nyerah$|^nyerahttt$|^[1-9]$/
+handler.customPrefix = /^\.([1-9]|ttt|join|nyerah|nyerahttt)$/i
+handler.explicit = true
 handler.tags = ['game']
 handler.help = ['ttt', 'join', 'nyerah', 'nyerahttt', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 handler.limit = false
@@ -92,7 +93,12 @@ handler.limit = false
 module.exports = handler
 
 function render(b) {
-  return `${b[0]}${b[1]}${b[2]}\n${b[3]}${b[4]}${b[5]}\n${b[6]}${b[7]}${b[8]}`
+  return `${format(b[0])}${format(b[1])}${format(b[2])}\n${format(b[3])}${format(b[4])}${format(b[5])}\n${format(b[6])}${format(b[7])}${format(b[8])}`
+}
+
+function format(cell) {
+  if (cell === '❌' || cell === '⭕') return cell
+  return `⬜${cell}`
 }
 
 function check(b) {
@@ -101,5 +107,5 @@ function check(b) {
     [0,3,6],[1,4,7],[2,5,8],
     [0,4,8],[2,4,6]
   ]
-  return win.some(([a,b1,c]) => b[a] !== '⬜' && b[a] === b[b1] && b[a] === b[c])
+  return win.some(([a,b1,c]) => b[a] === b[b1] && b[a] === b[c] && ['❌', '⭕'].includes(b[a]))
 }
