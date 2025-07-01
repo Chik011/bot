@@ -58,8 +58,20 @@ Hi %name
     header: '┌  ◦ *%category*',
     body: '│  ◦ %cmd %islimit %isPremium',
     footer: '└  ',
-    after: `*Note:* Ketik .menu <category> untuk melihat menu spesifik\nContoh: .menu all`
+    after: `
+*Note:* Ketik *.menu <category>* untuk melihat menu spesifik
+Contoh: *.menu all*
+
+📢 *Grup WhatsApp Resmi Laurens Bot:*
+Bergabung dengan komunitas pengguna Laurens Bot sekarang!
+➡️ https://chat.whatsapp.com/KxysGONez5HGnxKsDEyab9
+
+📣 *Channel WhatsApp Resmi (Update Fitur & Info):*
+Ikuti channel resmi Laurens Bot untuk mendapatkan info terbaru.
+➡️ https://whatsapp.com/channel/0029Vb6CSaw77qVKwJVFFq1c
+`.trim()
 }
+
 
 let handler = async (m, { conn, usedPrefix: _p, args = [], command }) => {
     try {
@@ -122,8 +134,8 @@ let handler = async (m, { conn, usedPrefix: _p, args = [], command }) => {
                         externalAdReply: {
                             title: 'Grup Resmi Laurens Bot',
                             body: 'Klik untuk bergabung ke grup komunitas',
-                            thumbnailUrl: 'https://envs.sh/mR4.jpg/IMG20250612411.jpg',
-                            sourceUrl: 'https://www.whatsapp.com/channel/0029Vb6CSaw77qVKwJVFFq1c',
+                            thumbnailUrl: 'https://chat.whatsapp.com/KxysGONez5HGnxKsDEyab9?mode=ac_c',
+                            sourceUrl: 'https://chat.whatsapp.com/KxysGONez5HGnxKsDEyab9?mode=ac_c',
                             mediaType: 1,
                             previewType: 1,
                             renderLargerThumbnail: true

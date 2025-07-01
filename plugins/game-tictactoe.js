@@ -1,13 +1,13 @@
 global.tictactoe = global.tictactoe || {}
 
-const handler = async (m, { conn, command, text }) => {
+const handler = async (m, { conn, command }) => {
   const id = m.chat
   const sender = m.sender
   const game = global.tictactoe[id]
 
   // Mulai Game
   if (command === 'ttt') {
-    if (game) return m.reply('⚠️ Masih ada game berjalan. Ketik *.nyerah* untuk menyerah.')
+    if (game) return m.reply('⚠️ Masih ada game berlangsung. Ketik *.nyerah* atau *.nyerahttt* jika ingin berhenti bermain.')
 
     global.tictactoe[id] = {
       board: Array(9).fill('⬜'),
@@ -37,20 +37,20 @@ const handler = async (m, { conn, command, text }) => {
     })
   }
 
-  // Menyerah
-  if (command === 'nyerah') {
+  // Menyerah / Nyerahttt
+  if (['nyerah', 'nyerahttt'].includes(command)) {
     if (!game) return m.reply('⚠️ Tidak ada game.')
-    if (![game.X, game.O].includes(sender)) return m.reply('❌ Kamu bukan pemain.')
+    if (![game.X, game.O].includes(sender)) return m.reply('❌ Kamu bukan pemain dalam game ini.')
 
     const pemenang = sender === game.X ? game.O : game.X
     delete global.tictactoe[id]
 
-    return conn.reply(id, `🏳️ @${sender.split('@')[0]} menyerah!\n🏆 @${pemenang.split('@')[0]} menang!`, m, {
+    return conn.reply(id, `🏳️ @${sender.split('@')[0]} menyerah dari game!\n🏆 @${pemenang.split('@')[0]} menang!`, m, {
       mentions: [sender, pemenang]
     })
   }
 
-  // Input posisi: .1 - .9
+  // Input posisi angka 1–9
   if (/^[1-9]$/.test(command) && game && game.status === 'play') {
     if (![game.X, game.O].includes(sender)) return
     if (sender !== game.turn) {
@@ -83,9 +83,10 @@ const handler = async (m, { conn, command, text }) => {
   }
 }
 
-handler.command = ['ttt', 'join', 'nyerah', ...'123456789']
+// Perbaikan di bagian command
+handler.command = ['ttt', 'join', 'nyerah', 'nyerahttt', /^[1-9]$/]
 handler.tags = ['game']
-handler.help = ['ttt', 'join', 'nyerah', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+handler.help = ['ttt', 'join', 'nyerah', 'nyerahttt', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 handler.limit = false
 
 module.exports = handler
@@ -101,4 +102,4 @@ function check(b) {
     [0,4,8],[2,4,6]
   ]
   return win.some(([a,b1,c]) => b[a] !== '⬜' && b[a] === b[b1] && b[a] === b[c])
-                                           }
+}
