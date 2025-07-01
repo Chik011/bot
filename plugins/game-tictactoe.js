@@ -1,19 +1,18 @@
 global.tictactoe = global.tictactoe || {}
 
-const handler = async (m, { conn, command, usedPrefix }) => {
+const handler = async (m, { conn, command }) => {
   const id = m.chat
   const sender = m.sender
   const game = global.tictactoe[id]
 
-  // Daftar command angka
   const angkaCmd = ['1','2','3','4','5','6','7','8','9']
 
   // Mulai Game
   if (command === 'ttt') {
-    if (game) return m.reply('⚠️ Masih ada game berlangsung. Ketik *.nyerah* atau *.nyerahttt* jika ingin berhenti bermain.')
+    if (game) return m.reply('⚠️ Masih ada game berlangsung. Ketik *.nyerah* atau *.nyerahttt* untuk menyerah.')
 
     global.tictactoe[id] = {
-      board: Array.from({ length: 9 }, (_, i) => `${i + 1}`), // Isi awal angka 1-9
+      board: Array.from({ length: 9 }, (_, i) => `${i + 1}`),
       X: sender,
       O: null,
       turn: null,
@@ -48,13 +47,14 @@ const handler = async (m, { conn, command, usedPrefix }) => {
     const pemenang = sender === game.X ? game.O : game.X
     delete global.tictactoe[id]
 
-    return conn.reply(id, `🏳️ @${sender.split('@')[0]} menyerah dari game!\n🏆 @${pemenang.split('@')[0]} menang!`, m, {
+    return conn.reply(id, `🏳️ @${sender.split('@')[0]} menyerah!\n🏆 @${pemenang.split('@')[0]} menang!`, m, {
       mentions: [sender, pemenang]
     })
   }
 
   // Input angka 1–9
-  if (angkaCmd.includes(command) && game && game.status === 'play') {
+  if (angkaCmd.includes(command)) {
+    if (!game || game.status !== 'play') return
     if (![game.X, game.O].includes(sender)) return
     if (sender !== game.turn) {
       return conn.reply(id, `⏳ Giliran: @${game.turn.split('@')[0]}`, m, {
@@ -86,9 +86,9 @@ const handler = async (m, { conn, command, usedPrefix }) => {
   }
 }
 
-handler.command = ['ttt', 'join', 'nyerah', 'nyerahttt', '1','2','3','4','5','6','7','8','9']
+handler.command = /^([1-9]|ttt|join|nyerah|nyerahttt)$/i
 handler.tags = ['game']
-handler.help = ['ttt', 'join', 'nyerah', 'nyerahttt', '1','2','3','4','5','6','7','8','9']
+handler.help = ['ttt', 'join', 'nyerah', 'nyerahttt', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 handler.limit = false
 
 module.exports = handler
@@ -98,8 +98,7 @@ function render(b) {
 }
 
 function format(cell) {
-  if (cell === '❌' || cell === '⭕') return cell
-  return `⬜${cell}`
+  return (cell === '❌' || cell === '⭕') ? cell : `⬜${cell}`
 }
 
 function check(b) {
@@ -109,4 +108,4 @@ function check(b) {
     [0,4,8],[2,4,6]
   ]
   return win.some(([a,b1,c]) => b[a] === b[b1] && b[a] === b[c] && ['❌', '⭕'].includes(b[a]))
-}
+                        }
