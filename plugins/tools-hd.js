@@ -30,15 +30,15 @@ let handler = async (m, { conn, usedPrefix, command }) => {
       const img = await q.download();
       const url = await uploadImage(img);
 
-      const api = `https://apiflash.top/api/remini?url=${encodeURIComponent(url)}`;
-      const res = await fetch(api);
-      const raw = await res.text();
+      // ✅ Gunakan API remini dari violetics (tidak perlu apikey)
+      const api = `https://violetics.pw/api/photooxy/remini?image=${encodeURIComponent(url)}`;
+      const res = await axios.get(api);
 
-      const json = JSON.parse(raw);
+      if (!res.data.status || !res.data.result) {
+        throw new Error('❌ Gagal memproses gambar.');
+      }
 
-      if (!json.status || !json.result) throw new Error('❌ Gagal memperjelas gambar.');
-
-      await conn.sendFile(m.chat, json.result, 'hd.jpg', wm, m);
+      await conn.sendFile(m.chat, res.data.result, 'hd.jpg', wm, m);
     } else {
       m.reply(`📸 Kirim gambar lalu balas dengan perintah *${usedPrefix + command}*`);
     }
