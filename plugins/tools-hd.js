@@ -10,14 +10,11 @@ async function uploadToImgbb(buffer) {
   const form = new FormData();
   form.append('image', buffer.toString('base64'));
 
-  const res = await axios.post(`https://api.imgbb.com/1/upload?expiration=600&key=${IMGBB_API_KEY}`, form, {
+  const res = await axios.post(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, form, {
     headers: form.getHeaders()
   });
 
-  if (!res.data || !res.data.data || !res.data.data.url) {
-    throw new Error('❌ Gagal upload ke imgbb');
-  }
-
+  if (!res.data?.data?.url) throw new Error('❌ Gagal upload ke imgbb');
   return res.data.data.url;
 }
 
@@ -32,14 +29,11 @@ let handler = async (m, { conn, usedPrefix, command }) => {
       const img = await q.download();
       const url = await uploadToImgbb(img);
 
-      // ✅ GANTI ke proxy Remini aman
-      const api = `https://remini-proxy.chikokasa.repl.co/api?url=${encodeURIComponent(url)}`;
+      // ✅ API aktif & stabil
+      const api = `https://vihangayt.me/tools/remini?url=${encodeURIComponent(url)}`;
       const res = await axios.get(api);
 
-      if (!res.data.status || !res.data.result) {
-        throw new Error('❌ Gagal memperjelas gambar.');
-      }
-
+      if (!res.data.status || !res.data.result) throw new Error('❌ Gagal memperjelas gambar.');
       await conn.sendFile(m.chat, res.data.result, 'hd.jpg', wm, m);
     } else {
       m.reply(`📸 Kirim gambar lalu balas dengan perintah *${usedPrefix + command}*`);
