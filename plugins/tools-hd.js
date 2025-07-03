@@ -4,19 +4,22 @@ const FormData = require('form-data');
 const wm = '© Laurens';
 const wait = '_Sedang diproses, tunggu sebentar..._';
 
-async function uploadImage(buffer) {
-  const form = new FormData();
-  form.append('file', buffer, 'image.jpg');
+// ✅ API key kamu dari imgbb
+const IMGBB_API_KEY = '22de3077171dee25a17b2b1c70473de4';
 
-  const res = await axios.post('https://telegra.ph/upload', form, {
+async function uploadToImgbb(buffer) {
+  const form = new FormData();
+  form.append('image', buffer.toString('base64'));
+
+  const res = await axios.post(`https://api.imgbb.com/1/upload?key=${22de3077171dee25a17b2b1c70473de4}`, form, {
     headers: form.getHeaders()
   });
 
-  if (!res.data || !res.data[0] || !res.data[0].src) {
-    throw new Error('❌ Gagal upload gambar.');
+  if (!res.data || !res.data.data || !res.data.data.url) {
+    throw new Error('❌ Gagal upload ke imgbb');
   }
 
-  return 'https://telegra.ph' + res.data[0].src;
+  return res.data.data.url;
 }
 
 let handler = async (m, { conn, usedPrefix, command }) => {
@@ -28,14 +31,13 @@ let handler = async (m, { conn, usedPrefix, command }) => {
       m.reply(wait);
 
       const img = await q.download();
-      const url = await uploadImage(img);
+      const url = await uploadToImgbb(img);
 
-      // ✅ Gunakan API remini dari violetics (tidak perlu apikey)
       const api = `https://violetics.pw/api/photooxy/remini?image=${encodeURIComponent(url)}`;
       const res = await axios.get(api);
 
       if (!res.data.status || !res.data.result) {
-        throw new Error('❌ Gagal memproses gambar.');
+        throw new Error('❌ Gagal memperjelas gambar.');
       }
 
       await conn.sendFile(m.chat, res.data.result, 'hd.jpg', wm, m);
