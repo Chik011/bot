@@ -31,7 +31,7 @@ let handler = async (m, { conn, usedPrefix, command }) => {
 
       // ✅ API aktif & stabil
       const api = `https://vihangayt.me/tools/remini?url=${encodeURIComponent(url)}`;
-      const res = await axios.get(api);
+      const res = await axios.get(api, { timeout: 10000 }); // 10 detik
 
       if (!res.data.status || !res.data.result) throw new Error('❌ Gagal memperjelas gambar.');
       await conn.sendFile(m.chat, res.data.result, 'hd.jpg', wm, m);
