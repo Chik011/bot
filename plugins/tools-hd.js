@@ -4,8 +4,8 @@ const FormData = require('form-data');
 const wm = '© Laurens';
 const wait = '_Sedang diproses, tunggu sebentar..._';
 
-// ✅ API key kamu dari imgbb
 const IMGBB_API_KEY = '22de3077171dee25a17b2b1c70473de4';
+const ZAHWA_API_KEY = 'zenzkey_22de3077171dee25a17b2b1c70473de4';
 
 async function uploadToImgbb(buffer) {
   const form = new FormData();
@@ -33,7 +33,7 @@ let handler = async (m, { conn, usedPrefix, command }) => {
       const img = await q.download();
       const url = await uploadToImgbb(img);
 
-      const api = `https://violetics.pw/api/photooxy/remini?image=${encodeURIComponent(url)}`;
+      const api = `https://api.zahwazein.xyz/photoeditor/remini?url=${encodeURIComponent(url)}&apikey=${ZAHWA_API_KEY}`;
       const res = await axios.get(api);
 
       if (!res.data.status || !res.data.result) {
