@@ -11,7 +11,7 @@ async function uploadToImgbb(buffer) {
   const form = new FormData();
   form.append('image', buffer.toString('base64'));
 
-  const res = await axios.post(`https://api.imgbb.com/1/upload?key=${22de3077171dee25a17b2b1c70473de4}`, form, {
+  const res = await axios.post(`https://api.imgbb.com/1/upload?expiration=600&key=${IMGBB_API_KEY}`, form, {
     headers: form.getHeaders()
   });
 
