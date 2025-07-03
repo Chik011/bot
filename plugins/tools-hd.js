@@ -1,8 +1,23 @@
-const fetch = require('node-fetch');
-const uploadImage = require('../lib/uploadImage');
+const axios = require('axios');
+const FormData = require('form-data');
 
 const wm = '© Laurens';
 const wait = '_Sedang diproses, tunggu sebentar..._';
+
+async function uploadImage(buffer) {
+  const form = new FormData();
+  form.append('file', buffer, 'image.jpg');
+
+  const res = await axios.post('https://telegra.ph/upload', form, {
+    headers: form.getHeaders()
+  });
+
+  if (!res.data || !res.data[0] || !res.data[0].src) {
+    throw new Error('❌ Gagal upload gambar.');
+  }
+
+  return 'https://telegra.ph' + res.data[0].src;
+}
 
 let handler = async (m, { conn, usedPrefix, command }) => {
   try {
@@ -13,12 +28,11 @@ let handler = async (m, { conn, usedPrefix, command }) => {
       m.reply(wait);
 
       const img = await q.download();
-      const out = await uploadImage(img);
+      const url = await uploadImage(img);
 
-      const api = `https://apiflash.top/api/remini?url=${encodeURIComponent(out)}`;
+      const api = `https://apiflash.top/api/remini?url=${encodeURIComponent(url)}`;
       const res = await fetch(api);
       const raw = await res.text();
-      console.log(raw); // Debugging
 
       const json = JSON.parse(raw);
 
