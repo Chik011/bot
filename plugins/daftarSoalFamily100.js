@@ -65,7 +65,7 @@ module.exports = [
     },
     {
         soal: "Sebutkan sesuatu yang dilakukan saat liburan!",
-        jawaban: ['jalan-jalan', 'belanja', 'tidur', 'nonton film', 'makan enak', 'foto-foto']
+        jawaban: ['jalan jalan', 'belanja', 'tidur', 'nonton film', 'makan enak', 'foto-foto']
     },
     {
         soal: "Sebutkan pekerjaan rumah yang sering dilakukan!",
