@@ -43,6 +43,7 @@ handler.help = ['clearsession'];
 handler.tags = ['owner'];
 handler.command = /^(clearsession|clearsessions)$/i;
 handler.rowner = true;
+handler.admin = true // Admin grup bisa pakai
 handler.owner = true; // Ensure this command is only for the owner
 
 module.exports = handler;
