@@ -15,9 +15,9 @@ let family100toHandler = async (m, { conn, command }) => {
                     { jawab: 'sofya city', poin: 30 },
                     { jawab: 'el scaro', poin: 25 },
                     { jawab: 'hora diomedea', poin: 20 },
-                    { jawab: 'polis', poin: 10 },
-                    { jawab: 'elban', poin: 10 },
-                    { jawab: 'lyark city', poin: 5 }
+                    { jawab: 'eink lang', poin: 10 },
+                    { jawab: 'dragon city', poin: 10 },
+                    { jawab: 'rumah admin', poin: 5 }
                 ]
             }
         ];
