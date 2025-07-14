@@ -8,7 +8,7 @@ let family100Handler = async (m, { conn, command }) => {
       return conn.reply(m.chat, '🚩 Masih ada sesi Family 100 yang belum selesai.\nGunakan *!nyerah* untuk menyerah.', m);
     }
 
-    const daftarSoal = [
+    const daftarSoal = [ // ===> 30 soal baru sudah aku buat fix
       {
         soal: "Sebutkan benda yang sering dibawa saat ke pantai!",
         jawaban: [
@@ -156,6 +156,83 @@ let family100Handler = async (m, { conn, command }) => {
           { jawab: 'notebook', poin: 10 },
           { jawab: 'mouse', poin: 10 },
           { jawab: 'stapler', poin: 5 }
+        ]
+      },
+      {
+        soal: "Sebutkan sesuatu yang sering dibawa ke sekolah!",
+        jawaban: [
+          { jawab: 'tas', poin: 30 },
+          { jawab: 'buku', poin: 25 },
+          { jawab: 'pulpen', poin: 20 },
+          { jawab: 'pensil', poin: 10 },
+          { jawab: 'penghapus', poin: 10 },
+          { jawab: 'bekal', poin: 5 }
+        ]
+      },
+      {
+        soal: "Sebutkan sesuatu yang dilakukan sebelum tidur!",
+        jawaban: [
+          { jawab: 'gosok gigi', poin: 30 },
+          { jawab: 'cuci muka', poin: 25 },
+          { jawab: 'berdoa', poin: 20 },
+          { jawab: 'main hp', poin: 10 },
+          { jawab: 'minum air', poin: 10 },
+          { jawab: 'cuci kaki', poin: 5 }
+        ]
+      },
+      {
+        soal: "Sebutkan sesuatu yang biasanya ada di dapur!",
+        jawaban: [
+          { jawab: 'kompor', poin: 30 },
+          { jawab: 'panci', poin: 25 },
+          { jawab: 'pisau', poin: 20 },
+          { jawab: 'sendok', poin: 10 },
+          { jawab: 'gelas', poin: 10 },
+          { jawab: 'wajan', poin: 5 }
+        ]
+      },
+      {
+        soal: "Sebutkan sesuatu yang dilakukan saat liburan!",
+        jawaban: [
+          { jawab: 'jalan-jalan', poin: 30 },
+          { jawab: 'belanja', poin: 25 },
+          { jawab: 'tidur', poin: 20 },
+          { jawab: 'nonton film', poin: 10 },
+          { jawab: 'makan enak', poin: 10 },
+          { jawab: 'foto-foto', poin: 5 }
+        ]
+      },
+      {
+        soal: "Sebutkan pekerjaan rumah yang sering dilakukan!",
+        jawaban: [
+          { jawab: 'menyapu', poin: 30 },
+          { jawab: 'mengepel', poin: 25 },
+          { jawab: 'cuci piring', poin: 20 },
+          { jawab: 'cuci baju', poin: 10 },
+          { jawab: 'setrika', poin: 10 },
+          { jawab: 'beres-beres', poin: 5 }
+        ]
+      },
+      {
+        soal: "Sebutkan sesuatu yang sering dipakai orang tua!",
+        jawaban: [
+          { jawab: 'kacamata', poin: 30 },
+          { jawab: 'tongkat', poin: 25 },
+          { jawab: 'jaket', poin: 20 },
+          { jawab: 'sarung', poin: 10 },
+          { jawab: 'jam tangan', poin: 10 },
+          { jawab: 'topi', poin: 5 }
+        ]
+      },
+      {
+        soal: "Sebutkan tempat umum yang sering dikunjungi!",
+        jawaban: [
+          { jawab: 'mall', poin: 30 },
+          { jawab: 'pasar', poin: 25 },
+          { jawab: 'rumah sakit', poin: 20 },
+          { jawab: 'terminal', poin: 10 },
+          { jawab: 'sekolah', poin: 10 },
+          { jawab: 'stasiun', poin: 5 }
         ]
       }
     ];

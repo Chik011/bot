@@ -1,4 +1,4 @@
-Const wait = 'Tunggu sebentar...'; // Make sure 'Const' is 'const'
+const wait = 'Tunggu sebentar...'; // Make sure 'Const' is 'const'
 
 let tebakKata = {}; // Objek untuk menyimpan sesi game Tebak Kata
 

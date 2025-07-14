@@ -13,7 +13,7 @@ let handler = async (m, { conn, command, text, isOwner, isAdmin }) => {
   };
 
   const teams = conn.raidTeams[chatId];
-
+    
   switch (command) {
 
     case 'joinraid':
