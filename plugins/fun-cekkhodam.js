@@ -19,7 +19,6 @@ let handler = async (m, { text, usedPrefix, command }) => {
 
 handler.command = handler.help = ['cekkhodam','cekhodam','cekodam'];
 handler.tags = ['fun'];
-handler.limit = true;
 
 module.exports = handler;
 
