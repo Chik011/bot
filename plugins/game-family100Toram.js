@@ -12,11 +12,13 @@ let family100toHandler = async (m, { conn, command }) => {
             {
                 soal: "Sebutkan nama kota yang ada di Toram Online!",
                 jawaban: [
-                    { jawab: 'sofya city', poin: 30 },
-                    { jawab: 'el scaro', poin: 25 },
-                    { jawab: 'hora diomedea', poin: 20 },
+                    { jawab: 'sofya city', poin: 10 },
+                    { jawab: 'el scaro', poin: 10 },
+                    { jawab: 'hora diomedea', poin: 10 },
                     { jawab: 'eink lang', poin: 10 },
-                    { jawab: 'dragon city', poin: 10 },
+                    { jawab: 'nov satercia', poin: 10 },
+                    { jawab: 'Draco Town', poin: 10 },
+                    { jawab: 'Erva tronc', poin: 10 },
                     { jawab: 'rumah admin', poin: 5 }
                 ]
             }
