@@ -1,54 +1,54 @@
 const pembolongData = {
   ohs: `*⚔️ OHS (One-Hand Sword)*
-• 0-1: 15-30m
-• 1-2: 150-250m`,
+0-1: 10-20M
+1-2: 90-100M`,
 
-  '2h': `*⚔️ 2H (Two-Hand Sword)*
-• 0-1: 10-15m
-• 1-2: 60-80m`,
+  ths: `*⚔️ THS (Two-Hand Sword)*
+0-1: 10-20M
+1-2: 95-100M`,
 
   knuckles: `*👊 Knuckles*
-• 0-1: 12-18m
-• 1-2: 100-120m`,
+0-1: 6-12M
+1-2: 70-90M`,
 
   katana: `*🗡️ Katana*
-• 0-1: 12-16m
-• 1-2: 100-120m`,
+0-1: 25-30M
+1-2: 80-95M`,
 
   staff: `*🔮 Staff*
-• 0-1: 10-15m
-• 1-2: 90-120m`,
+0-1: 25-35M
+1-2: 80-90M`,
 
   bow: `🏹 *Bow*
-• 0-1: 9-15m
-• 1-2: 60-90m`,
+0-1: 10-15M
+1-2: 75-85M`,
 
   bowgun: `*🔫 Bowgun*
-• 0-1: 7-14m
-• 1-2: 45-65m`,
+0-1: 20-30M
+1-2: 60-70M`,
 
   md: `*📘 MD (Magic Device)*
-• 0-1: 5-12m
-• 1-2: 16-35m`,
+0-1: 5-12M
+1-2: 35-45M`,
 
   halberd: `*🔱 Halberd*
-• 0-1: 7-12m
-• 1-2: 70-80m`,
+0-1: 15-25M
+1-2: 90-100M`,
 
   armor: `*🛡️ Armor*
-• Spirit Needle: 10m
-• Legendary Needle: 400m+`,
+Spirit Needle: 10M
+Legendary Needle: 650M+`,
 
   additionals: `*👒 Additionals*
-• Fairy Silk: 5-10m
-• Legendary Silk: 600m+`,
+Fairy Silk: 5-10M
+Legendary Silk: 750M+`,
 
   ring: `*💍 Ring*
-• High Grade Ornament: 8-10m
-• Legendary Ornament: 450-500m`,
+High Grade Ornament: 8-10M
+Legendary Ornament: 500M+`,
 
   extract: `*Extract*
-• Extract : 2-3M`,
+• Extract : 3-4M`,
 
   pseudo: `*berat semu/pseudo*
 • pseudo : 4-5M`,
@@ -60,7 +60,7 @@ let handler = async (m, { conn, command, text }) => {
 
   if (!key) {
     // Tampilkan semua jika tidak ada input
-    let fullList = `📌 *Harga Pembolong (Estimasi)*\n(Harga belum pasti, bisa berubah)\n\n`;
+    let fullList = `📌 *Harga Pembolong (Estimasi)*\n(Harga belum pasti, bisa berubah, Harga sekarang di rate 10k 35m)\n\n`;
     for (let k in pembolongData) {
       fullList += `${pembolongData[k]}\n\n`;
     }

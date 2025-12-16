@@ -201,7 +201,23 @@ let handler = async (m, { conn, args, command }) => {
           { name: "Fallen Angel (Nightmare)", level: "295-300" }
         ],
         location: "Caelus Facility (Fasilitas Caelus)"
-      }
+      },
+      {
+        range: "300-315",
+        bosses: [
+          { name: "Mulgoon (Ultimate) (314)", location_detail: "Plastida Raksasa" },
+          { name: "Torexesa (Ultimate) (309)", location_detail: "Aquaciry: Gedung Parlemen" },
+          { name: "Humida (Ultimate) (311)", location_detail: "Plastida Raksasa" },
+          { name: "Naga Meraung Bovinari (Ultimate) (308)", location_detail: "kuil Karunia Kecil: Ruang Puja" },
+          { name: "Iblis Kristal Jahanam Sejati (Nightmare) (309) ", location_detail: "Aquaciry: Gedung Parlemen" },
+          { name: "Vatudo (Ultimate) (305) ", location_detail: "Laut Dalam: Zona Terdalam" },
+        ],
+        alternatives: [
+          { type: "Miniboss", name: "Meduso", level: "311", location: " Aquatisda: Area Dalam" },
+          { type: "Miniboss", name: "Dandolion ", level: "308", location: "Lembah Umidus Jalan Tebing" },
+          { type: "Miniboss", name: "Meteora ", level: "302", location: "Dataran Menabra" }
+        ]
+      },
     ];
 
     if (command === 'lvl') { // Command diganti menjadi 'lvl'
